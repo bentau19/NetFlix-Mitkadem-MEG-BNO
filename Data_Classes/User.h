@@ -15,6 +15,7 @@ public:
     void addMovie(const Movie& movie);  // Add a movie
     std::vector<Movie> getMovies();  // Return the movies
     bool removeMovie(int movieId);  // Remove a movie
+    int getuserid(); // Return the user id
 };
 
 #endif

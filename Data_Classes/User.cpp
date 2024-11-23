@@ -29,3 +29,8 @@ bool User::removeMovie(int movieId)
     }
     return false;  // false - didnt find
 }
+
+int User::getuserid()
+{
+    return UserId;
+}
