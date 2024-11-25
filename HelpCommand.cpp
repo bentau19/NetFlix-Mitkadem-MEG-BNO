@@ -15,7 +15,7 @@ public:
     }
     void execute(string str){
         if(str.length() > 1) {
-            throw exception;
+         //   throw exception;
         }
         cout << "add[userid] [movieid1] [movieid2]…" << endl;
         cout << "recommend[userid] [movieid]" <<endl;

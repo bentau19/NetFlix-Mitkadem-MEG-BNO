@@ -10,8 +10,8 @@ map <string, ICommand*> commands;
 void run() {
    // ICommand* help = new HelpCommand();
   //  commands["help"] = help;
-    commands["help"] = new HelpCommand();
-  //  commands["add"] = new AddCommand();
+   // commands["help"] = new HelpCommand();
+    commands["add"] = new AddCommand();
   //  commands["recommend %d %s"];
     int userid;
     string task;
