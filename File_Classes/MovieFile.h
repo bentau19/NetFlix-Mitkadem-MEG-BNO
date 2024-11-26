@@ -10,8 +10,6 @@
 
 class MovieFile : public IFile {
 private:
-    std::fstream file;      // File stream to work with files
-    std::string fileName;   // Member variable to store the file name
     void create(const std::string name) override;     // Create a file with the specified name
     void deleteItem(const std::string name) override; // Delete the specified file
 public:
