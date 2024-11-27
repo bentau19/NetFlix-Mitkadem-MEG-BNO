@@ -13,6 +13,5 @@ public:
     MovieFile();
     void Write(std::string Line);
     void display() override;                     // Optional: Customize display
-    std::string read();
 };
 #endif

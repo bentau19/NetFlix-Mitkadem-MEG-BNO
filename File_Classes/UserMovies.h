@@ -1,15 +1,14 @@
-#ifndef USERMOVIES
-#define USERMOVIES
-#include <string>
-class UserMovies
-{
-private:
-public:
-    static int* UserList(int userid); //return a list of the user movies, first arg has the size of the array.
-    static bool AddUserMovies( std::string movies[], int size,int Userid); // recieve array of movies, 
-    //the size of the array and userid, return if managed to add the movies
+#ifndef USERMOVIES_H
+#define USERMOVIES_H
 
+#include <vector>  // Include the vector header
+#include <string>  // Include string header
+using namespace std;
+class UserMovies {
+public:
+    static vector<int> transformStringToIntVector(const std::vector<std::string>& strVec);
+    static vector<int> UserList(int userid);  // Return a list of the user's movie IDs
+    static bool AddUserMovies(vector<string> movie, int Userid); // add the movies to the user ret flase if didnt manage
 };
 
-
-#endif
+#endif // USERMOVIES_H

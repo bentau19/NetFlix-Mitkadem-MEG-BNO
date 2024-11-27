@@ -10,8 +10,8 @@ private:
     virtual void deleteItem(const std::string name) = 0;
 public:
     virtual void display() = 0;
-    virtual void Write(std::string Line);
-    virtual std::string GetName();
+    virtual void Write(std::string Line)=0;
+    virtual std::string GetName()=0;
 };
 
 #endif
