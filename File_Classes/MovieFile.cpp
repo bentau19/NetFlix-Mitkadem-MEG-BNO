@@ -1,45 +1,16 @@
 #include "MovieFile.h"
-MovieFile::MovieFile(const std::string name){
-    fileName = name;
-    if (!doesFileExist())
-    {
-        create(name);
+MovieFile::MovieFile() : BaseFile("Movies.txt") {
+    if (!doesFileExist(fileName)) {
+        create(fileName);
     }
-    
 }
-bool MovieFile::doesFileExist() {
-    std::ifstream file(fileName + ".txt"); 
-    bool t = file.good();            // true if managed to open file
-    if (t){
+void MovieFile::Write(std::string Line) {
+    try {
+        openFile(std::ios::out | std::ios::app);  //file in append
+        file << Line << std::endl;               // Write the line
         file.close();
-    }
-    return t;
-}
-void MovieFile::create(const std::string name) {
-    std::ofstream file(name+".txt");  // Create and open the file
-    if (file.is_open()) {
-        file.close(); 
-    } else {
-        std::cout << "Failed to create file: " << name << std::endl;
-    }
-}
-
-void MovieFile::deleteItem(const std::string name) {
-    if (std::filesystem::remove(name+".txt")) {  // Remove the file using filesystem
-        std::cout << "Deleted movie file: " << name << std::endl;
-    } else {
-        std::cout << "Failed to delete file: " << name << std::endl;
-    }
-}
-
-void MovieFile::Write(std::string Line)
-{
-    std::ofstream outFile(fileName + ".txt", std::ios::app);  // Open the file
-    if (outFile.is_open()) {
-        outFile << Line << std::endl;   // Write to the file
-        outFile.close();  // Dont forget to close the file
-    } else {
-        std::cout << "Error opening file for writing.\n";
+    } catch (const std::ios_base::failure& e) {  
+        std::cerr << "Error: " << e.what() << std::endl;
     }
 }
 
@@ -49,7 +20,7 @@ void MovieFile::display()
         std::cout << "No file to display. Please create or set a file first." << std::endl;
         return;
     }
-    std::ifstream file(fileName+".txt");  // Open the file for reading
+    std::ifstream file(fileName+".txt");  // file for reading
     if (file.is_open()) {
         std::string line;
         std::cout << fileName << std::endl;
@@ -62,7 +33,25 @@ void MovieFile::display()
     }
 }
 
-std::string MovieFile::GetName()
+std::string MovieFile::read()
 {
-    return fileName;
+
+    std::string line;
+    std::cout << fileName << std::endl;
+    try {
+        openFile(std::ios::in);
+
+        while (std::getline(file, line)) {
+            std::cout << line << std::endl;
+        }
+
+
+        file.close();
+    } catch (const std::ios_base::failure& e) {  
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    
+
+    return std::string();
 }
