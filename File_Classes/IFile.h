@@ -7,7 +7,7 @@
 class IFile{
 private:
     virtual void create(const std::string name) = 0;
-    virtual void deleteItem(const std::string name) = 0;
+    virtual void deleteItem() = 0;
 public:
     virtual void display() = 0;
     virtual void Write(std::string Line)=0;

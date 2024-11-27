@@ -8,11 +8,16 @@ using namespace std;
 
 int main() {
     try {
+        UserFile f;
         vector<int> m = UserMovies::UserList(1);
         for (int num : m) {
-        std::cout << num << " ";  // Print each element followed by a space
+            std::cout << num << " ";  // Print each element followed by a space
         }
-        std::cout << std::endl;  // End with a newline
+        cout << std::endl;  // End with a newline
+        vector<string> movies;
+        movies.push_back("65");
+        movies.push_back("2");
+        cout << UserMovies::AddUserMovies(movies,2);
     } catch (const exception& e) {
         cerr << "Error: " << e.what() << endl; // Print error message
     }

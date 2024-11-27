@@ -38,7 +38,8 @@ void BaseFile::openFile(std::ios::openmode mode) {
 }
 
 // Delete a file
-void BaseFile::deleteItem(const std::string name) {
+void BaseFile::deleteItem() {
+    std::string name = fileName;
     if (doesFileExist()) {
         if (std::remove(name.c_str()) != 0) {  // Use std::remove to delete the file
             throw std::ios_base::failure("Failed to delete file: " + name);

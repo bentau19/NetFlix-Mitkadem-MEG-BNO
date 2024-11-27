@@ -21,7 +21,7 @@ public:
 
     // IFile interface methods (these will be overridden in BaseFile)
     virtual void create(const std::string name) override;
-    virtual void deleteItem(const std::string name) override;
+    virtual void deleteItem() override;
     virtual void display() override;
     virtual void Write(const std::string line) override;
     virtual std::string GetName() override;
