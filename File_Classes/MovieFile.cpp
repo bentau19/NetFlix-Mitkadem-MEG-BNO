@@ -1,6 +1,6 @@
 #include "MovieFile.h"
-std::string BaseFile::fileName = "Movies.txt";
-MovieFile::MovieFile() : BaseFile(fileName) {
+MovieFile::MovieFile() : BaseFile("Movies.txt") {
+    fileName = "Movies.txt";
 }
 void MovieFile::display()
 {

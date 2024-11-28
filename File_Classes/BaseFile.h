@@ -11,7 +11,7 @@
 class BaseFile : public IFile {
 protected:
     std::fstream file;  // File stream
-    static std::string fileName;  // File name
+    std::string fileName;  // File name
 
     void openFile(std::ios::openmode mode);  // Open file helper
 
@@ -27,7 +27,7 @@ public:
     virtual std::string GetName() override;
 
     // Static method to check if file exists
-    static bool doesFileExist();
+    static bool doesFileExist(std::string name);
     virtual std::vector<std::string> read();
 };
 

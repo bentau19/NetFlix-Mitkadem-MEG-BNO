@@ -7,47 +7,48 @@
 #include <algorithm>
 
 
-std::vector<int> UserMovies::UserList(int userid) {
+vector<int> UserMovies::IdList(int Id, BaseFile* f){
     int j;
-    string line = UserLine(userid,&j);
-    std::vector<std::string> movies = StringHandler::split(line, ' ');
-    return StringToIntVector(movies);
+    string line = IdLine(Id,&j ,f); // find me the line of the id
+    std::vector<std::string> ListIds = StringHandler::split(line, ' '); //gice me the list of the ids
+    return StringToIntVector(ListIds);
 }
 
-bool UserMovies::AddUserMovies(vector<string> movie, int Userid)
+bool UserMovies::AddIdsToId(vector<string> ListId, int ToId,BaseFile* f)
 {
     try
     {
-        vector<string> AllUsersData; // a vector of all the users
-        vector<string> UserData; // a vector of the specific user,
-        // 1st arg is the userid 2nd arg will be all its movies
-        vector<string> UserMovies;//all movies of the user
-        UserFile f;
-        AllUsersData = f.read();
-        int i = 0;
-        UserData = StringHandler::split(UserLine(Userid,&i), ';');
-        if(UserData.size()>=2){
-            UserMovies = StringHandler::split(UserData[1], ' ');
+        vector<string> AllIdData; // a vector of all the Ids and their lists
+        vector<string> IdData; // a vector of the specific Id,
+        // 1st arg is the Id 2nd arg will be all its list
+        vector<string> IdList;//all Ids in the list of the Toid
+        AllIdData = f->read(); // read from the file
+
+        int i = 0; // remember index in the all list to delete
+
+        IdData = StringHandler::split(IdLine(ToId,&i,f), ';');
+        if(IdData.size()>=2){
+            IdList = StringHandler::split(IdData[1], ' ');
         }
         if (i!= -1)//delete i if it exists
         {
-            AllUsersData.erase(AllUsersData.begin() + i); // Erase the line at i
+            AllIdData.erase(AllIdData.begin() + i); // Erase the line at i
         }
-        else{
-            UserData[0]=to_string(Userid);
-            UserData.push_back("");
+        else{//if the id didnt exist make it
+            IdData[0]=to_string(ToId);
+            IdData.push_back("");
         }
         //now we change the users movies
-        UserMovies = addUnique(UserMovies,movie);
+        IdList = addUnique(IdList,ListId);
         //now we add the new user to the vector
-        UserData[1] = StringHandler::join(UserMovies , ' ');
-        AllUsersData.push_back(StringHandler::join(UserData,';'));
+        IdData[1] = StringHandler::join(IdList , ' ');
+        AllIdData.push_back(StringHandler::join(IdData,';'));
         //delete the file to create a new one
-        f.deleteItem();
-        UserFile fn;
-        for (size_t i = 0; i < AllUsersData.size(); i++)
+        f->deleteItem();
+        f->create(f->GetName());
+        for (size_t i = 0; i < AllIdData.size(); i++)
         {
-            fn.Write(AllUsersData[i]);
+            f->Write(AllIdData[i]);
         }
         return true;
     }
@@ -59,7 +60,6 @@ bool UserMovies::AddUserMovies(vector<string> movie, int Userid)
 }
 vector<string> UserMovies::addUnique(const std::vector<string>& vec1, const vector<std::string>& vec2) {
     vector<std::string> result = vec1; // Start with all elements from vec1
-
     for (const auto& item : vec2) {
         // Add the item only if it's not already present in the result
         if (find(result.begin(), result.end(), item) == result.end()) {
@@ -70,10 +70,8 @@ vector<string> UserMovies::addUnique(const std::vector<string>& vec1, const vect
     return result;
 }
 
-std::string UserMovies::UserLine(int id, int* loc = nullptr) {
-    UserFile f;
-    std::vector<std::string> info = f.read();
-
+string UserMovies::IdLine(int id, int* loc,BaseFile* File) {
+    std::vector<std::string> info = File->read();;
     for (size_t i = 0; i < info.size(); i++) {
         std::string line = info[i];
         std::vector<std::string> user = StringHandler::split(line, ';');
@@ -93,7 +91,7 @@ std::string UserMovies::UserLine(int id, int* loc = nullptr) {
 }
 
 
-std::vector<int> UserMovies::StringToIntVector(const std::vector<std::string>& strVec) {
+vector<int> UserMovies::StringToIntVector(const std::vector<std::string>& strVec) {
     std::vector<int> intVec;
     for (const auto& str : strVec) {
         try {
@@ -106,3 +104,4 @@ std::vector<int> UserMovies::StringToIntVector(const std::vector<std::string>& s
     }
     return intVec;
 }
+

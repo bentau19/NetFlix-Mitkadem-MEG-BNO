@@ -17,7 +17,7 @@ BaseFile::~BaseFile() {
 
 // Create a file
 void BaseFile::create(const std::string name) {
-    if(doesFileExist){
+    if(doesFileExist(name)){
         return;
     }
     std::ofstream outFile(name);
@@ -40,7 +40,7 @@ void BaseFile::openFile(std::ios::openmode mode) {
 // Delete a file
 void BaseFile::deleteItem() {
     std::string name = fileName;
-    if (doesFileExist()) {
+    if (doesFileExist(name)) {
         if (std::remove(name.c_str()) != 0) {  // Use std::remove to delete the file
             throw std::ios_base::failure("Failed to delete file: " + name);
         }
@@ -60,7 +60,7 @@ void BaseFile::display() {
 }
 
 // Check if a file exists
-bool BaseFile::doesFileExist() {
+bool BaseFile::doesFileExist(std::string fileName) {
     std::ifstream testFile(fileName);
     bool exists = testFile.good();  // Check if the file stream can be opened
     testFile.close();
@@ -86,7 +86,7 @@ std::vector<std::string> BaseFile::read() {
 //write to the file
 void BaseFile::Write(std::string Line) {
     try {
-        doesFileExist();
+        doesFileExist(fileName);
         openFile(std::ios::out | std::ios::app);  //file in append
         file << Line << std::endl;               // Write the line
         file.close();
