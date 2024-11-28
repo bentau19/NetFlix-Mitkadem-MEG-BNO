@@ -12,7 +12,7 @@ class AddBuilder
 private:
 
 public:
-    static void BuildAdd(int userid,vector<string> movies);
+    static bool BuildAdd(int userid,vector<string> movies);
 };
 
 #endif

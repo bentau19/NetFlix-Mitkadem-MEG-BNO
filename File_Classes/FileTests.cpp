@@ -12,7 +12,7 @@ int main() {
         vector<string> movies;
         movies.push_back("65");
         movies.push_back("2");
-        AddBuilder::BuildAdd(4,movies);
+        cout << AddBuilder::BuildAdd(4,movies)<< endl;
 
         
     } catch (const exception& e) {
