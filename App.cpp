@@ -14,17 +14,21 @@ public:
     void run() {
         while (true)
         {
-            string task = menu->nextCommand();
-            string command = menu-> getCommand(task);
-            std::string remaingCommand = menu ->getCommandAsk(task);
-            try {
-                commands[command]-> execute(remaingCommand);
-            }
-            catch(...){
+        string task = menu->nextCommand();
+        string command = menu->getCommand(task);
+        string remainingCommand = menu->getCommandAsk(task);
+            try {          
+                    auto it = commands.find(command);
+                    if (it != commands.end() && it->second != nullptr) {
+                        commands[command]-> execute(remainingCommand);
+                    } else {
+                        throw std::runtime_error("Command not found: " + command);
+                    }
+                } 
+                    catch(...){
 
-            }
-
-        }
+                }
+       }
         
     }
 };

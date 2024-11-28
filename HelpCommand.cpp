@@ -8,18 +8,15 @@ private:
 public:
     HelpCommand();
     ~HelpCommand();
-    void execute(){
-        cout << "add[userid] [movieid1] [movieid2]…" << endl;
-        cout << "recommend[userid] [movieid]" <<endl;
-        cout << "help" <<endl;
-    }
     void execute(string str){
-        if(str.length() > 0) {
+        if(str.length() > 0 || str==" ") {
             throw std::invalid_argument("");
-        }
-        cout << "add[userid] [movieid1] [movieid2]…" << endl;
+        } else {
+         cout << "add[userid] [movieid1] [movieid2]…" << endl;
         cout << "recommend[userid] [movieid]" <<endl;
         cout << "help" <<endl;
+        }
+    
     }
 };
 
