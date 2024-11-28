@@ -3,12 +3,16 @@
 using namespace std;
 #include <vector>
 #include <string>
+#include "UserMovies.h"
+#include "BaseFile.h"
+#include "UserFile.h"
+#include "MovieFile.h"
 class AddBuilder
 {
 private:
 
 public:
-    static void BuildAdd(int userid,vector<string> movies);
+    static bool BuildAdd(int userid,vector<string> movies);
 };
 
 #endif
