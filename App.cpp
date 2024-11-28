@@ -10,16 +10,13 @@ private:
     IMenu* menu;
     map <string, ICommand*> commands;
 public:
- App(IMenu* menu, map <string, ICommand*> commands): menu(menu), commands(commands){}
-    App(IMenu* menu, map <string, ICommand*> commands);
-    ~App();
-
+   App(IMenu* menu, map <string, ICommand*> commands): menu(menu), commands(commands){}
     void run() {
         while (true)
         {
             string task = menu->nextCommand();
             string command = menu-> getCommand(task);
-            string remaingCommand = menu ->getCommandAsk(task);
+            std::string remaingCommand = menu ->getCommandAsk(task);
             try {
                 commands[command]-> execute(remaingCommand);
             }
