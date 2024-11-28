@@ -1,8 +1,8 @@
 #include "UserFile.h"
 #include "stringhandler.h"
-std::string BaseFile::fileName = "Users.txt";
 UserFile::UserFile(): BaseFile("Users.txt")
 {
+    fileName = "Users.txt";
 }
 void UserFile::display()
 {
