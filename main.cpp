@@ -2,30 +2,28 @@
 #include <fstream>
 #include <map>
 #include "ICommand.h"
+#include "ConsoleMenu.cpp"
 #include "HelpCommand.cpp"
 #include "AddCommand.cpp"
+#include "App.cpp"
+#include "RecomedionCommand.cpp"
 using namespace std;
 map <string, ICommand*> commands;
 
-void run() {
-   // ICommand* help = new HelpCommand();
-  //  commands["help"] = help;
-   // commands["help"] = new HelpCommand();
-    commands["add"] = new AddCommand();
-  //  commands["recommend %d %s"];
-    int userid;
-    string task;
-    string com;
-    while (true)
-    {
-        cin >> task;
-        com = task[0];
-        try{
-          commands[com] -> execute(task);
-        }
-        catch(...) {
 
-        }
-    }
-    
+int main(){
+     ICommand* addCommand = new AddCommand();
+    commands["Add"] = addCommand;
+
+    ICommand* helpCommand = new HelpCommand();
+    commands["Help"] = helpCommand;
+      ICommand* recCommand = new RecomedionCommand();
+    commands["recomadetion"] = recCommand;
+  App app(new ConsoleMenu(), commands);
+  app.run();
+
+  delete addCommand;
+  delete helpCommand;
+  delete recCommand;
+
 }

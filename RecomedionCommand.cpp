@@ -12,13 +12,7 @@ public:
     ~RecomedionCommand();
 
     void execute(string str){
-       int userid = str[1];
-       int* movies = new int[str.length() - 2];
-       for (size_t i = 2; i < str.length(); i++)
-       {
-          movies[i-2] = str[i];
-       }
-
+        cout<<str<<endl;
     }
     void execute(){}
 };

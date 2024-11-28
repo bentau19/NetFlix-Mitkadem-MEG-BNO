@@ -14,8 +14,8 @@ public:
         cout << "help" <<endl;
     }
     void execute(string str){
-        if(str.length() > 1) {
-         //   throw exception;
+        if(str.length() > 0) {
+            throw std::invalid_argument("");
         }
         cout << "add[userid] [movieid1] [movieid2]…" << endl;
         cout << "recommend[userid] [movieid]" <<endl;
