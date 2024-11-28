@@ -3,6 +3,10 @@
 using namespace std;
 #include <vector>
 #include <string>
+#include "UserMovies.h"
+#include "BaseFile.h"
+#include "UserFile.h"
+#include "MovieFile.h"
 class AddBuilder
 {
 private:
