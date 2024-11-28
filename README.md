@@ -1,2 +1,2 @@
 # NetFlix-Mitkadem-MEG-BNO
-This is an epic project that made noya happy and rice
+This is an epic project that made noya happy and rich
