@@ -10,7 +10,7 @@ public:
 
     void execute() override;  // Override execute method with no parameters
     void execute(std::string str) override;  // Override execute method with string parameter
-    std::vector<std::string> splitString(const std::string& str);
+
 };
 
 #endif // ADD_H

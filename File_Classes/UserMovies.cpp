@@ -9,9 +9,17 @@
 
 vector<int> UserMovies::IdList(int Id, BaseFile* f){
     int j;
+
     string line = IdLine(Id,&j ,f); // find me the line of the id
-    std::vector<std::string> ListIds = StringHandler::split(line, ' '); //gice me the list of the ids
-    return StringToIntVector(ListIds);
+    vector<string> IdAndList = StringHandler::split(line,';');
+    if (IdAndList.size()<2)
+    {
+        vector<int> a;
+        return  a;
+    }
+    vector<string> ListIds = StringHandler::split(IdAndList[1], ' '); //gice me the list of the ids
+    vector<int>  a = StringToIntVector(ListIds);
+    return a;
 }
 
 bool UserMovies::AddIdsToId(vector<string> ListId, int ToId,BaseFile* f)
@@ -104,4 +112,3 @@ vector<int> UserMovies::StringToIntVector(const std::vector<std::string>& strVec
     }
     return intVec;
 }
-
