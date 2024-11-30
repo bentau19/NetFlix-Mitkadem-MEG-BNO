@@ -1,4 +1,5 @@
 #include "Add.h"
+#include "../File_Classes/AddBuilder.h"
 #include <iostream>
 #include <vector>
 #include <sstream>  // Include the sstream header
@@ -19,17 +20,26 @@ void Add::execute() {
 
 // Method to execute with a string parameter
 void Add::execute(std::string str) {
-    std::cout << "Executing add command with argument: " << str << std::endl;
+    std::vector<std::string> userMovies = splitString(str);  
+    if(userMovies.size()<2) throw std::invalid_argument("");
+    int usrId = std::atoi(userMovies[0].c_str());
+    userMovies.erase(userMovies.begin());
+    AddBuilder a;
+    a.BuildAdd(usrId, userMovies);
 }
 
 std::vector<std::string> Add::splitString(const std::string& str) {
     std::vector<std::string> res;
     std::stringstream ss(str);
     std::string item;
+    try{
     while (getline(ss, item, ' ')) {
-        if (!item.empty()) {
+        if (!item.empty()) {    
+            int test = std::atoi(item.c_str());
             res.push_back(item);
         }
+    }}catch(...){
+        throw std::invalid_argument("");
     }
     return res;
 }
