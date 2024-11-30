@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "O:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate"
+		},
+		{
+			"file" : "O:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild/CMakeFiles/b19e118e6edda5eef6d7ec6f9f938b4c/googletest-populate.rule"
+		},
+		{
+			"file" : "O:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild/CMakeFiles/0b41bc5d9e439a27defb2fca4d5f7c91/googletest-populate-complete.rule"
+		},
+		{
+			"file" : "O:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild/CMakeFiles/2814359fc0cc771586aa93d5b92ed911/googletest-populate-build.rule"
+		},
+		{
+			"file" : "O:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild/CMakeFiles/2814359fc0cc771586aa93d5b92ed911/googletest-populate-configure.rule"
+		},
+		{
+			"file" : "O:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild/CMakeFiles/2814359fc0cc771586aa93d5b92ed911/googletest-populate-download.rule"
+		},
+		{
+			"file" : "O:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild/CMakeFiles/2814359fc0cc771586aa93d5b92ed911/googletest-populate-install.rule"
+		},
+		{
+			"file" : "O:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild/CMakeFiles/2814359fc0cc771586aa93d5b92ed911/googletest-populate-mkdir.rule"
+		},
+		{
+			"file" : "O:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild/CMakeFiles/2814359fc0cc771586aa93d5b92ed911/googletest-populate-patch.rule"
+		},
+		{
+			"file" : "O:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild/CMakeFiles/2814359fc0cc771586aa93d5b92ed911/googletest-populate-test.rule"
+		},
+		{
+			"file" : "O:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild/CMakeFiles/2814359fc0cc771586aa93d5b92ed911/googletest-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"googletest-populate"
+		],
+		"name" : "googletest-populate"
+	}
+}

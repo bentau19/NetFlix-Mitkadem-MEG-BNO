@@ -1,15 +1,17 @@
 #ifndef MOVIEFILE_H
 #define MOVIEFILE_H
 
-
 #include "BaseFile.h"
-#include <iostream>
-#include <fstream>
 #include <string>
-#include <stdexcept>
+
 class MovieFile : public BaseFile {
 public:
+    // Constructor: Initialize fileName
     MovieFile();
-    void display() override;
+    ~MovieFile();
+    std::string GetName() const override;
+    // Display the content of the Movies.txt file
+    std::string display() override;
 };
-#endif
+
+#endif // MOVIEFILE_H

@@ -1,19 +1,17 @@
-#ifndef USER_FILE
-#define USER_FILE
+#ifndef USERFILE_H
+#define USERFILE_H
+
 #include "BaseFile.h"
-#include <iostream>
-#include <fstream>
 #include <string>
-#include <stdexcept>
+
 class UserFile : public BaseFile {
 public:
+    // Constructor: Initialize fileName
     UserFile();
-    void display();
+    ~UserFile();
+    std::string GetName() const override;
+    // Display the content of the Users.txt file
+    std::string display() override;
 };
 
-
-
-
-
-
-#endif
+#endif // USERFILE_H

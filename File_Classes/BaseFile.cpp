@@ -4,7 +4,7 @@
 #include <string>
 #include <stdexcept>
 // Constructor: Initialize the file name
-BaseFile::BaseFile(const std::string& name){
+BaseFile::BaseFile(const std::string name){
     create(name);
 }
 
@@ -50,13 +50,15 @@ void BaseFile::deleteItem() {
 }
 
 // Display file content
-void BaseFile::display() {
+std::string BaseFile::display() {
     openFile(std::ios::in);
     std::string line;
+    std::string alline;
     while (std::getline(file, line)) {
-        std::cout << line << std::endl;
+        alline+=line;
     }
     file.close();
+    return alline;
 }
 
 // Check if a file exists
@@ -94,8 +96,7 @@ void BaseFile::Write(std::string Line) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
 }
-
-std::string BaseFile::GetName()
+std::string BaseFile::GetName() const
 {
     return fileName;
 }

@@ -1,0 +1,10 @@
+^O:\DESKTOP\PROJECT\NETFLIX-MITKADEM-MEG-BNO\BUILD\_DEPS\GOOGLETEST-SUBBUILD\CMAKEFILES\B19E118E6EDDA5EEF6D7EC6F9F938B4C\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SO:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild -BO:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file O:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild/googletest-populate.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

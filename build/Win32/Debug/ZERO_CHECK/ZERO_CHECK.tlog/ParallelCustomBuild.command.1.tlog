@@ -1,0 +1,10 @@
+^O:\DESKTOP\PROJECT\NETFLIX-MITKADEM-MEG-BNO\BUILD\CMAKEFILES\EBD939CF3B5B39A5EA49B87D3D46E6FC\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SO:/desktop/Project/NetFlix-Mitkadem-MEG-BNO -BO:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file O:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/my_project.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
