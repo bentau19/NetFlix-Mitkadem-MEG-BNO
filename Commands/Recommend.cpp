@@ -70,7 +70,13 @@ void Recommend::execute(std::string str) {
     for (int tempUser : movieWatchers){
         vector<int> tempMovies = UserMovies::IdList(tempUser,&userFile);
         for(int tempMovie : tempMovies){
-            if(tempMovie==movieId) continue;
+            bool flag= false;
+            for (int temp : watchedList){
+                if (temp == tempMovie){flag=true;
+                continue;}
+            }
+
+            if(flag||tempMovie==movieId) continue;
             recommendedMovies[tempMovie]+=numOfCommon[tempUser];
         }
     }
