@@ -13,7 +13,7 @@ add_executable(netflix main.cpp
         File_Classes/FileTests.cpp
         File_Classes/main.cpp
         File_Classes/MovieFile.cpp
-        File_Classes/stringhandler.cpp
+        File_Classes/StringHandler.cpp
         File_Classes/UserFile.cpp
         File_Classes/UserMovies.cpp
         Commands/Recommend.cpp

@@ -1,5 +1,5 @@
 #include "UserFile.h"
-#include "stringhandler.h"
+#include "StringHandler.h"
 UserFile::UserFile(): BaseFile("Users.txt")
 {
     fileName = "Users.txt";
