@@ -28,13 +28,13 @@ string getCommandAsk(string task) {
         return ""; // No remaining string
     }
 }
-    int main(){
-     while ((true))
-     {
-        string task;
-        cin>>task;
-        cout<<getCommandAsk(task)<<endl;
-     }
+//    int main(){
+//     while ((true))
+//     {
+//        string task;
+//        cin>>task;
+//        cout<<getCommandAsk(task)<<endl;
+//     }
      
 
-}
+//}

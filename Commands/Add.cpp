@@ -20,7 +20,7 @@ void Add::execute() {
 
 // Method to execute with a string parameter
 void Add::execute(std::string str) {
-    std::vector<std::string> userMovies = splitString(str);  
+    std::vector<std::string> userMovies = splitString(str);
     if(userMovies.size()<2) throw std::invalid_argument("");
     int usrId = std::atoi(userMovies[0].c_str());
     userMovies.erase(userMovies.begin());
@@ -33,12 +33,16 @@ std::vector<std::string> Add::splitString(const std::string& str) {
     std::stringstream ss(str);
     std::string item;
     try{
-    while (getline(ss, item, ' ')) {
-        if (!item.empty()) {    
-            int test = std::atoi(item.c_str());
-            res.push_back(item);
-        }
-    }}catch(...){
+        while (getline(ss, item, ' ')) {
+            if (!item.empty()) {
+                for (char ch : item) {
+                    if (!isdigit(ch)) {
+                        throw std::invalid_argument("");  // Found a non-digit character
+                    }
+                }
+                res.push_back(item);
+            }
+        }}catch(...){
         throw std::invalid_argument("");
     }
     return res;

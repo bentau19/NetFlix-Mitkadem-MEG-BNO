@@ -1,4 +1,4 @@
-#include "StringHandler.h"
+#include "stringhandler.h"
 
 std::vector<std::string> StringHandler::split(const std::string& str, char delimiter) {
     std::vector<std::string> result;

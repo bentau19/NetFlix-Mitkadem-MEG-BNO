@@ -7,17 +7,17 @@
 #include "AddBuilder.h"
 using namespace std;
 
-int main() {
-    try {
-        vector<string> movies;
-        movies.push_back("65");
-        movies.push_back("2");
-        cout << AddBuilder::BuildAdd(4,movies)<< endl;
-
-        
-    } catch (const exception& e) {
-        cerr << "Error: " << e.what() << endl; // Print error message
-    }
-
-    return 0;
-}
+//int main() {
+//    try {
+//        vector<string> movies;
+//        movies.push_back("65");
+//        movies.push_back("2");
+//        cout << AddBuilder::BuildAdd(4,movies)<< endl;
+//
+//
+//    } catch (const exception& e) {
+//        cerr << "Error: " << e.what() << endl; // Print error message
+//    }
+//
+//    return 0;
+//}
