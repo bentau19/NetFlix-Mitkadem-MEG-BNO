@@ -1,12 +1,12 @@
 
-#include "Add.h"  // Include the header of the class you want to test
+#include "AddCommand.h"  // Include the header of the class you want to test
 #include <iostream>
 #include <vector>
 using namespace std;
-// Test case for Add class
+// Test case for AddCommand class
 
 //int main(int argc, char **argv) {
-//    Add hey;
+//    AddCommand hey;
 //    const char* a = " ";
 //
 //    std::vector<std::string> res = hey.splitString("1   2 3 4");

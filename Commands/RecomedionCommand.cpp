@@ -5,20 +5,20 @@
 #include <stdexcept>
 #include <unordered_map>
 #include <algorithm>
-#include "Recommend.h"
+#include "RecomedionCommand.h"
 #include "../StringTools/StringTools.h"
 #include "../File_Classes/UserFile.h"
 #include "../File_Classes/MovieFile.h"
 #include "../File_Classes/UserMovies.h"
 
 using namespace std;
-Recommend::Recommend() {}
+RecomedionCommand::RecomedionCommand() {}
 
 // Destructor definition
-Recommend::~Recommend() {}
+RecomedionCommand::~RecomedionCommand() {}
 
 // Method to execute with no parameters
-void Recommend::execute() {
+void RecomedionCommand::execute() {
     throw std::invalid_argument("");
 }
 
@@ -40,7 +40,7 @@ std::vector<std::pair<int, int>> sortByValueThenKey(const std::unordered_map<int
 }
 
 // Method to execute with a string parameter
-void Recommend::execute(std::string str) {
+void RecomedionCommand::execute(std::string str) {
     //checks if the string input is valid
     vector<std::string> data = StringTools::splitString(str);
     if(data.size()!=2)throw std::invalid_argument("");

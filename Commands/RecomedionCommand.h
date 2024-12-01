@@ -2,20 +2,20 @@
 // Created by User on 30/11/2024.
 //
 
-#ifndef NETFLIX_RECOMMEND_H
-#define NETFLIX_RECOMMEND_H
+#ifndef NETFLIX_RECOMEDIONCOMMAND_H
+#define NETFLIX_RECOMEDIONCOMMAND_H
 
 
 #include "ICommand.h"
 
-class Recommend: public ICommand {
+class RecomedionCommand: public ICommand {
     public:
-        Recommend();  // Constructor
-        ~Recommend(); // Destructor
+        RecomedionCommand();  // Constructor
+        ~RecomedionCommand(); // Destructor
         void execute() override;  // Override execute method with no parameters
         void execute(std::string str) override;  // Override execute method with string parameter
 
     };
 
 
-#endif //NETFLIX_RECOMMEND_H
+#endif //NETFLIX_RECOMEDIONCOMMAND_H

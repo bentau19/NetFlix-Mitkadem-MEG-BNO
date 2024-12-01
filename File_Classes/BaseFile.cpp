@@ -74,7 +74,7 @@ std::vector<std::string> BaseFile::read() {
     try {
         openFile(std::ios::in);  // Open the file in input mode
         while (std::getline(file, line)) {
-            lines.push_back(line);  // Add each line to the vector
+            lines.push_back(line);  // AddCommand each line to the vector
         }
         file.close();
     } catch (const std::ios_base::failure& e) {
