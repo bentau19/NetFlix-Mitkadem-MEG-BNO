@@ -69,7 +69,7 @@ bool UserMovies::AddIdsToId(vector<string> ListId, int ToId,BaseFile* f)
 vector<string> UserMovies::addUnique(const std::vector<string>& vec1, const vector<std::string>& vec2) {
     vector<std::string> result = vec1; // Start with all elements from vec1
     for (const auto& item : vec2) {
-        // AddCommand the item only if it's not already present in the result
+        // Add the item only if it's not already present in the result
         if (find(result.begin(), result.end(), item) == result.end()) {
             result.push_back(item);
         }
@@ -112,3 +112,4 @@ vector<int> UserMovies::StringToIntVector(const std::vector<std::string>& strVec
     }
     return intVec;
 }
+

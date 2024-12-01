@@ -3,8 +3,13 @@
 #include <fstream>
 #include <string>
 #include <stdexcept>
-// Constructor: Initialize the file name
-BaseFile::BaseFile(const std::string& name){
+
+BaseFile::BaseFile(const std::string name){
+
+    std::string DATA_DIR = "/app/data/";
+    
+
+    loc = DATA_DIR + name;
     create(name);
 }
 
@@ -17,12 +22,12 @@ BaseFile::~BaseFile() {
 
 // Create a file
 void BaseFile::create(const std::string name) {
-    if(doesFileExist(name)){
+    if(doesFileExist()){
         return;
     }
-    std::ofstream outFile(name);
+    std::ofstream outFile(loc);
     if (!outFile) {
-        throw std::ios_base::failure("Failed to create file: " + name);
+        throw std::ios_base::failure("Failed to create file: " + loc);
     }
     outFile.close();
 }
@@ -30,7 +35,7 @@ void BaseFile::create(const std::string name) {
 // Open the file in the specified mode
 void BaseFile::openFile(std::ios::openmode mode) {
     if (!file.is_open()) {
-        file.open(fileName, mode);
+        file.open(loc, mode);
         if (!file) {
             throw std::ios_base::failure("base Failed to open file: " + fileName);
         }
@@ -39,30 +44,31 @@ void BaseFile::openFile(std::ios::openmode mode) {
 
 // Delete a file
 void BaseFile::deleteItem() {
-    std::string name = fileName;
-    if (doesFileExist(name)) {
-        if (std::remove(name.c_str()) != 0) {  // Use std::remove to delete the file
-            throw std::ios_base::failure("Failed to delete file: " + name);
+    if (doesFileExist()) {
+        if (std::remove(loc.c_str()) != 0) {  // Use std::remove to delete the file
+            throw std::ios_base::failure("Failed to delete file: " + loc);
         }
     } else {
-        throw std::invalid_argument("File does not exist: " + name);
+        throw std::invalid_argument("File does not exist: " + loc);
     }
 }
 
 // Display file content
-void BaseFile::display() {
+std::string BaseFile::display() {
     openFile(std::ios::in);
     std::string line;
+    std::string alline;
     while (std::getline(file, line)) {
-        std::cout << line << std::endl;
+        alline+=line;
     }
     file.close();
+    return alline;
 }
 
 // Check if a file exists
-bool BaseFile::doesFileExist(std::string fileName) {
-    std::ifstream testFile(fileName);
-    bool exists = testFile.good();  // Check if the file stream can be opened
+bool BaseFile::doesFileExist() {
+    std::ifstream testFile(loc);
+    bool exists = testFile.good();
     testFile.close();
     return exists;
 }
@@ -74,7 +80,7 @@ std::vector<std::string> BaseFile::read() {
     try {
         openFile(std::ios::in);  // Open the file in input mode
         while (std::getline(file, line)) {
-            lines.push_back(line);  // AddCommand each line to the vector
+            lines.push_back(line);  // Add each line to the vector
         }
         file.close();
     } catch (const std::ios_base::failure& e) {
@@ -86,7 +92,7 @@ std::vector<std::string> BaseFile::read() {
 //write to the file
 void BaseFile::Write(std::string Line) {
     try {
-        doesFileExist(fileName);
+        doesFileExist();
         openFile(std::ios::out | std::ios::app);  //file in append
         file << Line << std::endl;               // Write the line
         file.close();
@@ -94,8 +100,7 @@ void BaseFile::Write(std::string Line) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
 }
-
-std::string BaseFile::GetName()
+std::string BaseFile::GetName() const
 {
     return fileName;
 }
