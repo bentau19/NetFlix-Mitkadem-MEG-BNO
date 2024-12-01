@@ -1,3 +1,0 @@
-O:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate.dir
-O:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild/CMakeFiles/ALL_BUILD.dir
-O:/desktop/Project/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-subbuild/CMakeFiles/ZERO_CHECK.dir
