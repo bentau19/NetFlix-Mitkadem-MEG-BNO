@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "../File_Classes/UserMovies.h"
 #include "../File_Classes/UserFile.h"
-#include "../File_Classes/stringhandler.h"
+#include "../File_Classes/StringHandler.h"
 #include <vector>
 #include <string>
 #include "../File_Classes/MovieFile.h"

@@ -1,6 +1,6 @@
 #include "UserMovies.h"
 #include "UserFile.h"
-#include "stringhandler.h"
+#include "StringHandler.h"
 #include <vector>
 #include <string>
 #include <iostream>

@@ -20,13 +20,13 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
 # Add the source files for the test executable
 add_executable(File_Classes_Tests
-  tests/File_Classes_Tests.cpp
-  File_Classes/BaseFile.cpp
-  File_Classes/UserMovies.cpp
-  File_Classes/UserFile.cpp
-  File_Classes/MovieFile.cpp
-  File_Classes/AddBuilder.cpp
-  File_Classes/stringhandler.cpp
+  src/tests/File_Classes_Tests.cpp
+  src/File_Classes/BaseFile.cpp
+  src/File_Classes/UserMovies.cpp
+  src/File_Classes/UserFile.cpp
+  src/File_Classes/MovieFile.cpp
+  src/File_Classes/AddBuilder.cpp
+  src/File_Classes/StringHandler.cpp
 )
 
 

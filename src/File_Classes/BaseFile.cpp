@@ -3,17 +3,11 @@
 #include <fstream>
 #include <string>
 #include <stdexcept>
-#include <filesystem>
-namespace fs = std::filesystem;
-// Constructor: Initialize the file name
+
 BaseFile::BaseFile(const std::string name){
 
-    std::string DATA_DIR = "../../data/";
-    if (!fs::exists(DATA_DIR)) {
-        if (!fs::create_directory(DATA_DIR)) {
-            throw std::runtime_error("Failed to create data directory: " + DATA_DIR);
-        }
-    }
+    std::string DATA_DIR = "/app/data/";
+    
 
     loc = DATA_DIR + name;
     create(name);
