@@ -1,6 +1,6 @@
 #include "AddCommand.h"
 #include "../File_Classes/AddBuilder.h"
-#include "../../StringTools/StringTools.h"
+#include "../../src/StringTools/StringTools.h"
 #include <iostream>
 #include <vector>
 #include <sstream>  // Include the sstream header

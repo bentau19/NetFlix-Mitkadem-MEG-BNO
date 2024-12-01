@@ -44,8 +44,6 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(netflix src/main.cpp
         src/Commands/AddCommand.cpp
         src/Commands/AddTest.cpp
-        Data_Classes/Movie.cpp
-        Data_Classes/User.cpp
         src/File_Classes/AddBuilder.cpp
         src/File_Classes/BaseFile.cpp
         src/File_Classes/FileTests.cpp

@@ -6,10 +6,11 @@
 #include <unordered_map>
 #include <algorithm>
 #include "RecomedionCommand.h"
-#include "../../StringTools/StringTools.h"
+#include "../../src/StringTools/StringTools.h"
 #include "../File_Classes/UserFile.h"
 #include "../File_Classes/MovieFile.h"
 #include "../File_Classes/UserMovies.h"
+
 
 using namespace std;
 RecomedionCommand::RecomedionCommand() {}
