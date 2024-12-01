@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\IAMVE\source\Targil1\NetFlix-Mitkadem-MEG-BNO\build\CMakeFiles\7663c7efeba88411e629161479e26a3b\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{9C97CE78-E771-3F49-94A3-CD2B5A5E55A0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+^C:\USERS\IAMVE\SOURCE\TARGIL1\NETFLIX-MITKADEM-MEG-BNO\BUILD\_DEPS\GOOGLETEST-SRC\GOOGLEMOCK\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/IAMVE/source/Targil1/NetFlix-Mitkadem-MEG-BNO -BC:/Users/IAMVE/source/Targil1/NetFlix-Mitkadem-MEG-BNO/build --check-stamp-file C:/Users/IAMVE/source/Targil1/NetFlix-Mitkadem-MEG-BNO/build/_deps/googletest-build/googlemock/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
