@@ -13,15 +13,15 @@ map <string, ICommand*> commands;
 
 int main(){
      ICommand* addCommand = new AddCommand();
-    commands["add"] = addCommand;
-
+    commands["add"] = addCommand; //make add command
     ICommand* helpCommand = new HelpCommand();
-    commands["help"] = helpCommand;
+    commands["help"] = helpCommand; //make help command
     ICommand* recCommand = new RecomedionCommand();
-    commands["recommendation"] = recCommand;
-    App app(new ConsoleMenu(), commands);
-    app.run();
+    commands["recommendation"] = recCommand; //make reccomadtion command
+    App app(new ConsoleMenu(), commands); //give app the commands we made and the menu we have
+    app.run(); //run the pogram
 
+   //delete the commands
   delete addCommand;
   delete helpCommand;
   delete recCommand;

@@ -13,32 +13,23 @@ public:
     ~ConsoleMenu();
     string nextCommand(){
         string task;
-        getline(cin, task);
-        return task;
+        getline(cin, task); //take next user input
+        return task; //return the input
     }
 
     string getCommand(string task){
-          std::string firstWord;
-          size_t i = 0;
-
-          // Skip leading spaces
-        while (i < task.length() && task[i] == ' ') {
-             ++i;
-         }
-
-         // Extract first word
-          for (; i < task.length() && task[i] != ' '; ++i) {
-            firstWord += task[i];
-         }
-
-         return firstWord;
+        vector<string> vecString = StringHandler::split(task,' ');
+        if (!vecString.empty()) {//if have words
+            return vecString[0];  //return first Word
+        } 
+        return ""; //else is empty string
     }
 
 string getCommandAsk(string task) {
     vector<string> vecString = StringHandler::split(task,' ');
-    vecString.erase(vecString.begin());
-    string remaining = StringHandler::join(vecString, ' ');
-    return remaining;
+    vecString.erase(vecString.begin()); //erse the first word from string
+    string remaining = StringHandler::join(vecString, ' '); //return the vector to string
+    return remaining; //return the string
 }
 
 
