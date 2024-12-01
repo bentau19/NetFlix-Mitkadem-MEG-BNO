@@ -10,7 +10,7 @@ User::~User()
 
 void User::addMovie(const Movie& movie)
 {
-    movies.push_back(movie);  // Add the movie to the vector
+    movies.push_back(movie);  // AddCommand the movie to the vector
 }
 // Get the list of movies (returns reference to the vector)
 std::vector<Movie> User::getMovies()

@@ -1,6 +1,6 @@
 #include "UserMovies.h"
 #include "UserFile.h"
-#include "stringhandler.h"
+#include "StringHandler.h"
 #include <vector>
 #include <string>
 #include <iostream>
@@ -9,9 +9,17 @@
 
 vector<int> UserMovies::IdList(int Id, BaseFile* f){
     int j;
+
     string line = IdLine(Id,&j ,f); // find me the line of the id
-    std::vector<std::string> ListIds = StringHandler::split(line, ' '); //gice me the list of the ids
-    return StringToIntVector(ListIds);
+    vector<string> IdAndList = StringHandler::split(line,';');
+    if (IdAndList.size()<2)
+    {
+        vector<int> a;
+        return  a;
+    }
+    vector<string> ListIds = StringHandler::split(IdAndList[1], ' '); //gice me the list of the ids
+    vector<int>  a = StringToIntVector(ListIds);
+    return a;
 }
 
 bool UserMovies::AddIdsToId(vector<string> ListId, int ToId,BaseFile* f)
@@ -61,7 +69,7 @@ bool UserMovies::AddIdsToId(vector<string> ListId, int ToId,BaseFile* f)
 vector<string> UserMovies::addUnique(const std::vector<string>& vec1, const vector<std::string>& vec2) {
     vector<std::string> result = vec1; // Start with all elements from vec1
     for (const auto& item : vec2) {
-        // Add the item only if it's not already present in the result
+        // AddCommand the item only if it's not already present in the result
         if (find(result.begin(), result.end(), item) == result.end()) {
             result.push_back(item);
         }
@@ -104,4 +112,3 @@ vector<int> UserMovies::StringToIntVector(const std::vector<std::string>& strVec
     }
     return intVec;
 }
-
