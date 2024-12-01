@@ -5,21 +5,20 @@
 #include <stdexcept>
 #include <unordered_map>
 #include <algorithm>
-#include "RecomedionCommand.h"
-#include "../../src/StringTools/StringTools.h"
+#include "RecommendCommand.h"
 #include "../File_Classes/UserFile.h"
 #include "../File_Classes/MovieFile.h"
 #include "../File_Classes/UserMovies.h"
-
+#include "../File_Classes/StringHandler.h"
 
 using namespace std;
-RecomedionCommand::RecomedionCommand() {}
+RecommendCommand::RecommendCommand() {}
 
 // Destructor definition
-RecomedionCommand::~RecomedionCommand() {}
+RecommendCommand::~RecommendCommand() {}
 
 // Method to execute with no parameters
-void RecomedionCommand::execute() {
+void RecommendCommand::execute() {
     throw std::invalid_argument("");
 }
 
@@ -41,9 +40,9 @@ std::vector<std::pair<int, int>> sortByValueThenKey(const std::unordered_map<int
 }
 
 // Method to execute with a string parameter
-void RecomedionCommand::execute(std::string str) {
+void RecommendCommand::execute(std::string str) {
     //checks if the string input is valid
-    vector<std::string> data = StringTools::splitString(str);
+    vector<std::string> data = StringHandler::splitString(str);
     if(data.size()!=2)throw std::invalid_argument("");
 
     // init the user and the movie and checks if they exist
@@ -89,4 +88,5 @@ void RecomedionCommand::execute(std::string str) {
         count++;
         if (count == 10) break;  // Stop after printing the first 10 elements
     }
+    cout<<""<<endl;
 }

@@ -1,4 +1,11 @@
 #include "StringHandler.h"
+#include <string>
+#include "ConsoleMenu.h"
+#include <iostream>
+#include <fstream>
+#include <stdexcept>
+#include <sstream>
+using namespace std;
 
 std::vector<std::string> StringHandler::split(const std::string& str, char delimiter) {
     std::vector<std::string> result;
@@ -12,7 +19,7 @@ std::vector<std::string> StringHandler::split(const std::string& str, char delim
         end = str.find(delimiter, start);
     }
 
-    // AddCommand the final segment
+    // Add the final segment
     result.push_back(str.substr(start));
 
     return result;
@@ -23,10 +30,30 @@ std::string StringHandler::join(const std::vector<std::string>& array, char deli
 
     for (size_t i = 0; i < array.size(); ++i) {
         result += array[i];
-        if (i < array.size() - 1) { // AddCommand delimiter between elements, not at the end
+        if (i < array.size() - 1) { // Add delimiter between elements, not at the end
             result += delimiter;
         }
     }
 
     return result;
+}
+
+std::vector<std::string> StringHandler::splitString(const std::string& str) {
+    std::vector<std::string> res;
+    std::stringstream ss(str);
+    std::string item;
+    try{
+        while (getline(ss, item, ' ')) {
+            if (!item.empty()) {
+                for (char ch : item) {
+                    if (!isdigit(ch)) {
+                        throw std::invalid_argument("");  // Found a non-digit character
+                    }
+                }
+                res.push_back(item);
+            }
+        }}catch(...){
+        throw std::invalid_argument("");
+    }
+    return res;
 }
