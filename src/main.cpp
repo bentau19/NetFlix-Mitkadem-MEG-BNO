@@ -27,4 +27,5 @@ int main(){
   delete addCommand;
   delete helpCommand;
   delete recCommand;
+  
 }

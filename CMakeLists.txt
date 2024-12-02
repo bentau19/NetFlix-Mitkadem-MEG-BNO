@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(my_project)
+project(netflix_project)
 
 # GoogleTest requires at least C++14 (if you still want to use GoogleTest)
 set(CMAKE_CXX_STANDARD 14)
@@ -19,6 +19,8 @@ include_directories(src)
 
 # Add the source files for the main executable
 add_executable(
+ # InputTest
+#  src/tests/InputTest.cpp
   my_project
   src/main.cpp 
   src/ConsoleMenu.cpp
@@ -37,6 +39,7 @@ add_executable(
 
 # Link the main executable with GoogleTest (optional, remove if not needed)
 target_link_libraries(
+  #InputTest
   my_project
   gtest_main  # GoogleTest library (if you need it, otherwise remove this line)
 )
