@@ -12,7 +12,7 @@ public:
     // Joins a vector of strings into a single string using the given delimiter
     static std::string join(const std::vector<std::string>& array, char delimiter);
 
-   static std::vector<std::string> StringHandler::splitString(const std::string& str);
+   static std::vector<std::string> splitString(const std::string& str);
 };
 
 #endif // STRINGHANDLER_H
