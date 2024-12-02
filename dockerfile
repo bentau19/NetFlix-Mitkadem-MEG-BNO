@@ -21,6 +21,3 @@ RUN mkdir -p build && cd build && cmake .. && make
 
 # List the contents of the build directory to debug the executable
 RUN ls -alh build/
-
-# Default command to run your executable (replace 'main' with your actual executable name)
-CMD ["./build/File_Classes_Tests"]
