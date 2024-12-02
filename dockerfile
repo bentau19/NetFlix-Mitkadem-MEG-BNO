@@ -1,7 +1,7 @@
 # Use an official C++ image with GCC and build tools
 FROM gcc:10.2.0
-
 # Install CMake and any other required tools
+RUN ls -R
 RUN apt-get update && apt-get install -y cmake build-essential wget
 
 # Install specific version of CMake (if needed)
