@@ -9,4 +9,4 @@ class ICommand {
      virtual void execute(std::string str) = 0;
 };
 
-#endif
+#endif // ICOMMAND_H

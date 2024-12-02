@@ -23,3 +23,4 @@ void AddCommand::execute(std::string str) {
     userMovies.erase(userMovies.begin());
     AddBuilder::BuildAdd(usrId, userMovies);
 }
+
