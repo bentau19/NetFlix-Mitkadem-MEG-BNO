@@ -40,8 +40,21 @@ std::vector<std::pair<int, int>> sortByValueThenKey(const std::unordered_map<int
     return vec;
 }
 
+
+
+
 // Method to execute with a string parameter
 void RecomedionCommand::execute(std::string str) {
+
+    vector<int> res = TestExFunc(str);
+
+    for(int a :res){
+        std::cout  << a << " ";
+    }
+
+}
+
+std::vector<int> RecomedionCommand::TestExFunc(std::string str) {
     //checks if the string input is valid
     vector<std::string> data = StringTools::splitString(str);
     if(data.size()!=2)throw std::invalid_argument("");
@@ -51,8 +64,14 @@ void RecomedionCommand::execute(std::string str) {
     int movieId = atoi(data[1].c_str());
     UserFile userFile;
     MovieFile movieFile;
-    vector<int> watchedList = UserMovies::IdList(userId,&userFile);
-    vector<int> movieWatchers = UserMovies::IdList(movieId,&movieFile);
+    vector<int> watchedList;
+    vector<int> movieWatchers;
+    try {
+        watchedList = UserMovies::IdList(userId, &userFile);
+        movieWatchers = UserMovies::IdList(movieId, &movieFile);
+    }catch (...){
+        throw std::invalid_argument("");
+    }
     if(watchedList.empty()||movieWatchers.empty())throw std::invalid_argument("");
 
     //similarity calc
@@ -74,7 +93,7 @@ void RecomedionCommand::execute(std::string str) {
             bool flag= false;
             for (int temp : watchedList){
                 if (temp == tempMovie){flag=true;
-                continue;}
+                    continue;}
             }
 
             if(flag||tempMovie==movieId) continue;
@@ -84,9 +103,11 @@ void RecomedionCommand::execute(std::string str) {
 
     std::vector<std::pair<int, int>> sortedDict = sortByValueThenKey(recommendedMovies);
     int count = 0;
+    vector<int> res;
     for (const auto& pair : sortedDict) {
-        std::cout  << pair.first << " ";
+        res.push_back(pair.first);
         count++;
         if (count == 10) break;  // Stop after printing the first 10 elements
     }
+    return res;
 }

@@ -15,6 +15,8 @@ void AddCommand::execute() {
     throw std::invalid_argument("");
 }
 
+
+
 // Method to execute with a string parameter
 void AddCommand::execute(std::string str) {
     std::vector<std::string> userMovies = StringTools::splitString(str); // make the commend vector {userid,movies...}

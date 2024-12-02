@@ -6,6 +6,7 @@
 #define NETFLIX_RECOMEDIONCOMMAND_H
 
 
+#include <vector>
 #include "ICommand.h"
 
 class RecomedionCommand: public ICommand {
@@ -14,7 +15,7 @@ class RecomedionCommand: public ICommand {
         ~RecomedionCommand(); // Destructor
         void execute() override;  // Override execute method with no parameters
         void execute(std::string str) override;  // Override execute method with string parameter
-
+        std::vector<int> TestExFunc(std::string str);
     };
 
 

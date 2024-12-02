@@ -12,7 +12,7 @@ std::vector<std::string> StringHandler::split(const std::string& str, char delim
         end = str.find(delimiter, start);
     }
 
-    // AddCommand the final segment
+    // Add the final segment
     result.push_back(str.substr(start));
 
     return result;
@@ -23,7 +23,7 @@ std::string StringHandler::join(const std::vector<std::string>& array, char deli
 
     for (size_t i = 0; i < array.size(); ++i) {
         result += array[i];
-        if (i < array.size() - 1) { // AddCommand delimiter between elements, not at the end
+        if (i < array.size() - 1) { // Add delimiter between elements, not at the end
             result += delimiter;
         }
     }
