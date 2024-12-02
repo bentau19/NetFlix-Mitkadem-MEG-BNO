@@ -2,6 +2,7 @@
 #define RecommendCommand_H
 using namespace std;
 #include <string>
+#include <vector>
 #include "ICommand.h"
 
 class RecommendCommand : public ICommand { // Ensure public inheritance
@@ -10,6 +11,7 @@ public:
         ~RecommendCommand();
 
     void execute(std::string str) override; // Use "override" keyword
+            std::vector<int> TestExFunc(std::string str);
     void execute();
 };
 

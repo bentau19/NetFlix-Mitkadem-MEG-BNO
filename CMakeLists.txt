@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(my_project)
+project(netflix_project)
 
-# GoogleTest requires at least C++14
+# GoogleTest requires at least C++14 (if you still want to use GoogleTest)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -14,24 +14,32 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+# Include directories
+include_directories(src)
 
-# Add the tests folder to the include path if needed
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/tests)
-
-# Add the source files for the test executable
-add_executable(File_Classes_Tests
-  src/tests/File_Classes_Tests.cpp
-  src/File_Classes/BaseFile.cpp
-  src/File_Classes/UserMovies.cpp
+# Add the source files for the main executable
+add_executable(
+ # InputTest
+#  src/tests/InputTest.cpp
+  my_project
+  src/main.cpp 
+  src/ConsoleMenu.cpp
+  src/App.cpp
   src/File_Classes/UserFile.cpp
+  src/File_Classes/BaseFile.cpp
+  src/File_Classes/StringHandler.cpp
+  src/File_Classes/UserMovies.cpp
   src/File_Classes/MovieFile.cpp
   src/File_Classes/AddBuilder.cpp
-  src/File_Classes/StringHandler.cpp
+  src/Commands/AddCommand.cpp
+  src/Commands/HelpCommand.cpp
+  src/Commands/RecommendCommand.cpp
+  
 )
 
-
-# Link the test executable with GoogleTest
+# Link the main executable with GoogleTest (optional, remove if not needed)
 target_link_libraries(
-  File_Classes_Tests  # Target executable
-  gtest_main  # GoogleTest library
+  #InputTest
+  my_project
+  gtest_main  # GoogleTest library (if you need it, otherwise remove this line)
 )

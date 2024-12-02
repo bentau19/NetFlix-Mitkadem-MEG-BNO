@@ -1,5 +1,6 @@
 #include "StringHandler.h"
 #include <string>
+#include "ConsoleMenu.h"
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
