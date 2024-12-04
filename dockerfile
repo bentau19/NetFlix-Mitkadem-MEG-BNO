@@ -1,4 +1,3 @@
-# Use an official C++ image with GCC and build tools
 FROM gcc:10.2.0
 # Install CMake and any other required tools
 RUN ls -R

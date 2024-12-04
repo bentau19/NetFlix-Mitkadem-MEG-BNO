@@ -19,7 +19,7 @@ include_directories(src)
 
 # Main executable
 add_executable(
-  my_project
+  main
   src/main.cpp 
   src/ConsoleMenu.cpp
   src/App.cpp

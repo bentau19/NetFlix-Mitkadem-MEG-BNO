@@ -49,6 +49,7 @@ void RecommendCommand::execute(std::string str) {
     for(int a :res){
         std::cout  << a << " ";
     }
+    std::cout << "\n";
 
 }
 
