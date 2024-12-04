@@ -19,7 +19,7 @@ void AddCommand::execute() {
 void AddCommand::execute(std::string str) {
     std::vector<std::string> userMovies = StringHandler::splitString(str);
     if(userMovies.size()<2) throw std::invalid_argument("");
-    int usrId = std::atoi(userMovies[0].c_str());
+    unsigned long usrId = stoul(userMovies[0]);
     userMovies.erase(userMovies.begin());
     AddBuilder::BuildAdd(usrId, userMovies);
 }

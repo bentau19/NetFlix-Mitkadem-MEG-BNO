@@ -11,7 +11,7 @@ public:
         ~RecommendCommand();
 
     void execute(std::string str) override; // Use "override" keyword
-            std::vector<int> TestExFunc(std::string str);
+            std::vector<unsigned long> TestExFunc(std::string str);
     void execute();
 };
 
