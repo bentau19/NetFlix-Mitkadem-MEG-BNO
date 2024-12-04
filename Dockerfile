@@ -17,9 +17,5 @@ COPY . .
 
 # Create a build directory, configure the project, and build it
 RUN mkdir -p build && cd build && cmake .. && make
-
-# List the contents of the build directory to debug the executable
-RUN ls -alh build/
-
-# Default command to run your executable (replace 'main' with your actual executable name)
-CMD ["./build/my_project"]
+# Change the working directory to build for the container's runtime
+WORKDIR /app/build
