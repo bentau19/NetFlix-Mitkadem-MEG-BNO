@@ -103,7 +103,7 @@ vector<unsigned long> UserMovies::StringTounsignedlongVector(const std::vector<s
     std::vector<unsigned long> unsignedlongVec;
     for (const auto& str : strVec) {
         try {
-            unsignedlongVec.push_back(std::stoi(str));
+            unsignedlongVec.push_back(std::stoul(str));
         } catch (const std::invalid_argument& e) {
             std::cerr << "Invalid number: " << str << std::endl;
         } catch (const std::out_of_range& e) {
