@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../ConsoleMenu.h"
+#include "../Menu/ConsoleMenu.h"
 #include <string>        // Include string
 
 TEST(InputTest, Basic){
