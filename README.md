@@ -13,13 +13,7 @@ Application Commands:
 
 * Invalid or unsupported commands were explicitly skipped, as per the project requirements.
 
-running examples:
-regular run:
-![alt text](image.png)
-
-exiting the app and returning:
-![alt text](image-1.png)
-
+-----------------------------------------------------------------------------------------------------------------------------------------
 
 program testing and running instractions:
     to build the project :)-
@@ -39,3 +33,18 @@ program testing and running instractions:
     to run the main after first time(after ctr+c and ctr+z or any way you get out of container):
 
         docker start -ai WoWThisProjectIsSoGood
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+running examples:
+regular run:
+![alt text](image.png)
+
+exiting the app and returning:
+![alt text](image-1.png)
+
+tests runs:
+![alt text](image-2.png)

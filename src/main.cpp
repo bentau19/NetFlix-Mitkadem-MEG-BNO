@@ -2,10 +2,10 @@
 #include <fstream>
 #include <map>
 #include "Commands/ICommand.h"
-#include "ConsoleMenu.h"
+#include "Menu/ConsoleMenu.h"
 #include "Commands/HelpCommand.h"
 #include "Commands/AddCommand.h"
-#include "App.h"
+#include "App/App.h"
 #include "Commands/RecommendCommand.h"
 #include <stdexcept>
 
