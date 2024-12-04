@@ -16,7 +16,7 @@ program testing and running instractions:
 
     to run the main first time(after ctr+c or any way you get out of container):
 
-        docker run --name WoWThisProjectIsSoGood -v ${pwd}/data:/app/data -it cpp
+        docker run --name WoWThisProjectIsSoGood -v ${pwd}/data:/app/data -it supercoolproject
         ./main
 
     to run the main after first time(after ctr+c and ctr+z or any way you get out of container):
