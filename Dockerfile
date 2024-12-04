@@ -1,7 +1,6 @@
-# Use an official C++ image with GCC and build tools
 FROM gcc:10.2.0
-
 # Install CMake and any other required tools
+RUN ls -R
 RUN apt-get update && apt-get install -y cmake build-essential wget
 
 # Install specific version of CMake (if needed)
@@ -18,9 +17,5 @@ COPY . .
 
 # Create a build directory, configure the project, and build it
 RUN mkdir -p build && cd build && cmake .. && make
-
-# List the contents of the build directory to debug the executable
-RUN ls -alh build/
-
-# Default command to run your executable (replace 'main' with your actual executable name)
-CMD ["./build/File_Classes_Tests"]
+# Change the working directory to build for the container's runtime
+WORKDIR /app/build

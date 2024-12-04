@@ -6,8 +6,10 @@
 #include <string>
 #include "../File_Classes/MovieFile.h"
 #include "../File_Classes/AddBuilder.h"
-#include "../Commands/RecomedionCommand.h"
+#include "../Commands/RecommendCommand.h"
+#include "../Commands/HelpCommand.h"
 #include "../Commands/AddCommand.h"
+#include "../Commands/ICommand.h"
 
 TEST(RecomedionCommand,Movie){
     //delete trash
@@ -27,7 +29,7 @@ TEST(RecomedionCommand,Movie){
     start.execute("8 101 104 105 106 109 111 114");
     start.execute("9 100 103 105 107 112 113 115");
     start.execute("10 100 102 105 106 107 109 110 116");
-    RecomedionCommand hey;
+    RecommendCommand hey;
     std::vector<int> res = hey.TestExFunc("1 104");
 
 //     Use Google Test's `ASSERT_EQ` macro for container comparison
@@ -45,7 +47,7 @@ TEST(RecomedionCommand,Movie3){
     AddCommand start;
     start.execute("1 100 101 102 103");
     start.execute("2 101 102 104 105 106");
-    RecomedionCommand hey;
+    RecommendCommand hey;
     std::vector<int> res = hey.TestExFunc("1 104");
 
 //     Use Google Test's `ASSERT_EQ` macro for container comparison
@@ -64,7 +66,7 @@ TEST(RecomedionCommand,Movie5){
     start.execute("1 100 101 102 103");
     start.execute("2 101 102 104 105 106");
     start.execute("3 1 2 4 5 6");
-    RecomedionCommand hey;
+    RecommendCommand hey;
     std::vector<int> res = hey.TestExFunc("1 104");
 
 //     Use Google Test's `ASSERT_EQ` macro for container comparison
@@ -82,7 +84,7 @@ TEST(RecomedionCommand,Movie4){
     AddCommand start;
     start.execute("1 100 101 102 103");
     start.execute("2 101 102 105 106");
-    RecomedionCommand hey;
+    RecommendCommand hey;
 
     EXPECT_THROW(hey.TestExFunc("1 104");, std::invalid_argument);
 
@@ -107,7 +109,7 @@ TEST(RecomedionCommand,Movie2){
     start.execute("8 101 104 105 106 109 111 114");
     start.execute("9 100 103 105 107 112 113 115");
     start.execute("10 100 102 105 106 107 109 110 116");
-    RecomedionCommand hey;
+    RecommendCommand hey;
 
     EXPECT_THROW(hey.TestExFunc("1 1");, std::invalid_argument);
 //    ASSERT_NO_THROW(MovieFile u);

@@ -13,14 +13,29 @@ Application Commands:
 
 * Invalid or unsupported commands were explicitly skipped, as per the project requirements.
 
-running example:
+running examples:
+regular run:
 ![alt text](image.png)
 
-program running instractions:
-cd build
-cmake ..
-cmake --bulid .
-cd debug
-./my_project
+exiting the app and returning:
+![alt text](image-1.png)
 
-testing running intruction:
+
+program testing and running instractions:
+    to build the project :)-
+    
+        docker build -t supercoolproject .
+
+    to run the tests:
+
+        docker run -it supercoolproject
+        ./Tests
+
+    to run the main first time(after ctr+c or any way you get out of container):
+
+        docker run --name WoWThisProjectIsSoGood -v ${pwd}/data:/app/data -it supercoolproject
+        ./main
+
+    to run the main after first time(after ctr+c and ctr+z or any way you get out of container):
+
+        docker start -ai WoWThisProjectIsSoGood
