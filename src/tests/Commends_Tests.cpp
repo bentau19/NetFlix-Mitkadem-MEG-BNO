@@ -30,10 +30,10 @@ TEST(RecomedionCommand,Movie){
     start.execute("9 100 103 105 107 112 113 115");
     start.execute("10 100 102 105 106 107 109 110 116");
     RecommendCommand hey;
-    std::vector<int> res = hey.TestExFunc("1 104");
+    std::vector<unsigned long> res = hey.TestExFunc("1 104");
 
 //     Use Google Test's `ASSERT_EQ` macro for container comparison
-    std::vector<int> expected = {105, 106, 111, 110, 112, 113, 107, 108, 109, 114};
+    std::vector<unsigned long> expected = {105, 106, 111, 110, 112, 113, 107, 108, 109, 114};
     ASSERT_EQ(res, expected);
 //    ASSERT_NO_THROW(MovieFile u);
 }
@@ -48,10 +48,10 @@ TEST(RecomedionCommand,Movie3){
     start.execute("1 100 101 102 103");
     start.execute("2 101 102 104 105 106");
     RecommendCommand hey;
-    std::vector<int> res = hey.TestExFunc("1 104");
+    std::vector<unsigned long> res = hey.TestExFunc("1 104");
 
 //     Use Google Test's `ASSERT_EQ` macro for container comparison
-    std::vector<int> expected = {105, 106};
+    std::vector<unsigned long> expected = {105, 106};
     ASSERT_EQ(res, expected);
 //    ASSERT_NO_THROW(MovieFile u);
 }
@@ -67,10 +67,10 @@ TEST(RecomedionCommand,Movie5){
     start.execute("2 101 102 104 105 106");
     start.execute("3 1 2 4 5 6");
     RecommendCommand hey;
-    std::vector<int> res = hey.TestExFunc("1 104");
+    std::vector<unsigned long> res = hey.TestExFunc("1 104");
 
 //     Use Google Test's `ASSERT_EQ` macro for container comparison
-    std::vector<int> expected = {105, 106};
+    std::vector<unsigned long> expected = {105, 106};
     ASSERT_EQ(res, expected);
 //    ASSERT_NO_THROW(MovieFile u);
 }
@@ -125,8 +125,8 @@ TEST(ADDCMD,manySpaces1){
     //make many spaces
     AddCommand b;
     b.execute("1     2    3   3   4  4 5  6  7  8     8 9");
-    vector<int> watchedList = UserMovies::IdList(1,&userFile);
-    vector<int> target = {2,3,4,5,6,7,8,9};
+    vector<unsigned long> watchedList = UserMovies::IdList(1,&userFile);
+    vector<unsigned long> target = {2,3,4,5,6,7,8,9};
     ASSERT_EQ(watchedList, target);
 }
 TEST(ADDCMD,manySpaces2){
@@ -139,8 +139,8 @@ TEST(ADDCMD,manySpaces2){
     //make many spaces
     AddCommand b;
     b.execute("       1     2                               3   3   4  4 5  6                                                                             7  8     8 9                        ");
-    vector<int> watchedList = UserMovies::IdList(1,&userFile);
-    vector<int> target = {2,3,4,5,6,7,8,9};
+    vector<unsigned long> watchedList = UserMovies::IdList(1,&userFile);
+    vector<unsigned long> target = {2,3,4,5,6,7,8,9};
     ASSERT_EQ(watchedList, target);
 }
 TEST(ADDCMD,MovieExist){
@@ -151,11 +151,11 @@ TEST(ADDCMD,MovieExist){
     movieFile.deleteItem();
 
     AddCommand b;
-    for (int i = 0; i < 4; ++i) {
+    for (unsigned long i = 0; i < 4; ++i) {
         b.execute("1 2 3 4");
     }
-    vector<int> watchedList = UserMovies::IdList(1,&userFile);
-    vector<int> target = {2,3,4};
+    vector<unsigned long> watchedList = UserMovies::IdList(1,&userFile);
+    vector<unsigned long> target = {2,3,4};
     ASSERT_EQ(watchedList, target);
 }
 //
@@ -173,10 +173,10 @@ TEST(ADDCMD,SimpleRun){
     a.execute("2 6 7 8");
     b.execute("1 5 6 7");
 
-    vector<int> watchedList = UserMovies::IdList(1,&userFile);
-    vector<int> target = {2,3,4,5,6,7};
-    vector<int> watchedList2 = UserMovies::IdList(2,&userFile);
-    vector<int> target2 = {3,4,5,6,7,8};
+    vector<unsigned long> watchedList = UserMovies::IdList(1,&userFile);
+    vector<unsigned long> target = {2,3,4,5,6,7};
+    vector<unsigned long> watchedList2 = UserMovies::IdList(2,&userFile);
+    vector<unsigned long> target2 = {3,4,5,6,7,8};
     ASSERT_EQ(watchedList, target);
     ASSERT_EQ(watchedList2, target2);
 }
