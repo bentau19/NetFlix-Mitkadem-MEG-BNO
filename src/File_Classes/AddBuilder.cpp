@@ -1,6 +1,6 @@
 #include "AddBuilder.h"
 
-bool AddBuilder::BuildAdd(int userid, vector<string> movies)
+bool AddBuilder::BuildAdd(unsigned long userid, vector<string> movies)
 {
     try{
         UserFile uf;
@@ -11,7 +11,7 @@ bool AddBuilder::BuildAdd(int userid, vector<string> movies)
         user.push_back(to_string(userid));
         for (size_t i = 0; i < movies.size(); i++)
         {
-            int id = stoi(movies[i]);
+            long id = stoul(movies[i]);
             first &= UserMovies::AddIdsToId(user,id ,&mf);
         }
         return first;

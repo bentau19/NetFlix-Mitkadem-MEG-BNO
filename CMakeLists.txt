@@ -21,8 +21,8 @@ include_directories(src)
 add_executable(
   main
   src/main.cpp 
-  src/Menu/ConsoleMenu.cpp
-  src/App/App.cpp
+  src/ConsoleMenu.cpp
+  src/App.cpp
   src/File_Classes/UserFile.cpp
   src/File_Classes/BaseFile.cpp
   src/File_Classes/StringHandler.cpp
@@ -40,8 +40,8 @@ add_executable(
   src/tests/File_Classes_Tests.cpp
   src/tests/Commends_Tests.cpp
   src/tests/InputTest.cpp
-  src/Menu/ConsoleMenu.cpp
-  src/App/App.cpp
+  src/ConsoleMenu.cpp
+  src/App.cpp
   src/File_Classes/UserFile.cpp
   src/File_Classes/BaseFile.cpp
   src/File_Classes/StringHandler.cpp

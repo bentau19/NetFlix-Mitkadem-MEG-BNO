@@ -33,8 +33,8 @@ TEST(FileWrite,BaseFileWrite){
 TEST(ReadList,empty){
     UserFile u;
     MovieFile m;
-    vector<int> listu = UserMovies::IdList(1,&u);
-    vector<int> listm = UserMovies::IdList(1,&m);
+    vector<unsigned long> listu = UserMovies::IdList(1,&u);
+    vector<unsigned long> listm = UserMovies::IdList(1,&m);
     ASSERT_EQ(listu.size(),0);
     ASSERT_EQ(listm.size(),0);
 }
@@ -57,14 +57,14 @@ TEST(Add,threeToEach){
 }
 TEST(ReturnList,User){
     UserFile u;
-    vector<int> listu = UserMovies::IdList(2,&u);
+    vector<unsigned long> listu = UserMovies::IdList(2,&u);
     ASSERT_EQ(listu[0],11);
     ASSERT_EQ(listu[1],22);
     ASSERT_EQ(listu[2],23);
 }
 TEST(ReturnList,movies){
     MovieFile u;
-    vector<int> listu = UserMovies::IdList(11,&u);
+    vector<unsigned long> listu = UserMovies::IdList(11,&u);
     ASSERT_EQ(listu[0],1);
     ASSERT_EQ(listu[1],2);
     ASSERT_EQ(listu[2],3);
