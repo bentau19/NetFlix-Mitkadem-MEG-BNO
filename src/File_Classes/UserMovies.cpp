@@ -21,7 +21,35 @@ vector<unsigned long> UserMovies::IdList(unsigned long Id, BaseFile* f){
     vector<unsigned long>  a = StringTounsignedlongVector(ListIds);
     return a;
 }
+std::vector<string> UserMovies::PopId(unsigned long ToId,vector<string>* alldata,BaseFile* f){
+    try
+    {        
+        int i = 0; // remember index in the all list to delete
+        vector<string> IdData; // a vector of the specific Id,
+        // 1st arg is the Id 2nd arg will be all its list
+        IdData = StringHandler::split(IdLine(ToId,&i,f), ';');
+        vector<string> IdList;//all Ids in the list of the Toid
 
+
+        if(IdData.size()>=2){
+            IdList = StringHandler::split(IdData[1], ' ');
+        }
+        if (i!= -1)//delete i if it exists
+        {
+            alldata->erase(alldata->begin() + i); // Erase the line at i
+        }
+        else{//if the id didnt exist make it
+            IdData[0]=to_string(ToId);
+            IdData.push_back("");
+        }
+        return  IdData;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        throw  e;
+    }
+}
 bool UserMovies::AddIdsToId(vector<string> ListId, unsigned long ToId,BaseFile* f)
 {
     try
@@ -31,21 +59,8 @@ bool UserMovies::AddIdsToId(vector<string> ListId, unsigned long ToId,BaseFile* 
         // 1st arg is the Id 2nd arg will be all its list
         vector<string> IdList;//all Ids in the list of the Toid
         AllIdData = f->read(); // read from the file
-
-        int i = 0; // remember index in the all list to delete
-
-        IdData = StringHandler::split(IdLine(ToId,&i,f), ';');
-        if(IdData.size()>=2){
-            IdList = StringHandler::split(IdData[1], ' ');
-        }
-        if (i!= -1)//delete i if it exists
-        {
-            AllIdData.erase(AllIdData.begin() + i); // Erase the line at i
-        }
-        else{//if the id didnt exist make it
-            IdData[0]=to_string(ToId);
-            IdData.push_back("");
-        }
+        IdData = PopId(ToId,&AllIdData,f); // get id data and delete from alliddata
+        IdList = StringHandler::split(IdData[1], ' ');
         //now we change the users movies
         IdList = addUnique(IdList,ListId);
         //now we add the new user to the vector

@@ -6,6 +6,7 @@
 using namespace std;
 class UserMovies {
 private:
+    static vector<string> PopId(unsigned long ToId,vector<string>* alldata,BaseFile* f);//find the id line return it and delete it from all data
     static vector<string> addUnique(const std::vector<string>& vec1, const vector<std::string>& vec2);
     static string IdLine(unsigned long id, int* loc,BaseFile* File);// return the line of the id in the file
     static vector<unsigned long> StringTounsignedlongVector(const std::vector<std::string>& strVec);
