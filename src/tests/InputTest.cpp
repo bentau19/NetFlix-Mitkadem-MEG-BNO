@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
-#include "../ConsoleMenu.h"
+#include "../Menu/ConsoleMenu.h"
 #include <string>        // Include string
 
-TEST(PlaceholderTest, Basic){
+TEST(InputTest, Basic){
    ConsoleMenu* menu = new ConsoleMenu();
    EXPECT_NO_THROW(ConsoleMenu* menu = new ConsoleMenu());
    string str = "thats that me esspreso";

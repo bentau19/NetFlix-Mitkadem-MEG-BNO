@@ -7,22 +7,22 @@
 #include <algorithm>
 
 
-vector<int> UserMovies::IdList(int Id, BaseFile* f){
+vector<unsigned long> UserMovies::IdList(unsigned long Id, BaseFile* f){
     int j;
 
     string line = IdLine(Id,&j ,f); // find me the line of the id
     vector<string> IdAndList = StringHandler::split(line,';');
     if (IdAndList.size()<2)
     {
-        vector<int> a;
+        vector<unsigned long> a;
         return  a;
     }
     vector<string> ListIds = StringHandler::split(IdAndList[1], ' '); //gice me the list of the ids
-    vector<int>  a = StringToIntVector(ListIds);
+    vector<unsigned long>  a = StringTounsignedlongVector(ListIds);
     return a;
 }
 
-bool UserMovies::AddIdsToId(vector<string> ListId, int ToId,BaseFile* f)
+bool UserMovies::AddIdsToId(vector<string> ListId, unsigned long ToId,BaseFile* f)
 {
     try
     {
@@ -78,7 +78,7 @@ vector<string> UserMovies::addUnique(const std::vector<string>& vec1, const vect
     return result;
 }
 
-string UserMovies::IdLine(int id, int* loc,BaseFile* File) {
+string UserMovies::IdLine(unsigned long id, int* loc,BaseFile* File) {
     std::vector<std::string> info = File->read();;
     for (size_t i = 0; i < info.size(); i++) {
         std::string line = info[i];
@@ -86,7 +86,7 @@ string UserMovies::IdLine(int id, int* loc,BaseFile* File) {
 
         if (user[0] == std::to_string(id)) {
             if (loc) { // Only set loc if loc is not nullptr
-                *loc = static_cast<int>(i);
+                *loc = static_cast<unsigned long>(i);
             }
             return line;
         }
@@ -99,17 +99,17 @@ string UserMovies::IdLine(int id, int* loc,BaseFile* File) {
 }
 
 
-vector<int> UserMovies::StringToIntVector(const std::vector<std::string>& strVec) {
-    std::vector<int> intVec;
+vector<unsigned long> UserMovies::StringTounsignedlongVector(const std::vector<std::string>& strVec) {
+    std::vector<unsigned long> unsignedlongVec;
     for (const auto& str : strVec) {
         try {
-            intVec.push_back(std::stoi(str));
+            unsignedlongVec.push_back(std::stoul(str));
         } catch (const std::invalid_argument& e) {
             std::cerr << "Invalid number: " << str << std::endl;
         } catch (const std::out_of_range& e) {
             std::cerr << "Out of range: " << str << std::endl;
         }
     }
-    return intVec;
+    return unsignedlongVec;
 }
 

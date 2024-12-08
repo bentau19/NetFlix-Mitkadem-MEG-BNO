@@ -3,8 +3,8 @@
 
 #include <map>
 #include <string>
-#include "IMenu.h"
-#include "Commands/ICommand.h"
+#include "../Menu/IMenu.h"
+#include "../Commands/ICommand.h"
 
 class App {
 private:

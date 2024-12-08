@@ -24,11 +24,11 @@ void RecommendCommand::execute() {
 
 // Function to sort the unordered_map by values in descending order
 // and by keys in ascending order for equal values
-std::vector<std::pair<int, int>> sortByValueThenKey(const std::unordered_map<int, int>& dict) {
-    std::vector<std::pair<int, int>> vec(dict.begin(), dict.end());
+std::vector<std::pair<unsigned long, unsigned long>> sortByValueThenKey(unordered_map<unsigned long, unsigned long> dict) {
+    std::vector<std::pair<unsigned long, unsigned long>> vec(dict.begin(), dict.end());
 
     // Sort the vector of pairs: first by value descending, then by key ascending
-    std::sort(vec.begin(), vec.end(), [](const std::pair<int, int>& a, const std::pair<int, int>& b) {
+    std::sort(vec.begin(), vec.end(), [](const std::pair<unsigned long, unsigned long>& a, const std::pair<unsigned long, unsigned long>& b) {
         if (a.second == b.second) {
             return a.first < b.first;  // If values are equal, sort by key ascending
         }
@@ -44,26 +44,27 @@ std::vector<std::pair<int, int>> sortByValueThenKey(const std::unordered_map<int
 // Method to execute with a string parameter
 void RecommendCommand::execute(std::string str) {
 
-    vector<int> res = TestExFunc(str);
+    vector<unsigned long> res = TestExFunc(str);
 
-    for(int a :res){
+    for(unsigned long a :res){
         std::cout  << a << " ";
     }
+    std::cout << "\n";
 
 }
 
-std::vector<int> RecommendCommand::TestExFunc(std::string str) {
+std::vector<unsigned long> RecommendCommand::TestExFunc(std::string str) {
     //checks if the string input is valid
     vector<std::string> data = StringHandler::splitString(str);
     if(data.size()!=2)throw std::invalid_argument("");
 
     // init the user and the movie and checks if they exist
-    int userId = atoi(data[0].c_str());
-    int movieId = atoi(data[1].c_str());
+    unsigned long userId =stoul(data[0]);
+    unsigned long movieId = stoul(data[1]);
     UserFile userFile;
     MovieFile movieFile;
-    vector<int> watchedList;
-    vector<int> movieWatchers;
+    vector<unsigned long> watchedList;
+    vector<unsigned long> movieWatchers;
     try {
         watchedList = UserMovies::IdList(userId, &userFile);
         movieWatchers = UserMovies::IdList(movieId, &movieFile);
@@ -73,23 +74,23 @@ std::vector<int> RecommendCommand::TestExFunc(std::string str) {
     if(watchedList.empty()||movieWatchers.empty())throw std::invalid_argument("");
 
     //similarity calc
-    unordered_map<int, int> numOfCommon;//dict of user nums of common movies with our user (user->sum of common movies)
+    unordered_map<unsigned long, unsigned long> numOfCommon;//dict of user nums of common movies with our user (user->sum of common movies)
     // make the heavy calc about how much common movie with which user
-    for (int tempMovie :watchedList){
-        vector<int> TempWatchers = UserMovies::IdList(tempMovie,&movieFile);
-        for(int tempUser : TempWatchers){
+    for (unsigned long tempMovie :watchedList){
+        vector<unsigned long> TempWatchers = UserMovies::IdList(tempMovie,&movieFile);
+        for(unsigned long tempUser : TempWatchers){
             if(tempUser==userId){ continue;}
             numOfCommon[tempUser]++;
         }
     }
 
-    unordered_map<int, int> recommendedMovies;//dict of rating of movie recommend
+    unordered_map<unsigned long, unsigned long> recommendedMovies;//dict of rating of movie recommend
 
-    for (int tempUser : movieWatchers){
-        vector<int> tempMovies = UserMovies::IdList(tempUser,&userFile);
-        for(int tempMovie : tempMovies){
+    for (unsigned long tempUser : movieWatchers){
+        vector<unsigned long> tempMovies = UserMovies::IdList(tempUser,&userFile);
+        for(unsigned long tempMovie : tempMovies){
             bool flag= false;
-            for (int temp : watchedList){
+            for (unsigned long temp : watchedList){
                 if (temp == tempMovie){flag=true;
                     continue;}
             }
@@ -99,9 +100,9 @@ std::vector<int> RecommendCommand::TestExFunc(std::string str) {
         }
     }
 
-    std::vector<std::pair<int, int>> sortedDict = sortByValueThenKey(recommendedMovies);
+    std::vector<std::pair<unsigned long, unsigned long>> sortedDict = sortByValueThenKey(recommendedMovies);
     int count = 0;
-    vector<int> res;
+    vector<unsigned long> res;
     for (const auto& pair : sortedDict) {
         res.push_back(pair.first);
         count++;
