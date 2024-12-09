@@ -97,37 +97,38 @@ std::vector<string> FileIO::PopId(unsigned long ToId, vector<string> *alldata, B
         throw  e;
     }
 }
-bool FileIO::AddIdsToId(vector<string> ListId, unsigned long ToId,BaseFile* f)
+bool FileIO::AddIdsToId(vector<string> ListId, unsigned long ToId, BaseFile* f)
 {
     try
     {
         vector<string> AllIdData; // a vector of all the Ids and their lists
         vector<string> IdData; // a vector of the specific Id,
         // 1st arg is the Id 2nd arg will be all its list
-        vector<string> IdList;//all Ids in the list of the Toid
+        vector<string> IdList; // all Ids in the list of the Toid
         AllIdData = f->read(); // read from the file
-        IdData = PopId(ToId,&AllIdData,f); // get id data and delete from alliddata
+        IdData = PopId(ToId, &AllIdData, f); // get id data and delete from alliddata
         IdList = StringHandler::split(IdData[1], ' ');
         //now we change the users movies
-        IdList = addUnique(IdList,ListId);
+        IdList = addUnique(IdList, ListId);
         //now we add the new user to the vector
-        IdData[1] = StringHandler::join(IdList , ' ');
-        AllIdData.push_back(StringHandler::join(IdData,';'));
+        IdData[1] = StringHandler::join(IdList, ' ');
+        AllIdData.push_back(StringHandler::join(IdData, ';'));
         //delete the file to create a new one
         f->deleteItem();
         f->create(f->GetName());
-        for (size_t i = 0; i < AllIdData.size(); i++)
+        for (const auto& line : AllIdData)
         {
-            f->Write(AllIdData[i]);
+            f->Write(line);
         }
         return true;
     }
-    catch(const std::exception& e)
+    catch (const std::exception& e)
     {
-        std::cerr << e.what() << '\n';
+        std::cerr << "throw in iididtoid" << '\n';
         return false;
     }
 }
+
 vector<string> FileIO::addUnique(const std::vector<string>& vec1, const vector<std::string>& vec2) {
     vector<std::string> result = vec1; // Start with all elements from vec1
     for (const auto& item : vec2) {
@@ -167,7 +168,6 @@ vector<unsigned long> FileIO::StringTounsignedlongVector(const std::vector<std::
         try {
             unsignedlongVec.push_back(std::stoul(str));
         } catch (const std::invalid_argument& e) {
-            std::cerr << "Invalid number: " << str << std::endl;
         } catch (const std::out_of_range& e) {
             std::cerr << "Out of range: " << str << std::endl;
         }
