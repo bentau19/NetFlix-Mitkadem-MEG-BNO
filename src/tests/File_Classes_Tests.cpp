@@ -69,3 +69,11 @@ TEST(ReturnList,movies){
     ASSERT_EQ(listu[1],2);
     ASSERT_EQ(listu[2],3);
 }
+TEST(RemoveList,RemoveMoviesFromUser){
+    vector<string> movies3;
+    movies3.push_back("32");
+    movies3.push_back("33");
+    ASSERT_TRUE(AddBuilder::BuildRemove(3,movies3));
+    ASSERT_FALSE(AddBuilder::BuildRemove(1,movies3));
+    ASSERT_FALSE(AddBuilder::BuildRemove(5,movies3));
+}

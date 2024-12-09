@@ -6,8 +6,40 @@
 #include <iostream>
 #include <algorithm>
 
+bool UserMovies::RemoveIdList(vector<string> ListId, unsigned long ToId, BaseFile *f)
+{
+    try
+    {
+        vector<string> AllIdData; // a vector of all the Ids and their lists
+        vector<string> IdData; // a vector of the specific Id,
+        // 1st arg is the Id 2nd arg will be all its list
+        vector<string> IdList;//all Ids in the list of the Toid
+        AllIdData = f->read(); // read from the file
+        IdData = PopId(ToId,&AllIdData,f); // get id data and delete from alliddata
+        IdList = StringHandler::split(IdData[1], ' ');
+        //now we change the users movies
+        IdList = RemoveSimillar(IdList,ListId);
+        //now we add the new user to the vector
+        IdData[1] = StringHandler::join(IdList , ' ');
+        AllIdData.push_back(StringHandler::join(IdData,';'));
+        //delete the file to create a new one
+        f->deleteItem();
+        f->create(f->GetName());
+        for (size_t i = 0; i < AllIdData.size(); i++)
+        {
+            f->Write(AllIdData[i]);
+        }
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return false;
+    }
+}
 
-vector<unsigned long> UserMovies::IdList(unsigned long Id, BaseFile* f){
+vector<unsigned long> UserMovies::IdList(unsigned long Id, BaseFile *f)
+{
     int j;
 
     string line = IdLine(Id,&j ,f); // find me the line of the id
@@ -21,7 +53,22 @@ vector<unsigned long> UserMovies::IdList(unsigned long Id, BaseFile* f){
     vector<unsigned long>  a = StringTounsignedlongVector(ListIds);
     return a;
 }
-std::vector<string> UserMovies::PopId(unsigned long ToId,vector<string>* alldata,BaseFile* f){
+
+std::vector<std::string> UserMovies::RemoveSimillar(const std::vector<std::string>& vec1, const std::vector<std::string>& vec2) {
+    std::vector<std::string> result = vec1; // Start with all elements from vec1
+
+    // Remove elements that are in vec2
+    result.erase(std::remove_if(result.begin(), result.end(), 
+        [&vec2](const std::string& item) {
+            return std::find(vec2.begin(), vec2.end(), item) != vec2.end();
+        }), 
+        result.end());
+
+    return result;
+}
+
+std::vector<string> UserMovies::PopId(unsigned long ToId, vector<string> *alldata, BaseFile *f)
+{
     try
     {        
         int i = 0; // remember index in the all list to delete
