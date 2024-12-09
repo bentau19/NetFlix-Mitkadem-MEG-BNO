@@ -1,4 +1,4 @@
-#include "UserMovies.h"
+#include "FileIO.h"
 #include "UserFile.h"
 #include "StringHandler.h"
 #include <vector>
@@ -6,7 +6,7 @@
 #include <iostream>
 #include <algorithm>
 
-bool UserMovies::RemoveIdList(vector<string> ListId, unsigned long ToId, BaseFile *f)
+bool FileIO::RemoveIdList(vector<string> ListId, unsigned long ToId, BaseFile *f)
 {
     try
     {
@@ -38,7 +38,7 @@ bool UserMovies::RemoveIdList(vector<string> ListId, unsigned long ToId, BaseFil
     }
 }
 
-vector<unsigned long> UserMovies::IdList(unsigned long Id, BaseFile *f)
+vector<unsigned long> FileIO::IdList(unsigned long Id, BaseFile *f)
 {
     int j;
 
@@ -54,7 +54,7 @@ vector<unsigned long> UserMovies::IdList(unsigned long Id, BaseFile *f)
     return a;
 }
 
-std::vector<std::string> UserMovies::RemoveSimillar(const std::vector<std::string>& vec1, const std::vector<std::string>& vec2) {
+std::vector<std::string> FileIO::RemoveSimillar(const std::vector<std::string>& vec1, const std::vector<std::string>& vec2) {
     std::vector<std::string> result = vec1; // Start with all elements from vec1
 
     // Remove elements that are in vec2
@@ -67,7 +67,7 @@ std::vector<std::string> UserMovies::RemoveSimillar(const std::vector<std::strin
     return result;
 }
 
-std::vector<string> UserMovies::PopId(unsigned long ToId, vector<string> *alldata, BaseFile *f)
+std::vector<string> FileIO::PopId(unsigned long ToId, vector<string> *alldata, BaseFile *f)
 {
     try
     {        
@@ -97,7 +97,7 @@ std::vector<string> UserMovies::PopId(unsigned long ToId, vector<string> *alldat
         throw  e;
     }
 }
-bool UserMovies::AddIdsToId(vector<string> ListId, unsigned long ToId,BaseFile* f)
+bool FileIO::AddIdsToId(vector<string> ListId, unsigned long ToId,BaseFile* f)
 {
     try
     {
@@ -128,7 +128,7 @@ bool UserMovies::AddIdsToId(vector<string> ListId, unsigned long ToId,BaseFile* 
         return false;
     }
 }
-vector<string> UserMovies::addUnique(const std::vector<string>& vec1, const vector<std::string>& vec2) {
+vector<string> FileIO::addUnique(const std::vector<string>& vec1, const vector<std::string>& vec2) {
     vector<std::string> result = vec1; // Start with all elements from vec1
     for (const auto& item : vec2) {
         // Add the item only if it's not already present in the result
@@ -140,7 +140,7 @@ vector<string> UserMovies::addUnique(const std::vector<string>& vec1, const vect
     return result;
 }
 
-string UserMovies::IdLine(unsigned long id, int* loc,BaseFile* File) {
+string FileIO::IdLine(unsigned long id, int* loc,BaseFile* File) {
     std::vector<std::string> info = File->read();;
     for (size_t i = 0; i < info.size(); i++) {
         std::string line = info[i];
@@ -161,7 +161,7 @@ string UserMovies::IdLine(unsigned long id, int* loc,BaseFile* File) {
 }
 
 
-vector<unsigned long> UserMovies::StringTounsignedlongVector(const std::vector<std::string>& strVec) {
+vector<unsigned long> FileIO::StringTounsignedlongVector(const std::vector<std::string>& strVec) {
     std::vector<unsigned long> unsignedlongVec;
     for (const auto& str : strVec) {
         try {

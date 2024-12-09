@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../File_Classes/UserMovies.h"
+#include "../File_Classes/FileIO.h"
 #include "../File_Classes/UserFile.h"
 #include "../File_Classes/StringHandler.h"
 #include <vector>
@@ -125,7 +125,7 @@ TEST(ADDCMD,manySpaces1){
     //make many spaces
     AddCommand b;
     b.execute("1     2    3   3   4  4 5  6  7  8     8 9");
-    vector<unsigned long> watchedList = UserMovies::IdList(1,&userFile);
+    vector<unsigned long> watchedList = FileIO::IdList(1,&userFile);
     vector<unsigned long> target = {2,3,4,5,6,7,8,9};
     ASSERT_EQ(watchedList, target);
 }
@@ -139,7 +139,7 @@ TEST(ADDCMD,manySpaces2){
     //make many spaces
     AddCommand b;
     b.execute("       1     2                               3   3   4  4 5  6                                                                             7  8     8 9                        ");
-    vector<unsigned long> watchedList = UserMovies::IdList(1,&userFile);
+    vector<unsigned long> watchedList = FileIO::IdList(1,&userFile);
     vector<unsigned long> target = {2,3,4,5,6,7,8,9};
     ASSERT_EQ(watchedList, target);
 }
@@ -154,7 +154,7 @@ TEST(ADDCMD,MovieExist){
     for (unsigned long i = 0; i < 4; ++i) {
         b.execute("1 2 3 4");
     }
-    vector<unsigned long> watchedList = UserMovies::IdList(1,&userFile);
+    vector<unsigned long> watchedList = FileIO::IdList(1,&userFile);
     vector<unsigned long> target = {2,3,4};
     ASSERT_EQ(watchedList, target);
 }
@@ -173,9 +173,9 @@ TEST(ADDCMD,SimpleRun){
     a.execute("2 6 7 8");
     b.execute("1 5 6 7");
 
-    vector<unsigned long> watchedList = UserMovies::IdList(1,&userFile);
+    vector<unsigned long> watchedList = FileIO::IdList(1,&userFile);
     vector<unsigned long> target = {2,3,4,5,6,7};
-    vector<unsigned long> watchedList2 = UserMovies::IdList(2,&userFile);
+    vector<unsigned long> watchedList2 = FileIO::IdList(2,&userFile);
     vector<unsigned long> target2 = {3,4,5,6,7,8};
     ASSERT_EQ(watchedList, target);
     ASSERT_EQ(watchedList2, target2);

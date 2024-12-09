@@ -3,7 +3,7 @@
 
 bool AddBuilder::CheckValid(unsigned long userid, std::vector<std::string> movies, BaseFile* b) {
     int i;
-    std::string ListString = UserMovies::IdLine(userid, &i, b);
+    std::string ListString = FileIO::IdLine(userid, &i, b);
     
     // If the user doesn't exist, return false
     if (ListString.empty()) {
@@ -35,13 +35,13 @@ bool AddBuilder::BuildAdd(unsigned long userid, vector<string> movies)
         UserFile uf;
         MovieFile mf;
         //add to the userfile
-        bool first = UserMovies::AddIdsToId(movies, userid,&uf);
+        bool first = FileIO::AddIdsToId(movies, userid,&uf);
         vector<string> user;
         user.push_back(to_string(userid));
         for (size_t i = 0; i < movies.size(); i++)
         {
             long id = stoul(movies[i]);
-            first &= UserMovies::AddIdsToId(user,id ,&mf);
+            first &= FileIO::AddIdsToId(user,id ,&mf);
         }
         return first;
     }
@@ -61,13 +61,13 @@ bool AddBuilder::BuildRemove(unsigned long userid, vector<string> movies)
         if(!CheckValid(userid,movies,&uf)){
             return false;
         }
-        bool first = UserMovies::RemoveIdList(movies, userid,&uf);
+        bool first = FileIO::RemoveIdList(movies, userid,&uf);
         vector<string> user;
         user.push_back(to_string(userid));
         for (size_t i = 0; i < movies.size(); i++)
         {
             long id = stoul(movies[i]);
-            first &= UserMovies::RemoveIdList(user,id ,&mf);
+            first &= FileIO::RemoveIdList(user,id ,&mf);
         }
         return first;
     }

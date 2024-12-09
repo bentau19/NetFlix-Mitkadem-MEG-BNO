@@ -7,7 +7,7 @@
 #include "../File_Classes/StringHandler.h"
 #include "../File_Classes/UserFile.h"
 #include "../File_Classes/MovieFile.h"
-#include "../File_Classes/UserMovies.h"
+#include "../File_Classes/FileIO.h"
 
 
 using namespace std;
@@ -66,8 +66,8 @@ std::vector<unsigned long> RecommendCommand::TestExFunc(std::string str) {
     vector<unsigned long> watchedList;
     vector<unsigned long> movieWatchers;
     try {
-        watchedList = UserMovies::IdList(userId, &userFile);
-        movieWatchers = UserMovies::IdList(movieId, &movieFile);
+        watchedList = FileIO::IdList(userId, &userFile);
+        movieWatchers = FileIO::IdList(movieId, &movieFile);
     }catch (...){
         throw std::invalid_argument("");
     }
@@ -77,7 +77,7 @@ std::vector<unsigned long> RecommendCommand::TestExFunc(std::string str) {
     unordered_map<unsigned long, unsigned long> numOfCommon;//dict of user nums of common movies with our user (user->sum of common movies)
     // make the heavy calc about how much common movie with which user
     for (unsigned long tempMovie :watchedList){
-        vector<unsigned long> TempWatchers = UserMovies::IdList(tempMovie,&movieFile);
+        vector<unsigned long> TempWatchers = FileIO::IdList(tempMovie,&movieFile);
         for(unsigned long tempUser : TempWatchers){
             if(tempUser==userId){ continue;}
             numOfCommon[tempUser]++;
@@ -87,7 +87,7 @@ std::vector<unsigned long> RecommendCommand::TestExFunc(std::string str) {
     unordered_map<unsigned long, unsigned long> recommendedMovies;//dict of rating of movie recommend
 
     for (unsigned long tempUser : movieWatchers){
-        vector<unsigned long> tempMovies = UserMovies::IdList(tempUser,&userFile);
+        vector<unsigned long> tempMovies = FileIO::IdList(tempUser,&userFile);
         for(unsigned long tempMovie : tempMovies){
             bool flag= false;
             for (unsigned long temp : watchedList){
