@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../File_Classes/UserMovies.h"
+#include "../File_Classes/FileIO.h"
 #include "../File_Classes/UserFile.h"
 #include "../File_Classes/StringHandler.h"
 #include <vector>
@@ -33,8 +33,8 @@ TEST(FileWrite,BaseFileWrite){
 TEST(ReadList,empty){
     UserFile u;
     MovieFile m;
-    vector<unsigned long> listu = UserMovies::IdList(1,&u);
-    vector<unsigned long> listm = UserMovies::IdList(1,&m);
+    vector<unsigned long> listu = FileIO::IdList(1,&u);
+    vector<unsigned long> listm = FileIO::IdList(1,&m);
     ASSERT_EQ(listu.size(),0);
     ASSERT_EQ(listm.size(),0);
 }
@@ -57,15 +57,23 @@ TEST(Add,threeToEach){
 }
 TEST(ReturnList,User){
     UserFile u;
-    vector<unsigned long> listu = UserMovies::IdList(2,&u);
+    vector<unsigned long> listu = FileIO::IdList(2,&u);
     ASSERT_EQ(listu[0],11);
     ASSERT_EQ(listu[1],22);
     ASSERT_EQ(listu[2],23);
 }
 TEST(ReturnList,movies){
     MovieFile u;
-    vector<unsigned long> listu = UserMovies::IdList(11,&u);
+    vector<unsigned long> listu = FileIO::IdList(11,&u);
     ASSERT_EQ(listu[0],1);
     ASSERT_EQ(listu[1],2);
     ASSERT_EQ(listu[2],3);
+}
+TEST(RemoveList,RemoveMoviesFromUser){
+    vector<string> movies3;
+    movies3.push_back("32");
+    movies3.push_back("33");
+    ASSERT_TRUE(AddBuilder::BuildRemove(3,movies3));
+    ASSERT_FALSE(AddBuilder::BuildRemove(1,movies3));
+    ASSERT_FALSE(AddBuilder::BuildRemove(5,movies3));
 }
