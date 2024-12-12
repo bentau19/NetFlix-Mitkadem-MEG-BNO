@@ -4,10 +4,10 @@ using namespace std;
 #include <fstream>
 #include <string>
 
-    HelpCommand::HelpCommand(){}
+    Help::Help(){}
 
-    HelpCommand::~HelpCommand(){}
-     void HelpCommand::execute(std::string str){
+    Help::~Help(){}
+     void Help::execute(std::string str){
         if(str.length() > 0 || str==" ") { //if got more agument then "help" then invalid
             throw std::invalid_argument("");
         } else {

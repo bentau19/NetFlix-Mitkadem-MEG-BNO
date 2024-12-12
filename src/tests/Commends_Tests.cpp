@@ -1,15 +1,12 @@
 #include <gtest/gtest.h>
 #include "../File_Classes/FileIO.h"
 #include "../File_Classes/UserFile.h"
-#include "../File_Classes/StringHandler.h"
 #include <vector>
-#include <string>
 #include "../File_Classes/MovieFile.h"
-#include "../File_Classes/AddBuilder.h"
-#include "../Commands/RecommendCommand.h"
-#include "../Commands/HelpCommand.h"
-#include "../Commands/AddCommand.h"
-#include "../Commands/ICommand.h"
+#include "../Commands/GET.h"
+#include "../Commands/Add.h"
+#include "../Commands/Post.h"
+#include "../Commands/Patch.h"
 
 TEST(RecomedionCommand,Movie){
     //delete trash
@@ -18,7 +15,7 @@ TEST(RecomedionCommand,Movie){
     userFile.deleteItem();
     movieFile.deleteItem();
 
-    AddCommand start;
+    Add start;
     start.execute("1 100 101 102 103");
     start.execute("2 101 102 104 105 106");
     start.execute("3 100 104 105 107 108");
@@ -29,7 +26,7 @@ TEST(RecomedionCommand,Movie){
     start.execute("8 101 104 105 106 109 111 114");
     start.execute("9 100 103 105 107 112 113 115");
     start.execute("10 100 102 105 106 107 109 110 116");
-    RecommendCommand hey;
+    GET hey;
     std::vector<unsigned long> res = hey.TestExFunc("1 104");
 
 //     Use Google Test's `ASSERT_EQ` macro for container comparison
@@ -44,10 +41,10 @@ TEST(RecomedionCommand,Movie3){
     userFile.deleteItem();
     movieFile.deleteItem();
 
-    AddCommand start;
+    Add start;
     start.execute("1 100 101 102 103");
     start.execute("2 101 102 104 105 106");
-    RecommendCommand hey;
+    GET hey;
     std::vector<unsigned long> res = hey.TestExFunc("1 104");
 
 //     Use Google Test's `ASSERT_EQ` macro for container comparison
@@ -62,11 +59,11 @@ TEST(RecomedionCommand,Movie5){
     userFile.deleteItem();
     movieFile.deleteItem();
 
-    AddCommand start;
+    Add start;
     start.execute("1 100 101 102 103");
     start.execute("2 101 102 104 105 106");
     start.execute("3 1 2 4 5 6");
-    RecommendCommand hey;
+    GET hey;
     std::vector<unsigned long> res = hey.TestExFunc("1 104");
 
 //     Use Google Test's `ASSERT_EQ` macro for container comparison
@@ -81,10 +78,10 @@ TEST(RecomedionCommand,Movie4){
     userFile.deleteItem();
     movieFile.deleteItem();
 
-    AddCommand start;
+    Add start;
     start.execute("1 100 101 102 103");
     start.execute("2 101 102 105 106");
-    RecommendCommand hey;
+    GET hey;
 
     EXPECT_THROW(hey.TestExFunc("1 104");, std::invalid_argument);
 
@@ -98,7 +95,7 @@ TEST(RecomedionCommand,Movie2){
     userFile.deleteItem();
     movieFile.deleteItem();
 
-    AddCommand start;
+    Add start;
     start.execute("1 100 101 102 103");
     start.execute("2 101 102 104 105 106");
     start.execute("3 100 104 105 107 108");
@@ -109,7 +106,7 @@ TEST(RecomedionCommand,Movie2){
     start.execute("8 101 104 105 106 109 111 114");
     start.execute("9 100 103 105 107 112 113 115");
     start.execute("10 100 102 105 106 107 109 110 116");
-    RecommendCommand hey;
+    GET hey;
 
     EXPECT_THROW(hey.TestExFunc("1 1");, std::invalid_argument);
 //    ASSERT_NO_THROW(MovieFile u);
@@ -123,7 +120,7 @@ TEST(ADDCMD,manySpaces1){
     movieFile.deleteItem();
 
     //make many spaces
-    AddCommand b;
+    Add b;
     b.execute("1     2    3   3   4  4 5  6  7  8     8 9");
     vector<unsigned long> watchedList = FileIO::IdList(1,&userFile);
     vector<unsigned long> target = {2,3,4,5,6,7,8,9};
@@ -137,7 +134,7 @@ TEST(ADDCMD,manySpaces2){
     movieFile.deleteItem();
 
     //make many spaces
-    AddCommand b;
+    Add b;
     b.execute("       1     2                               3   3   4  4 5  6                                                                             7  8     8 9                        ");
     vector<unsigned long> watchedList = FileIO::IdList(1,&userFile);
     vector<unsigned long> target = {2,3,4,5,6,7,8,9};
@@ -150,7 +147,7 @@ TEST(ADDCMD,MovieExist){
     userFile.deleteItem();
     movieFile.deleteItem();
 
-    AddCommand b;
+    Add b;
     for (unsigned long i = 0; i < 4; ++i) {
         b.execute("1 2 3 4");
     }
@@ -166,8 +163,8 @@ TEST(ADDCMD,SimpleRun){
     userFile.deleteItem();
     movieFile.deleteItem();
 
-    AddCommand a;
-    AddCommand b;
+    Add a;
+    Add b;
     a.execute("1 2 3 4");
     b.execute("2 3 4 5");
     a.execute("2 6 7 8");
@@ -186,7 +183,7 @@ TEST(ADDCMD,commendNotValid1){
     MovieFile movieFile;
     userFile.deleteItem();
     movieFile.deleteItem();
-    AddCommand a;
+    Add a;
     EXPECT_THROW(a.execute("1"), std::invalid_argument);
 }
 TEST(ADDCMD,commendNotValid2){
@@ -195,6 +192,114 @@ TEST(ADDCMD,commendNotValid2){
     MovieFile movieFile;
     userFile.deleteItem();
     movieFile.deleteItem();
-    AddCommand a;
+    Add a;
     EXPECT_THROW(a.execute("hello its ben!"), std::invalid_argument);
+}
+
+
+TEST(Post,userNoExist){
+    //delete trash
+    UserFile userFile;
+    MovieFile movieFile;
+    userFile.deleteItem();
+    movieFile.deleteItem();
+    Post a;
+    a.execute("1 2 3");
+    a.execute("2 2 3");
+    vector<unsigned long> ret1 = FileIO::IdList(1,&userFile);
+    vector<unsigned long> ret2 = FileIO::IdList(2,&userFile);
+    vector<unsigned long> target = {2,3};
+    ASSERT_EQ(ret1, target);
+    ASSERT_EQ(ret2, target);
+}
+
+TEST(Post,userDoesExist){
+    //delete trash
+    UserFile userFile;
+    MovieFile movieFile;
+    userFile.deleteItem();
+    movieFile.deleteItem();
+    Post a;
+    a.execute("1 2 3");
+    EXPECT_THROW(a.execute("1 4 5");, std::invalid_argument);
+
+}
+
+TEST(Post,tooManySpaces){
+    //delete trash
+    UserFile userFile;
+    MovieFile movieFile;
+    userFile.deleteItem();
+    movieFile.deleteItem();
+    Post a;
+    a.execute("1              2        3");
+    a.execute("          2 2 3                      ");
+    vector<unsigned long> ret1 = FileIO::IdList(1,&userFile);
+    vector<unsigned long> ret2 = FileIO::IdList(2,&userFile);
+    vector<unsigned long> target = {2,3};
+    ASSERT_EQ(ret1, target);
+    ASSERT_EQ(ret2, target);
+}
+TEST(Post,wrongInput){
+    //delete trash
+    UserFile userFile;
+    MovieFile movieFile;
+    userFile.deleteItem();
+    movieFile.deleteItem();
+    Post a;
+    a.execute("1 2 3");
+    EXPECT_THROW(a.execute("2");, std::invalid_argument);
+}
+
+
+TEST(Patch,userExist){
+    //delete trash
+    UserFile userFile;
+    MovieFile movieFile;
+    userFile.deleteItem();
+    movieFile.deleteItem();
+    Post a;
+    Patch b;
+    a.execute("1 2 3");
+    b.execute("1 4 5");
+    vector<unsigned long> ret1 = FileIO::IdList(1,&userFile);
+    vector<unsigned long> target = {2,3, 4,5};
+    ASSERT_EQ(ret1, target);
+}
+
+TEST(Patch,userDoesNotExist){
+    //delete trash
+    UserFile userFile;
+    MovieFile movieFile;
+    userFile.deleteItem();
+    movieFile.deleteItem();
+    Patch a;
+    EXPECT_THROW(a.execute("1 4 5");, std::invalid_argument);
+
+}
+
+TEST(Patch,tooManySpaces){
+    //delete trash
+    UserFile userFile;
+    MovieFile movieFile;
+    userFile.deleteItem();
+    movieFile.deleteItem();
+    Post a;
+    Patch b;
+    a.execute("1          2              3");
+    b.execute("1          4        6");
+    vector<unsigned long> ret1 = FileIO::IdList(1,&userFile);
+    vector<unsigned long> target = {2,3, 4,6};
+    ASSERT_EQ(ret1, target);
+}
+TEST(Patch,wrongInput){
+    //delete trash
+    UserFile userFile;
+    MovieFile movieFile;
+    userFile.deleteItem();
+    movieFile.deleteItem();
+    Post b;
+    b.execute("1          2              3");
+    Patch a;
+    EXPECT_THROW(a.execute("1");, std::invalid_argument);
 }

@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <unordered_map>
 #include <algorithm>
-#include "RecommendCommand.h"
+#include "GET.h"
 #include "../File_Classes/StringHandler.h"
 #include "../File_Classes/UserFile.h"
 #include "../File_Classes/MovieFile.h"
@@ -11,13 +11,13 @@
 
 
 using namespace std;
-RecommendCommand::RecommendCommand() {}
+GET::GET() {}
 
 // Destructor definition
-RecommendCommand::~RecommendCommand() {}
+GET::~GET() {}
 
 // Method to execute with no parameters
-void RecommendCommand::execute() {
+void GET::execute() {
     throw std::invalid_argument("");
 }
 
@@ -26,7 +26,6 @@ void RecommendCommand::execute() {
 // and by keys in ascending order for equal values
 std::vector<std::pair<unsigned long, unsigned long>> sortByValueThenKey(unordered_map<unsigned long, unsigned long> dict) {
     std::vector<std::pair<unsigned long, unsigned long>> vec(dict.begin(), dict.end());
-
     // Sort the vector of pairs: first by value descending, then by key ascending
     std::sort(vec.begin(), vec.end(), [](const std::pair<unsigned long, unsigned long>& a, const std::pair<unsigned long, unsigned long>& b) {
         if (a.second == b.second) {
@@ -41,38 +40,46 @@ std::vector<std::pair<unsigned long, unsigned long>> sortByValueThenKey(unordere
 
 
 
+
 // Method to execute with a string parameter
-void RecommendCommand::execute(std::string str) {
-
+void GET::execute(std::string str) {
     vector<unsigned long> res = TestExFunc(str);
-
     for(unsigned long a :res){
         std::cout  << a << " ";
     }
     std::cout << "\n";
-
 }
-
-std::vector<unsigned long> RecommendCommand::TestExFunc(std::string str) {
-    //checks if the string input is valid
+vector<std::string> validityTest(std::string str){
     vector<std::string> data = StringHandler::splitString(str);
     if(data.size()!=2)throw std::invalid_argument("");
+    return data;
+}
 
+
+std::vector<unsigned long> GET::TestExFunc(std::string str) {
     // init the user and the movie and checks if they exist
-    unsigned long userId =stoul(data[0]);
-    unsigned long movieId = stoul(data[1]);
+    unsigned long userId;
+    unsigned long movieId;
     UserFile userFile;
     MovieFile movieFile;
     vector<unsigned long> watchedList;
     vector<unsigned long> movieWatchers;
+
     try {
+        //checks if the string input is valid
+        vector<std::string> data = validityTest(str);
+        userId = stoul(data[0]);
+        movieId = stoul(data[1]);
+        if(!isExist(userId,&userFile)||
+           !isExist(movieId,&movieFile))throw std::invalid_argument("");
+
         watchedList = FileIO::IdList(userId, &userFile);
         movieWatchers = FileIO::IdList(movieId, &movieFile);
     }catch (...){
         throw std::invalid_argument("");
     }
-    if(watchedList.empty()||movieWatchers.empty())throw std::invalid_argument("");
 
+    std::cout<<"200 Ok \n\n";
     //similarity calc
     unordered_map<unsigned long, unsigned long> numOfCommon;//dict of user nums of common movies with our user (user->sum of common movies)
     // make the heavy calc about how much common movie with which user

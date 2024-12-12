@@ -29,9 +29,13 @@ add_executable(
   src/File_Classes/FileIO.cpp
   src/File_Classes/MovieFile.cpp
   src/File_Classes/AddBuilder.cpp
-  src/Commands/AddCommand.cpp
-  src/Commands/HelpCommand.cpp
-  src/Commands/RecommendCommand.cpp
+        src/Commands/Add.cpp
+        src/Commands/Help.cpp
+        src/Commands/GET.cpp
+        src/Commands/Post.cpp
+        src/Commands/Post.h
+        src/Commands/Patch.cpp
+        src/Commands/Patch.h
 )
 
 # Tests executable
@@ -48,9 +52,11 @@ add_executable(
   src/File_Classes/FileIO.cpp
   src/File_Classes/MovieFile.cpp
   src/File_Classes/AddBuilder.cpp
-  src/Commands/AddCommand.cpp
-  src/Commands/HelpCommand.cpp
-  src/Commands/RecommendCommand.cpp
+        src/Commands/Add.cpp
+        src/Commands/Help.cpp
+        src/Commands/GET.cpp
+        src/Commands/Post.cpp
+        src/Commands/Patch.cpp
 )
 
 # Link GoogleTest to the test target
