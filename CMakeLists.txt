@@ -13,6 +13,7 @@ FetchContent_Declare(
 )
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
+find_package(Threads REQUIRED)
 
 # Include directories
 include_directories(src)
@@ -52,6 +53,36 @@ add_executable(
   src/Commands/HelpCommand.cpp
   src/Commands/RecommendCommand.cpp
 )
+
+# Add the source files for the main executable
+add_executable(
+  client
+  src/client.cpp 
+ # src/ConsoleMenu.cpp
+  #src/File_Classes/StringHandler.cpp
+)
+
+add_executable(
+  server
+  src/server.cpp
+  src/dataClass/Data.cpp
+  src/Menu/ConsoleMenu.cpp
+  src/File_Classes/StringHandler.cpp
+)
+
+# Link the main executable with GoogleTest (optional, remove if not needed)
+target_link_libraries(
+  client
+  gtest_main  # GoogleTest library (if you need it, otherwise remove this line)
+  Threads::Threads  # Link pthreads
+)
+
+target_link_libraries(
+  server
+  gtest_main  # GoogleTest library (if you need it, otherwise remove this line)
+  Threads::Threads  # Link pthreads
+)
+
 
 # Link GoogleTest to the test target
 target_link_libraries(
