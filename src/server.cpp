@@ -7,6 +7,15 @@
 using namespace std;
 #include "Menu/ConsoleMenu.h"
 #include "File_Classes/StringHandler.h"
+#include <map>
+#include "Commands/ICommand.h"
+#include "Menu/ConsoleMenu.h"
+#include "Commands/HelpCommand.h"
+#include "Commands/AddCommand.h"
+#include "NewApp/App.h"
+#include "Commands/RecommendCommand.h"
+#include <stdexcept>
+map <string, ICommand*> commands;
 
 
 int server_sock; // Server socket descriptor
@@ -31,6 +40,11 @@ void* clientHandler(void* param) {
     close(data->client_sock);
     delete data;
 
+    return nullptr;
+}
+void* threadFunc(void* arg) {
+    App* app = static_cast<App*>(arg);
+    app->run();
     return nullptr;
 }
 
@@ -64,7 +78,12 @@ int main() {
     }
 
     cout << "Server is listening on port 12345..." << endl;
-
+    ICommand* addCommand = new AddCommand();
+    commands["add"] = addCommand; //make add command
+    ICommand* helpCommand = new HelpCommand();
+    commands["help"] = helpCommand; //make help command
+    ICommand* recCommand = new RecommendCommand();
+    commands["recommend"] = recCommand; //make reccomadtion command
     while (true) {
         // Accept a client connection
         int client_sock = accept(server_sock, (struct sockaddr *)&client_addr, &client_len);
@@ -75,11 +94,12 @@ int main() {
 
         // Allocate memory to store the received data
         Data* data = new Data();
+        App app(new ConsoleMenu(), commands, data); //give app the commands we made and the menu we have
         data->client_sock = client_sock;
         ConsoleMenu menu;  // Create a ConsoleMenu object on the stack
         // Create a new thread to handle this client
         pthread_t tid;
-        if (pthread_create(&tid, nullptr, clientHandler, data) != 0) {
+        if (pthread_create(&tid, nullptr,threadFunc, &app) != 0) {
             perror("Failed to create thread");
             close(client_sock);
             delete data;

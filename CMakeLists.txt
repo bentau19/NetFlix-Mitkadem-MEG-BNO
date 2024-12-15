@@ -67,7 +67,17 @@ add_executable(
   src/server.cpp
   src/dataClass/Data.cpp
   src/Menu/ConsoleMenu.cpp
+  src/NewApp/App.cpp
+  src/File_Classes/UserFile.cpp
+  src/File_Classes/BaseFile.cpp
   src/File_Classes/StringHandler.cpp
+  src/File_Classes/UserMovies.cpp
+  src/File_Classes/MovieFile.cpp
+  src/File_Classes/AddBuilder.cpp
+  src/Commands/AddCommand.cpp
+  src/Commands/HelpCommand.cpp
+  src/Commands/RecommendCommand.cpp
+
 )
 
 # Link the main executable with GoogleTest (optional, remove if not needed)

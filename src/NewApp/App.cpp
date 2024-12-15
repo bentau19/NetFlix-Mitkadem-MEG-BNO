@@ -3,6 +3,8 @@
 #include <iostream>
 #include "../dataClass/Data.h"
 #include "../Menu/ConsoleMenu.h"
+#include "../Menu/IMenu.h"
+
 App::App(ConsoleMenu* menu, std::map<std::string, ICommand*> commands, Data* data)
     : menu(menu), commands(commands), data(data) {}
 App::App(IMenu* menu, std::map<std::string, ICommand*> commands)
@@ -12,8 +14,13 @@ App::App(IMenu* menu, std::map<std::string, ICommand*> commands)
 App::~App() {}
 
     void App::run() {
+        while (true) {
+        // Receive data from the client
         Data* inputData = ConsoleMenu::nextCommand2(data);
-        string task = inputData->buffer;
+        if (data == nullptr || inputData ==nullptr) {
+            break;  // Exit the loop if the client disconnects or an error occurs
+        }
+            string task = inputData->buffer;
         string command = menu->getCommand(task);
         string remainingCommand = menu->getCommandAsk(task);
             try {          
@@ -30,6 +37,7 @@ App::~App() {}
         ConsoleMenu::printOutPut2(inputData);
         
     }
+}
 
 
 
