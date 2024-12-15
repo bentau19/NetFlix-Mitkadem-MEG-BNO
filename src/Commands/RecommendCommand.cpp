@@ -17,7 +17,7 @@ RecommendCommand::RecommendCommand() {}
 RecommendCommand::~RecommendCommand() {}
 
 // Method to execute with no parameters
-void RecommendCommand::execute() {
+string RecommendCommand::execute() {
     throw std::invalid_argument("");
 }
 
@@ -42,22 +42,24 @@ std::vector<std::pair<unsigned long, unsigned long>> sortByValueThenKey(unordere
 
 
 // Method to execute with a string parameter
-void RecommendCommand::execute(std::string str) {
+string RecommendCommand::execute(std::string str) {
 
     vector<unsigned long> res = TestExFunc(str);
-
+    string toPrint ="";
     for(unsigned long a :res){
-        std::cout  << a << " ";
+        toPrint += std::to_string(a) + " ";
     }
-    std::cout << "\n";
+    toPrint+= "\n";
+    return toPrint;
 
 }
 
 std::vector<unsigned long> RecommendCommand::TestExFunc(std::string str) {
     //checks if the string input is valid
     vector<std::string> data = StringHandler::splitString(str);
-    if(data.size()!=2)throw std::invalid_argument("");
-
+    if(data.size()!=2){
+        throw std::invalid_argument("");
+    }
     // init the user and the movie and checks if they exist
     unsigned long userId =stoul(data[0]);
     unsigned long movieId = stoul(data[1]);

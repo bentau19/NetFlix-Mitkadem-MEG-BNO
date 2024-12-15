@@ -2,10 +2,28 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <cstdlib>  // For std::stoi
 
 using namespace std;
 
-int main() {
+int main(int argc, char* argv[]) {
+    if (argc != 3) {
+        cerr << "Usage: " << argv[0] << " <server_ip> <port>" << endl;
+        return 1;
+    }
+
+    const char* server_ip = argv[1];
+    int port;
+    try {
+        port = stoi(argv[2]);
+        if (port <= 0 || port > 65535) {
+            throw invalid_argument("Invalid port number");
+        }
+    } catch (...) {
+        cerr << "Error: Please provide a valid port number between 1 and 65535." << endl;
+        return 1;
+    }
+
     int client_sock;
     struct sockaddr_in server_addr;
     char buffer[4096];
@@ -19,8 +37,8 @@ int main() {
     // Set up server address structure
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(12345);  // The same port as the server
-    server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");  // Loopback address (localhost)
+    server_addr.sin_port = htons(port);  // The port passed as an argument
+    server_addr.sin_addr.s_addr = inet_addr(server_ip);  // IP address passed as an argument
 
     // Connect to the server
     if (connect(client_sock, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {

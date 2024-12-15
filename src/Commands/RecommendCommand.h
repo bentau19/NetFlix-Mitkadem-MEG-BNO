@@ -10,9 +10,9 @@ public:
     RecommendCommand();
         ~RecommendCommand();
 
-    void execute(std::string str) override; // Use "override" keyword
+    string execute(std::string str) override; // Use "override" keyword
             std::vector<unsigned long> TestExFunc(std::string str);
-    void execute();
+    string execute();
 };
 
 #endif

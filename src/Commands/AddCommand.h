@@ -9,8 +9,8 @@ public:
     AddCommand();  // Constructor
     ~AddCommand(); // Destructor
 
-    void execute();  // Override execute method with no parameters
-    void execute(std::string str) override;  // Override execute method with string parameter
+    string execute();  // Override execute method with no parameters
+    string execute(std::string str) override;  // Override execute method with string parameter
 
 };
 

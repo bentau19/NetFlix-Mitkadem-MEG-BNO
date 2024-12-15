@@ -1,5 +1,7 @@
 #ifndef DATA_H
 #define DATA_H
+#include <string>
+using namespace std;
 
 class Data {
 public:
@@ -10,6 +12,8 @@ public:
 
     // Constructor to initialize the class members
       Data(char* buffer, int buffer_size, int client_sock  ); // Constructor
+      Data(string buffer, int buffer_size, int client_sock  ); // Constructor
+
       Data();
     ~Data(); // Destructor
 };

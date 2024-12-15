@@ -7,14 +7,15 @@ using namespace std;
     HelpCommand::HelpCommand(){}
 
     HelpCommand::~HelpCommand(){}
-     void HelpCommand::execute(std::string str){
+     string HelpCommand::execute(std::string str){
         if(str.length() > 0 || str==" ") { //if got more agument then "help" then invalid
-            throw std::invalid_argument("");
+            return " 400 Bad Request";
         } else {
             //help command
-        cout << "add[userid] [movieid1] [movieid2]…" << endl;
-        cout << "recommend[userid] [movieid]" <<endl;
-        cout << "help" <<endl;
+        string toPrint =  "add[userid] [movieid1] [movieid2]…\n";
+        toPrint += "recommend[userid] [movieid]\n";
+        toPrint += "help\n";
+        return toPrint;
         }
     
     }

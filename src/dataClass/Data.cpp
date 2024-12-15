@@ -1,4 +1,6 @@
 #include "Data.h"
+#include <string>
+using namespace std;
 
 // Constructor to initialize the class members (if needed)
 Data::Data() {
@@ -8,6 +10,18 @@ Data::Data() {
 }
 Data::  Data(char* input_buffer, int size, int sock) : buffer_size(size), client_sock(sock) {
         // Ensure the buffer doesn't overflow
+        if (size > sizeof(buffer)) {
+            size = sizeof(buffer);
+        }
+        
+        // Manually copy the bytes from input_buffer to the buffer array
+        for (int i = 0; i < size; ++i) {
+            buffer[i] = input_buffer[i];
+        }
+    }
+
+    Data::Data(string input_buffer, int size, int sock) : buffer_size(size), client_sock(sock) {
+                // Ensure the buffer doesn't overflow
         if (size > sizeof(buffer)) {
             size = sizeof(buffer);
         }
