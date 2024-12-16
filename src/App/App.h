@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 #include "../Menu/IMenu.h"
-#include "Commands/General/ICommand.h"
+#include "../Commands/ICommand.h"
 
 class App {
 private:
