@@ -28,6 +28,7 @@ class Validity {
 public:
     static std::vector<std::string> SplitToDigitVec (const std::string& str){
         return StringHandler::splitString(str);
+
     }
     static std::vector<std::string> twoNumsVec(std::string str){
         std::vector<std::string> data = SplitToDigitVec(str);
