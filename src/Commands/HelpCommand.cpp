@@ -4,10 +4,10 @@ using namespace std;
 #include <fstream>
 #include <string>
 
-    Help::Help(){}
+    HelpCommand::HelpCommand(){}
 
-    Help::~Help(){}
-std::string Help::execute(std::string str){
+    HelpCommand::~HelpCommand(){}
+     void HelpCommand::execute(std::string str){
         if(str.length() > 0 || str==" ") { //if got more agument then "help" then invalid
             throw std::invalid_argument("");
         } else {
@@ -16,6 +16,6 @@ std::string Help::execute(std::string str){
         cout << "recommend[userid] [movieid]" <<endl;
         cout << "help" <<endl;
         }
-    return "";
+    
     }
 
