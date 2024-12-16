@@ -7,15 +7,14 @@
 
 
 #include <string>
-#include "ICommand.h"
+#include "Commands/General/ICommand.h"
 
 class Patch : public ICommand {
     public:
         Patch();  // Constructor
         ~Patch(); // Destructor
 
-        void execute();  // Override execute method with no parameters
-        void execute(std::string str) override;  // Override execute method with string parameter
+    std::string execute(std::string str) override;  // Override execute method with string parameter
 
 };
 

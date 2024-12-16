@@ -29,13 +29,15 @@ add_executable(
   src/File_Classes/FileIO.cpp
   src/File_Classes/MovieFile.cpp
   src/File_Classes/AddBuilder.cpp
-        src/Commands/Add.cpp
-        src/Commands/Help.cpp
-        src/Commands/GET.cpp
-        src/Commands/Post.cpp
-        src/Commands/Post.h
-        src/Commands/Patch.cpp
-        src/Commands/Patch.h
+        src/Commands/General/Help.cpp
+        src/Commands/Data_Manipulation/Get.cpp
+        src/Commands/Add_Data/Post.cpp
+        src/Commands/Add_Data/Post.h
+        src/Commands/Add_Data/Patch.cpp
+        src/Commands/Add_Data/Patch.h
+        src/Commands/Delete_Data/Delete.cpp
+        src/Commands/Delete_Data/Delete.h
+        src/Commands/General/Validity.h
 )
 
 # Tests executable
@@ -52,11 +54,11 @@ add_executable(
   src/File_Classes/FileIO.cpp
   src/File_Classes/MovieFile.cpp
   src/File_Classes/AddBuilder.cpp
-        src/Commands/Add.cpp
-        src/Commands/Help.cpp
-        src/Commands/GET.cpp
-        src/Commands/Post.cpp
-        src/Commands/Patch.cpp
+        src/Commands/General/Help.cpp
+        src/Commands/Data_Manipulation/Get.cpp
+        src/Commands/Add_Data/Post.cpp
+        src/Commands/Add_Data/Patch.cpp
+        src/Commands/Delete_Data/Delete.cpp
 )
 
 # Link GoogleTest to the test target

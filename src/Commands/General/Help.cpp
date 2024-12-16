@@ -7,7 +7,7 @@ using namespace std;
     Help::Help(){}
 
     Help::~Help(){}
-     void Help::execute(std::string str){
+std::string Help::execute(std::string str){
         if(str.length() > 0 || str==" ") { //if got more agument then "help" then invalid
             throw std::invalid_argument("");
         } else {
@@ -16,6 +16,6 @@ using namespace std;
         cout << "recommend[userid] [movieid]" <<endl;
         cout << "help" <<endl;
         }
-    
+    return "";
     }
 

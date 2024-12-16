@@ -3,23 +3,20 @@
 #include <stdexcept>
 #include <unordered_map>
 #include <algorithm>
-#include "GET.h"
-#include "../File_Classes/StringHandler.h"
-#include "../File_Classes/UserFile.h"
-#include "../File_Classes/MovieFile.h"
-#include "../File_Classes/FileIO.h"
+#include "Get.h"
+#include "File_Classes/StringHandler.h"
+#include "File_Classes/UserFile.h"
+#include "File_Classes/MovieFile.h"
+#include "File_Classes/FileIO.h"
+#include "Commands/General/Validity.h"
 
 
 using namespace std;
-GET::GET() {}
+Get::Get() {}
 
 // Destructor definition
-GET::~GET() {}
+Get::~Get() {}
 
-// Method to execute with no parameters
-void GET::execute() {
-    throw std::invalid_argument("");
-}
 
 
 // Function to sort the unordered_map by values in descending order
@@ -42,21 +39,26 @@ std::vector<std::pair<unsigned long, unsigned long>> sortByValueThenKey(unordere
 
 
 // Method to execute with a string parameter
-void GET::execute(std::string str) {
-    vector<unsigned long> res = TestExFunc(str);
-    for(unsigned long a :res){
-        std::cout  << a << " ";
+std::string Get::execute(std::string str) {
+    try {
+        vector<unsigned long> recommend = TestExFunc(str);
+        string res = Validity::ValidityAlert(GetSuc);
+        res+=" \n";
+
+        for (unsigned long a : recommend) {
+            res += std::to_string(a) + " "; // Convert number to string and append
+        }
+        res +="\n";
+        return res;
+
+    }catch(...){
+        return Validity::ValidityAlert(GenFail);
     }
-    std::cout << "\n";
-}
-vector<std::string> validityTest(std::string str){
-    vector<std::string> data = StringHandler::splitString(str);
-    if(data.size()!=2)throw std::invalid_argument("");
-    return data;
 }
 
 
-std::vector<unsigned long> GET::TestExFunc(std::string str) {
+
+std::vector<unsigned long> Get::TestExFunc(std::string str) {
     // init the user and the movie and checks if they exist
     unsigned long userId;
     unsigned long movieId;
@@ -67,7 +69,7 @@ std::vector<unsigned long> GET::TestExFunc(std::string str) {
 
     try {
         //checks if the string input is valid
-        vector<std::string> data = validityTest(str);
+        vector<std::string> data = Validity::twoNumsVec(str);
         userId = stoul(data[0]);
         movieId = stoul(data[1]);
         if(!isExist(userId,&userFile)||
@@ -78,8 +80,6 @@ std::vector<unsigned long> GET::TestExFunc(std::string str) {
     }catch (...){
         throw std::invalid_argument("");
     }
-
-    std::cout<<"200 Ok \n\n";
     //similarity calc
     unordered_map<unsigned long, unsigned long> numOfCommon;//dict of user nums of common movies with our user (user->sum of common movies)
     // make the heavy calc about how much common movie with which user

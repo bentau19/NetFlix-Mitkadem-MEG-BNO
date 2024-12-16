@@ -8,7 +8,7 @@ class Help : public ICommand { // Ensure public inheritance
 public:
     Help();
     ~Help();
-    virtual void execute(std::string str) override; // Use "override" keyword
+    virtual std::string execute(std::string str) override; // Use "override" keyword
 };
 
 #endif
