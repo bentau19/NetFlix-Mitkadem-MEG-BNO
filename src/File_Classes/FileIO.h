@@ -16,6 +16,7 @@ public:
     static vector<unsigned long> IdList(unsigned long Id,BaseFile* File);  // Return a list of the Id in the specific file
     static bool AddIdsToId(vector<string> ListId, unsigned long ToId,BaseFile* File); // recieve a list of ids,
     // and add them to the given id list for a specidic file: ToId; id1 id2 id3 id4 .....
+    static bool isExists(unsigned long id,BaseFile *f);//check if exists in specific file
 };
 
 #endif

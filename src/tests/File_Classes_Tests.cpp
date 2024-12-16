@@ -69,6 +69,14 @@ TEST(ReturnList,movies){
     ASSERT_EQ(listu[1],2);
     ASSERT_EQ(listu[2],3);
 }
+TEST(IdExists,MoviesAndUser){
+    UserFile u;
+    MovieFile m;
+    ASSERT_TRUE(FileIO::isExists(1,&u));
+    ASSERT_TRUE(FileIO::isExists(11,&m));
+    ASSERT_FALSE(FileIO::isExists(777,&u));
+    ASSERT_FALSE(FileIO::isExists(777,&m));
+}
 TEST(RemoveList,RemoveMoviesFromUser){
     vector<string> movies3;
     movies3.push_back("32");

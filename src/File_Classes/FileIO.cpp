@@ -129,6 +129,26 @@ bool FileIO::AddIdsToId(vector<string> ListId, unsigned long ToId, BaseFile* f)
     }
 }
 
+bool FileIO::isExists(unsigned long id, BaseFile *f)//func to check if id exists in f
+{
+    vector<string> idlist;
+    vector<string> fulllist = f->read();//read from the file
+    for (size_t i = 0; i < fulllist.size(); i++)//iterate over every line
+    {
+        idlist = StringHandler::split(fulllist[i],';');//split to the id and the list that is in the id
+        if (!idlist.size())//if blank line somehow break
+        {
+            break;
+        }
+        if (idlist[0]== to_string(id))//check if the id is equal
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 vector<string> FileIO::addUnique(const std::vector<string>& vec1, const vector<std::string>& vec2) {
     vector<std::string> result = vec1; // Start with all elements from vec1
     for (const auto& item : vec2) {
