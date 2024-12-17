@@ -8,6 +8,7 @@
 #include "Commands/Add_Data/PatchCmd.h"
 #include "Commands/General/Validity.h"
 #include "Commands/Delete_Data/DeleteCmd.h"
+#include "Commands/General/HelpCmd.h"
 
 void DelTemp(){
     //delete trash
@@ -281,4 +282,16 @@ TEST(Delete,DelUser){
     d.execute("1 2 4");
     UserFile userFile;
     ASSERT_EQ(GetCmd::isExist(1, &userFile), false);
+}
+TEST(HelpCmd, valid){
+    DelTemp();
+    HelpCmd n;
+    std::string res=
+            "DELETE, arguments: [userid] [movieid1] [movieid2] ...\nGET, arguments: [userid] [movieid]\nPATCH, arguments: [userid] [movieid1] [movieid2] ...\nPOST, arguments: [userid] [movieid1] [movieid2] ...\nHELP\n";
+    ASSERT_EQ(n.execute(""), res);
+}
+TEST(HelpCmd, no_valid){
+    DelTemp();
+    HelpCmd n;
+      ASSERT_EQ(n.execute("1"), Validity::ValidityAlert(syntaxErr));
 }

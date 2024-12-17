@@ -4,10 +4,10 @@ using namespace std;
 #include <string>
 #include "ICommand.h"
 
-class Help : public ICommand { // Ensure public inheritance
+class HelpCmd : public ICommand { // Ensure public inheritance
 public:
-    Help();
-    ~Help();
+    HelpCmd();
+    ~HelpCmd();
     virtual std::string execute(std::string str) override; // Use "override" keyword
 };
 

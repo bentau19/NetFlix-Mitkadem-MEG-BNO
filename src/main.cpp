@@ -17,7 +17,7 @@ map <string, ICommand*> commands;
 int main(){
      ICommand* addCommand = new PostCmd();
     commands["add"] = addCommand; //make add command
-    ICommand* helpCommand = new Help();
+    ICommand* helpCommand = new HelpCmd();
     commands["help"] = helpCommand; //make help command
     ICommand* recCommand = new GetCmd();
     commands["recommend"] = recCommand; //make reccomadtion command
