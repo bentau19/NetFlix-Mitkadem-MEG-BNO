@@ -29,7 +29,6 @@ add_executable(
   src/File_Classes/FileIO.cpp
   src/File_Classes/MovieFile.cpp
   src/File_Classes/AddBuilder.cpp
-
         src/Commands/General/Help.cpp
         src/Commands/Data_Manipulation/GetCmd.cpp
         src/Commands/Add_Data/PostCmd.cpp
@@ -39,7 +38,6 @@ add_executable(
         src/Commands/Delete_Data/DeleteCmd.cpp
         src/Commands/Delete_Data/DeleteCmd.h
         src/Commands/General/Validity.h
-
 )
 
 # Tests executable
@@ -56,13 +54,11 @@ add_executable(
   src/File_Classes/FileIO.cpp
   src/File_Classes/MovieFile.cpp
   src/File_Classes/AddBuilder.cpp
-
         src/Commands/General/Help.cpp
         src/Commands/Data_Manipulation/GetCmd.cpp
         src/Commands/Add_Data/PostCmd.cpp
         src/Commands/Add_Data/PatchCmd.cpp
         src/Commands/Delete_Data/DeleteCmd.cpp
-
 )
 
 # Link GoogleTest to the test target
