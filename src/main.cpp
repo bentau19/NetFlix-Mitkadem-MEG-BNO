@@ -3,7 +3,7 @@
 #include <map>
 #include "Commands/General/ICommand.h"
 #include "Menu/ConsoleMenu.h"
-#include "Commands/General/HelpCommand.h"
+#include "Commands/General/HelpCmd.h"
 
 #include "App/App.h"
 #include "Commands/Data_Manipulation/GetCmd.h"
