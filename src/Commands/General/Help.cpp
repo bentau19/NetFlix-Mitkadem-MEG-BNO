@@ -1,5 +1,5 @@
 using namespace std;
-#include "HelpCommand.h"
+#include "HelpCmd.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -12,9 +12,11 @@ std::string Help::execute(std::string str){
             throw std::invalid_argument("");
         } else {
             //help command
-        cout << "add[userid] [movieid1] [movieid2]…" << endl;
-        cout << "recommend[userid] [movieid]" <<endl;
-        cout << "help" <<endl;
+        cout << "DELETE, arguments: [userid] [movieid1] [movieid2] ..." << endl;
+            cout << "GET, arguments: [userid] [movieid]" << endl;
+            cout << "PATCH, arguments: [userid] [movieid1] [movieid2] ..." << endl;
+            cout << "POST, arguments: [userid] [movieid1] [movieid2] ..." << endl;
+            cout << "HELP" <<endl;
         }
     return "";
     }
