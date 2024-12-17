@@ -3,30 +3,26 @@
 #include <stdexcept>
 #include <unordered_map>
 #include <algorithm>
-#include "RecommendCommand.h"
-#include "../File_Classes/StringHandler.h"
-#include "../File_Classes/UserFile.h"
-#include "../File_Classes/MovieFile.h"
-#include "../File_Classes/FileIO.h"
+#include "GetCmd.h"
+#include "File_Classes/StringHandler.h"
+#include "File_Classes/UserFile.h"
+#include "File_Classes/MovieFile.h"
+#include "File_Classes/FileIO.h"
+#include "Commands/General/Validity.h"
 
 
 using namespace std;
-RecommendCommand::RecommendCommand() {}
+GetCmd::GetCmd() {}
 
 // Destructor definition
-RecommendCommand::~RecommendCommand() {}
+GetCmd::~GetCmd() {}
 
-// Method to execute with no parameters
-string RecommendCommand::execute() {
-    throw std::invalid_argument("");
-}
 
 
 // Function to sort the unordered_map by values in descending order
 // and by keys in ascending order for equal values
 std::vector<std::pair<unsigned long, unsigned long>> sortByValueThenKey(unordered_map<unsigned long, unsigned long> dict) {
     std::vector<std::pair<unsigned long, unsigned long>> vec(dict.begin(), dict.end());
-
     // Sort the vector of pairs: first by value descending, then by key ascending
     std::sort(vec.begin(), vec.end(), [](const std::pair<unsigned long, unsigned long>& a, const std::pair<unsigned long, unsigned long>& b) {
         if (a.second == b.second) {
@@ -41,40 +37,49 @@ std::vector<std::pair<unsigned long, unsigned long>> sortByValueThenKey(unordere
 
 
 
+
 // Method to execute with a string parameter
-string RecommendCommand::execute(std::string str) {
+std::string GetCmd::execute(std::string str) {
+    try {
+        vector<unsigned long> recommend = TestExFunc(str);
+        string res = Validity::ValidityAlert(GetSuc);
+        res+=" \n";
 
-    vector<unsigned long> res = TestExFunc(str);
-    string toPrint ="";
-    for(unsigned long a :res){
-        toPrint += std::to_string(a) + " ";
+        for (unsigned long a : recommend) {
+            res += std::to_string(a) + " "; // Convert number to string and append
+        }
+        res +="\n";
+        return res;
+
+    }catch(...){
+        return Validity::ValidityAlert(GenFail);
     }
-    toPrint+= "\n";
-    return toPrint;
-
 }
 
-std::vector<unsigned long> RecommendCommand::TestExFunc(std::string str) {
-    //checks if the string input is valid
-    vector<std::string> data = StringHandler::splitString(str);
-    if(data.size()!=2){
-        throw std::invalid_argument("");
-    }
+
+
+std::vector<unsigned long> GetCmd::TestExFunc(std::string str) {
     // init the user and the movie and checks if they exist
-    unsigned long userId =stoul(data[0]);
-    unsigned long movieId = stoul(data[1]);
+    unsigned long userId;
+    unsigned long movieId;
     UserFile userFile;
     MovieFile movieFile;
     vector<unsigned long> watchedList;
     vector<unsigned long> movieWatchers;
+
     try {
+        //checks if the string input is valid
+        vector<std::string> data = Validity::twoNumsVec(str);
+        userId = stoul(data[0]);
+        movieId = stoul(data[1]);
+        if(!isExist(userId,&userFile)||
+           !isExist(movieId,&movieFile))throw std::invalid_argument("");
+
         watchedList = FileIO::IdList(userId, &userFile);
         movieWatchers = FileIO::IdList(movieId, &movieFile);
     }catch (...){
         throw std::invalid_argument("");
     }
-    if(watchedList.empty()||movieWatchers.empty())throw std::invalid_argument("");
-
     //similarity calc
     unordered_map<unsigned long, unsigned long> numOfCommon;//dict of user nums of common movies with our user (user->sum of common movies)
     // make the heavy calc about how much common movie with which user

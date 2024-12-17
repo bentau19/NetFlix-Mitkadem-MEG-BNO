@@ -36,7 +36,7 @@ add_executable(
   src/File_Classes/UserFile.cpp
   src/File_Classes/BaseFile.cpp
   src/File_Classes/StringHandler.cpp
-  src/File_Classes/UserMovies.cpp
+  src/File_Classes/FileIO.cpp
   src/File_Classes/MovieFile.cpp
   src/File_Classes/AddBuilder.cpp
   src/Commands/AddCommand.cpp
