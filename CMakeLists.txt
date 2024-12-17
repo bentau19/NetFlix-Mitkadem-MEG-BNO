@@ -31,7 +31,7 @@ add_executable(
   server
   src/server.cpp
   src/dataClass/Data.cpp
-  src/Menu/ConsoleMenu.cpp
+  src/Menu/ServerMenu.cpp
   src/App/App.cpp
   src/File_Classes/UserFile.cpp
   src/File_Classes/BaseFile.cpp
@@ -42,7 +42,10 @@ add_executable(
   src/Commands/AddCommand.cpp
   src/Commands/HelpCommand.cpp
   src/Commands/RecommendCommand.cpp
-
+  #src/Commands/Data_Manipulation/GetCmd.cpp
+  #src/Commands/Add_Data/PostCmd.cpp
+ # src/Commands/Add_Data/PatchCmd.cpp
+  #src/Commands/Delete_Data/DeleteCmd.cpp
 )
 
 # Link the main executable with GoogleTest (optional, remove if not needed)

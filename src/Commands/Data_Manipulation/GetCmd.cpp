@@ -8,7 +8,7 @@
 #include "File_Classes/UserFile.h"
 #include "File_Classes/MovieFile.h"
 #include "File_Classes/FileIO.h"
-#include "Commands/General/Validity.h"
+//#include "Commands/General/Validity.h"
 
 
 using namespace std;
@@ -42,8 +42,8 @@ std::vector<std::pair<unsigned long, unsigned long>> sortByValueThenKey(unordere
 std::string GetCmd::execute(std::string str) {
     try {
         vector<unsigned long> recommend = TestExFunc(str);
-        string res = Validity::ValidityAlert(GetSuc);
-        res+=" \n";
+      //  string res = Validity::ValidityAlert(GetSuc);
+      string  res = " \n";
 
         for (unsigned long a : recommend) {
             res += std::to_string(a) + " "; // Convert number to string and append
@@ -52,7 +52,7 @@ std::string GetCmd::execute(std::string str) {
         return res;
 
     }catch(...){
-        return Validity::ValidityAlert(GenFail);
+       // return Validity::ValidityAlert(GenFail);
     }
 }
 
@@ -69,7 +69,8 @@ std::vector<unsigned long> GetCmd::TestExFunc(std::string str) {
 
     try {
         //checks if the string input is valid
-        vector<std::string> data = Validity::twoNumsVec(str);
+        vector<std::string> data;
+        // = Validity::twoNumsVec(str);
         userId = stoul(data[0]);
         movieId = stoul(data[1]);
         if(!isExist(userId,&userFile)||

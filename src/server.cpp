@@ -13,6 +13,10 @@
 #include "Commands/AddCommand.h"
 #include "App/App.h"
 #include "Commands/RecommendCommand.h"
+//#include "Commands/Add_Data/PatchCmd.h"
+//#include "Commands/Add_Data/PostCmd.h"
+//#include "Commands/Delete_Data/DeleteCmd.h"
+//#include "Commands/Data_Manipulation/GetCmd.h"
 
 using namespace std;
 
@@ -78,7 +82,10 @@ int main(int argc, char* argv[]) {
     commands["add"] = new AddCommand();
     commands["help"] = new HelpCommand();
     commands["recommend"] = new RecommendCommand();
-
+    //commands["GET"] = new GetCmd();
+    //commands["POST"] = new PostCmd();
+    //commands["PATCH"] = new PatchCmd();
+    //commands["DELETE"] = new DeleteCmd();
     while (true) {
         // Accept a client connection
         int client_sock = accept(server_sock, (struct sockaddr *)&client_addr, &client_len);

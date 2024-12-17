@@ -1,9 +1,9 @@
-#ifndef RecommendCommand_H
-#define RecommendCommand_H
+#ifndef GetCmd_H
+#define GetCmd_H
 using namespace std;
 #include <string>
 #include <vector>
-#include "Commands/General/ICommand.h"
+#include "Commands/ICommand.h"
 #include "File_Classes/UserFile.h"
 #include "File_Classes/BaseFile.h"
 #include "File_Classes/FileIO.h"
