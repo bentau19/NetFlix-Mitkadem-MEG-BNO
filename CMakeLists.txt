@@ -18,41 +18,6 @@ find_package(Threads REQUIRED)
 # Include directories
 include_directories(src)
 
-# Main executable
-add_executable(
-  main
-  src/main.cpp 
-  src/Menu/ConsoleMenu.cpp
-  src/App/App.cpp
-  src/File_Classes/UserFile.cpp
-  src/File_Classes/BaseFile.cpp
-  src/File_Classes/StringHandler.cpp
-  src/File_Classes/UserMovies.cpp
-  src/File_Classes/MovieFile.cpp
-  src/File_Classes/AddBuilder.cpp
-  src/Commands/AddCommand.cpp
-  src/Commands/HelpCommand.cpp
-  src/Commands/RecommendCommand.cpp
-)
-
-# Tests executable
-add_executable(
-  Tests
-  src/tests/File_Classes_Tests.cpp
-  src/tests/Commends_Tests.cpp
-  src/tests/InputTest.cpp
-  src/Menu/ConsoleMenu.cpp
-  src/App/App.cpp
-  src/File_Classes/UserFile.cpp
-  src/File_Classes/BaseFile.cpp
-  src/File_Classes/StringHandler.cpp
-  src/File_Classes/UserMovies.cpp
-  src/File_Classes/MovieFile.cpp
-  src/File_Classes/AddBuilder.cpp
-  src/Commands/AddCommand.cpp
-  src/Commands/HelpCommand.cpp
-  src/Commands/RecommendCommand.cpp
-)
 
 # Add the source files for the main executable
 add_executable(
@@ -67,7 +32,7 @@ add_executable(
   src/server.cpp
   src/dataClass/Data.cpp
   src/Menu/ConsoleMenu.cpp
-  src/NewApp/App.cpp
+  src/App/App.cpp
   src/File_Classes/UserFile.cpp
   src/File_Classes/BaseFile.cpp
   src/File_Classes/StringHandler.cpp
@@ -93,9 +58,3 @@ target_link_libraries(
   Threads::Threads  # Link pthreads
 )
 
-
-# Link GoogleTest to the test target
-target_link_libraries(
-  Tests
-  gtest_main
-)

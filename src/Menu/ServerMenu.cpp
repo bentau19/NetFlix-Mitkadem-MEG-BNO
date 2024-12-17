@@ -7,23 +7,17 @@ using namespace std;
 #include <string>
 #include "../File_Classes/StringHandler.h"
 #include "../dataClass/Data.h"
-#include "ConsoleMenu.h"
+#include "ServerMenu.h"
 #include <cstring>
 
-ConsoleMenu::ConsoleMenu(/* args */)
+ServerMenu::ServerMenu(/* args */)
 {
 }
 
-ConsoleMenu::~ConsoleMenu()
+ServerMenu::~ServerMenu()
 {
 }
-    string ConsoleMenu::nextCommand(){
-        string task;
-        getline(cin, task); //take next user input
-        return task; //return the input
-    }
-
-    string ConsoleMenu::getCommand(string task){
+    string ServerMenu::getCommand(string task){
         vector<string> vecString = StringHandler::split(task,' ');
         if (!vecString.empty()) {//if have words
             return vecString[0];  //return first Word
@@ -31,7 +25,7 @@ ConsoleMenu::~ConsoleMenu()
         return ""; //else is empty string
     }
 
-string ConsoleMenu::getCommandAsk(string task) {
+string ServerMenu::getCommandAsk(string task) {
     vector<string> vecString = StringHandler::split(task,' ');
     vecString.erase(vecString.begin()); //erse the first word from string
     string remaining = StringHandler::join(vecString, ' '); //return the vector to string
@@ -39,7 +33,7 @@ string ConsoleMenu::getCommandAsk(string task) {
 }
 
 
-Data* ConsoleMenu::nextCommand2(void* param) {
+Data* ServerMenu::nextCommand(void* param) {
     Data* data = (Data*)param;
 
     // Clear the buffer before receiving new data
@@ -65,7 +59,7 @@ Data* ConsoleMenu::nextCommand2(void* param) {
     return data;
 }
 
-void* ConsoleMenu::printOutPut2(void* param) {
+void* ServerMenu::getCommandOutput(void* param) {
     Data* data = (Data*)param;
 
     // Send the received message back to the client

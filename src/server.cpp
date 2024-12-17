@@ -6,12 +6,12 @@
 #include <cstdlib>  // For std::stoi
 #include <map>
 #include "dataClass/Data.h"
-#include "Menu/ConsoleMenu.h"
+#include "Menu/ServerMenu.h"
 #include "File_Classes/StringHandler.h"
 #include "Commands/ICommand.h"
 #include "Commands/HelpCommand.h"
 #include "Commands/AddCommand.h"
-#include "NewApp/App.h"
+#include "App/App.h"
 #include "Commands/RecommendCommand.h"
 
 using namespace std;
@@ -89,7 +89,7 @@ int main(int argc, char* argv[]) {
 
         // Allocate memory to store the received data
         Data* data = new Data();
-        App app(new ConsoleMenu(), commands, data);  // Pass commands and menu to App
+        App app(new ServerMenu(), commands, data);  // Pass commands and menu to App
         data->client_sock = client_sock;
 
         // Create a new thread to handle this client
