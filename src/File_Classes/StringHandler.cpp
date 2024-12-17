@@ -1,10 +1,12 @@
 #include "StringHandler.h"
 #include <string>
 #include "../Menu/ConsoleMenu.h"
+#include "Commands/General/Validity.h"
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
 #include <sstream>
+
 using namespace std;
 
 std::vector<std::string> StringHandler::split(const std::string& str, char delimiter) {
@@ -47,13 +49,13 @@ std::vector<std::string> StringHandler::splitString(const std::string& str) {
             if (!item.empty()) {
                 for (char ch : item) {
                     if (!isdigit(ch)) {
-                        throw std::invalid_argument("");  // Found a non-digit character
+                        throw std::invalid_argument(ERR400);  // Found a non-digit character
                     }
                 }
                 res.push_back(item);
             }
         }}catch(...){
-        throw std::invalid_argument("");
+        throw std::invalid_argument(ERR400);
     }
     return res;
 }
