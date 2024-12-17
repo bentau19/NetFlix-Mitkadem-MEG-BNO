@@ -6,8 +6,8 @@
 #include "Commands/General/HelpCommand.h"
 
 #include "App/App.h"
-#include "Commands/Data_Manipulation/Get.h"
-#include "Commands/Add_Data/Post.h"
+#include "Commands/Data_Manipulation/GetCmd.h"
+#include "Commands/Add_Data/PostCmd.h"
 #include <stdexcept>
 
 using namespace std;
@@ -15,11 +15,11 @@ map <string, ICommand*> commands;
 
 
 int main(){
-     ICommand* addCommand = new Post();
+     ICommand* addCommand = new PostCmd();
     commands["add"] = addCommand; //make add command
     ICommand* helpCommand = new Help();
     commands["help"] = helpCommand; //make help command
-    ICommand* recCommand = new Get();
+    ICommand* recCommand = new GetCmd();
     commands["recommend"] = recCommand; //make reccomadtion command
     App app(new ConsoleMenu(), commands); //give app the commands we made and the menu we have
     app.run(); //run the pogram

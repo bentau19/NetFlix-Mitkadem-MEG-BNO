@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <unordered_map>
 #include <algorithm>
-#include "Get.h"
+#include "GetCmd.h"
 #include "File_Classes/StringHandler.h"
 #include "File_Classes/UserFile.h"
 #include "File_Classes/MovieFile.h"
@@ -12,10 +12,10 @@
 
 
 using namespace std;
-Get::Get() {}
+GetCmd::GetCmd() {}
 
 // Destructor definition
-Get::~Get() {}
+GetCmd::~GetCmd() {}
 
 
 
@@ -39,7 +39,7 @@ std::vector<std::pair<unsigned long, unsigned long>> sortByValueThenKey(unordere
 
 
 // Method to execute with a string parameter
-std::string Get::execute(std::string str) {
+std::string GetCmd::execute(std::string str) {
     try {
         vector<unsigned long> recommend = TestExFunc(str);
         string res = Validity::ValidityAlert(GetSuc);
@@ -58,7 +58,7 @@ std::string Get::execute(std::string str) {
 
 
 
-std::vector<unsigned long> Get::TestExFunc(std::string str) {
+std::vector<unsigned long> GetCmd::TestExFunc(std::string str) {
     // init the user and the movie and checks if they exist
     unsigned long userId;
     unsigned long movieId;

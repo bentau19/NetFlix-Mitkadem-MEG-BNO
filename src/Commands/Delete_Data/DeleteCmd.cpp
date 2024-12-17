@@ -2,14 +2,14 @@
 // Created by User on 15/12/2024.
 //
 
-#include "Delete.h"
+#include "DeleteCmd.h"
 #include "File_Classes/AddBuilder.h"
 #include "Commands/General/Validity.h"
 
-Delete::Delete(){}
-Delete::~Delete(){}
+DeleteCmd::DeleteCmd(){}
+DeleteCmd::~DeleteCmd(){}
 
-std::string Delete::execute(string str) {
+std::string DeleteCmd::execute(string str) {
     try {
         //init the data
         unsigned long usrId;

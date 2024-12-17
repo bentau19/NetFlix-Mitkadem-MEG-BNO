@@ -7,10 +7,10 @@ using namespace std;
 #include "File_Classes/UserFile.h"
 #include "File_Classes/BaseFile.h"
 #include "File_Classes/FileIO.h"
-class Get : public ICommand { // Ensure public inheritance
+class GetCmd : public ICommand { // Ensure public inheritance
 public:
-    Get();
-        ~Get();
+    GetCmd();
+        ~GetCmd();
 
     std::string execute(std::string str) override; // Use "override" keyword
     std::vector<unsigned long> TestExFunc(std::string str);

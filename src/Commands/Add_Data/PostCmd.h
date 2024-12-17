@@ -10,10 +10,10 @@
 #include "Commands/General/ICommand.h"
 #include "File_Classes/AddBuilder.h"
 
-class Post : public ICommand {
+class PostCmd : public ICommand {
 public:
-    Post();  // Constructor
-    ~Post(); // Destructor
+    PostCmd();  // Constructor
+    ~PostCmd(); // Destructor
 
    std::string execute(std::string str) override;  // Override execute method with string parameter
 };

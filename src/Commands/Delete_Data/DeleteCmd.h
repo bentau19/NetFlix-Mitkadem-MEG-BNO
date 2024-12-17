@@ -15,10 +15,10 @@ using namespace std;
 #include "File_Classes/FileIO.h"
 
 
-class Delete : public ICommand { // Ensure public inheritance
+class DeleteCmd : public ICommand { // Ensure public inheritance
 public:
-    Delete();
-    ~Delete();
+    DeleteCmd();
+    ~DeleteCmd();
 
     std::string execute(std::string str) override; // Use "override" keyword
 };

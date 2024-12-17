@@ -9,10 +9,10 @@
 #include <string>
 #include "Commands/General/ICommand.h"
 
-class Patch : public ICommand {
+class PatchCmd : public ICommand {
     public:
-        Patch();  // Constructor
-        ~Patch(); // Destructor
+        PatchCmd();  // Constructor
+        ~PatchCmd(); // Destructor
 
     std::string execute(std::string str) override;  // Override execute method with string parameter
 

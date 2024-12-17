@@ -42,7 +42,7 @@ void BaseFile::openFile(std::ios::openmode mode) {
     }
 }
 
-// Delete a file
+// DeleteCmd a file
 void BaseFile::deleteItem() {
     if (doesFileExist()) {
         if (std::remove(loc.c_str()) != 0) {  // Use std::remove to delete the file

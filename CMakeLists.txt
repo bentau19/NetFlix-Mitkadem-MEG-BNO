@@ -30,13 +30,13 @@ add_executable(
   src/File_Classes/MovieFile.cpp
   src/File_Classes/AddBuilder.cpp
         src/Commands/General/Help.cpp
-        src/Commands/Data_Manipulation/Get.cpp
-        src/Commands/Add_Data/Post.cpp
-        src/Commands/Add_Data/Post.h
-        src/Commands/Add_Data/Patch.cpp
-        src/Commands/Add_Data/Patch.h
-        src/Commands/Delete_Data/Delete.cpp
-        src/Commands/Delete_Data/Delete.h
+        src/Commands/Data_Manipulation/GetCmd.cpp
+        src/Commands/Add_Data/PostCmd.cpp
+        src/Commands/Add_Data/PostCmd.h
+        src/Commands/Add_Data/PatchCmd.cpp
+        src/Commands/Add_Data/PatchCmd.h
+        src/Commands/Delete_Data/DeleteCmd.cpp
+        src/Commands/Delete_Data/DeleteCmd.h
         src/Commands/General/Validity.h
 )
 
@@ -55,10 +55,10 @@ add_executable(
   src/File_Classes/MovieFile.cpp
   src/File_Classes/AddBuilder.cpp
         src/Commands/General/Help.cpp
-        src/Commands/Data_Manipulation/Get.cpp
-        src/Commands/Add_Data/Post.cpp
-        src/Commands/Add_Data/Patch.cpp
-        src/Commands/Delete_Data/Delete.cpp
+        src/Commands/Data_Manipulation/GetCmd.cpp
+        src/Commands/Add_Data/PostCmd.cpp
+        src/Commands/Add_Data/PatchCmd.cpp
+        src/Commands/Delete_Data/DeleteCmd.cpp
 )
 
 # Link GoogleTest to the test target

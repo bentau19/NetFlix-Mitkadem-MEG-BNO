@@ -3,28 +3,28 @@
 //
 
 #include <stdexcept>
-#include "Patch.h"
+#include "PatchCmd.h"
 #include "File_Classes/UserFile.h"
 #include "File_Classes/StringHandler.h"
-#include "Commands/Data_Manipulation/Get.h"
-#include "Post.h"
+#include "Commands/Data_Manipulation/GetCmd.h"
+#include "PostCmd.h"
 #include "Commands/General/Validity.h"
 
-Patch::Patch() {}
+PatchCmd::PatchCmd() {}
 
 // Destructor definition
-Patch::~Patch() {}
+PatchCmd::~PatchCmd() {}
 
 
 // Method to execute with a string parameter
-std::string Patch::execute(std::string str) {
+std::string PatchCmd::execute(std::string str) {
     try {
         UserFile userFile;
         //init the data
         unsigned long usrId;
         std::vector<std::string> userMovies = Validity::UserMoviesStringHandler(str, &usrId);
 
-        if (Get::isExist(usrId, &userFile))
+        if (GetCmd::isExist(usrId, &userFile))
             AddBuilder::BuildAdd(usrId, userMovies);
         else throw std::invalid_argument("");
     }catch (...){

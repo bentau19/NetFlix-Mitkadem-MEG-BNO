@@ -3,11 +3,11 @@
 #include "../File_Classes/UserFile.h"
 #include <vector>
 #include "../File_Classes/MovieFile.h"
-#include "Commands/Data_Manipulation/Get.h"
-#include "Commands/Add_Data/Post.h"
-#include "Commands/Add_Data/Patch.h"
+#include "Commands/Data_Manipulation/GetCmd.h"
+#include "Commands/Add_Data/PostCmd.h"
+#include "Commands/Add_Data/PatchCmd.h"
 #include "Commands/General/Validity.h"
-#include "Commands/Delete_Data/Delete.h"
+#include "Commands/Delete_Data/DeleteCmd.h"
 
 void DelTemp(){
     //delete trash
@@ -21,7 +21,7 @@ void DelTemp(){
 TEST(RecomedionCommand,Movie){
     DelTemp();
 
-    Post start;
+    PostCmd start;
     start.execute("1 100 101 102 103");
     start.execute("2 101 102 104 105 106");
     start.execute("3 100 104 105 107 108");
@@ -32,7 +32,7 @@ TEST(RecomedionCommand,Movie){
     start.execute("8 101 104 105 106 109 111 114");
     start.execute("9 100 103 105 107 112 113 115");
     start.execute("10 100 102 105 106 107 109 110 116");
-    Get hey;
+    GetCmd hey;
     std::vector<unsigned long> res = hey.TestExFunc("1 104");
 
 //     Use Google Test's `ASSERT_EQ` macro for container comparison
@@ -43,10 +43,10 @@ TEST(RecomedionCommand,Movie){
 TEST(RecomedionCommand,Movie3){
     DelTemp();
 
-    Post start;
+    PostCmd start;
     start.execute("1 100 101 102 103");
     start.execute("2 101 102 104 105 106");
-    Get hey;
+    GetCmd hey;
     std::vector<unsigned long> res = hey.TestExFunc("1 104");
 
 //     Use Google Test's `ASSERT_EQ` macro for container comparison
@@ -56,11 +56,11 @@ TEST(RecomedionCommand,Movie3){
 }
 TEST(RecomedionCommand,Movie5){
     DelTemp();
-    Post start;
+    PostCmd start;
     start.execute("1 100 101 102 103");
     start.execute("2 101 102 104 105 106");
     start.execute("3 1 2 4 5 6");
-    Get hey;
+    GetCmd hey;
     std::vector<unsigned long> res = hey.TestExFunc("1 104");
 
 //     Use Google Test's `ASSERT_EQ` macro for container comparison
@@ -70,10 +70,10 @@ TEST(RecomedionCommand,Movie5){
 }
 TEST(RecomedionCommand,Movie4){
     DelTemp();
-    Post start;
+    PostCmd start;
     start.execute("1 100 101 102 103");
     start.execute("2 101 102 105 106");
-    Get hey;
+    GetCmd hey;
 
     EXPECT_THROW(hey.TestExFunc("1 104");, std::invalid_argument);
 
@@ -82,7 +82,7 @@ TEST(RecomedionCommand,Movie4){
 
 TEST(RecomedionCommand,Movie2){
     DelTemp();
-    Post start;
+    PostCmd start;
     start.execute("1 100 101 102 103");
     start.execute("2 101 102 104 105 106");
     start.execute("3 100 104 105 107 108");
@@ -93,7 +93,7 @@ TEST(RecomedionCommand,Movie2){
     start.execute("8 101 104 105 106 109 111 114");
     start.execute("9 100 103 105 107 112 113 115");
     start.execute("10 100 102 105 106 107 109 110 116");
-    Get hey;
+    GetCmd hey;
 
     EXPECT_THROW(hey.TestExFunc("1 1");, std::invalid_argument);
 //    ASSERT_NO_THROW(MovieFile u);
@@ -104,7 +104,7 @@ TEST(ADDCMD,manySpaces1){
     UserFile userFile;
     DelTemp();
     //make many spaces
-    Post b;
+    PostCmd b;
     b.execute("1     2    3   3   4  4 5  6  7  8     8 9");
     vector<unsigned long> watchedList = FileIO::IdList(1,&userFile);
     vector<unsigned long> target = {2,3,4,5,6,7,8,9};
@@ -115,7 +115,7 @@ TEST(ADDCMD,manySpaces2){
     UserFile userFile;
     DelTemp();
     //make many spaces
-    Post b;
+    PostCmd b;
     b.execute("       1     2                               3   3   4  4 5  6                                                                             7  8     8 9                        ");
     vector<unsigned long> watchedList = FileIO::IdList(1,&userFile);
     vector<unsigned long> target = {2,3,4,5,6,7,8,9};
@@ -127,8 +127,8 @@ TEST(ADDCMD,SimpleRun){
 //delete trash
     UserFile userFile;
     DelTemp();
-    Post a;
-    Patch b;
+    PostCmd a;
+    PatchCmd b;
     a.execute("1 2 3 4");
     a.execute("2 3 4 5");
     b.execute("2 6 7 8");
@@ -144,13 +144,13 @@ TEST(ADDCMD,SimpleRun){
 TEST(ADDCMD,commendNotValid1){
 //delete trash
     DelTemp();
-    Post a;
+    PostCmd a;
     ASSERT_EQ(a.execute("1"), Validity::ValidityAlert(GenFail));
 }
 TEST(ADDCMD,commendNotValid2){
 //delete trash
     DelTemp();
-    Post a;
+    PostCmd a;
     ASSERT_EQ(a.execute("hello its ben!"), Validity::ValidityAlert(GenFail));
 }
 
@@ -159,7 +159,7 @@ TEST(Post,userNoExist){
     //delete trash
     UserFile userFile;
     DelTemp();
-    Post a;
+    PostCmd a;
     a.execute("1 2 3");
     a.execute("2 2 3");
     vector<unsigned long> ret1 = FileIO::IdList(1,&userFile);
@@ -172,7 +172,7 @@ TEST(Post,userNoExist){
 TEST(Post,userDoesExist){
     //delete trash
     DelTemp();
-    Post a;
+    PostCmd a;
     a.execute("1 2 3");
     ASSERT_EQ(a.execute("1 4 5"), Validity::ValidityAlert(GenFail));
 
@@ -182,7 +182,7 @@ TEST(Post,tooManySpaces){
     //delete trash
     UserFile userFile;
     DelTemp();
-    Post a;
+    PostCmd a;
     a.execute("1              2        3");
     a.execute("          2 2 3                      ");
     vector<unsigned long> ret1 = FileIO::IdList(1,&userFile);
@@ -194,7 +194,7 @@ TEST(Post,tooManySpaces){
 TEST(Post,wrongInput){
     //delete trash
     DelTemp();
-    Post a;
+    PostCmd a;
     a.execute("1 2 3");
     ASSERT_EQ(a.execute("2"), Validity::ValidityAlert(GenFail));
 }
@@ -204,8 +204,8 @@ TEST(Patch,userExist){
     //delete trash
     UserFile userFile;
     DelTemp();
-    Post a;
-    Patch b;
+    PostCmd a;
+    PatchCmd b;
     a.execute("1 2 3");
     b.execute("1 4 5");
     vector<unsigned long> ret1 = FileIO::IdList(1,&userFile);
@@ -216,7 +216,7 @@ TEST(Patch,userExist){
 TEST(Patch,userDoesNotExist){
     //delete trash
     DelTemp();
-    Patch a;
+    PatchCmd a;
     ASSERT_EQ(a.execute("1 4 5"), Validity::ValidityAlert(GenFail));
 
 }
@@ -225,8 +225,8 @@ TEST(Patch,tooManySpaces){
     //delete trash
     UserFile userFile;
     DelTemp();
-    Post a;
-    Patch b;
+    PostCmd a;
+    PatchCmd b;
     a.execute("1          2              3");
     b.execute("1          4        6");
     vector<unsigned long> ret1 = FileIO::IdList(1,&userFile);
@@ -236,9 +236,9 @@ TEST(Patch,tooManySpaces){
 TEST(Patch,wrongInput){
     //delete trash
     DelTemp();
-    Post b;
+    PostCmd b;
     b.execute("1          2              3");
-    Patch a;
+    PatchCmd a;
     ASSERT_EQ(a.execute("1"), Validity::ValidityAlert(GenFail));
 }
 
@@ -246,11 +246,11 @@ TEST(Delete,Valid_Proccess){
     //delete trash
     DelTemp();
     UserFile userFile;
-    Post n;
+    PostCmd n;
     n.execute("1 2 4 ");
-    Patch a;
+    PatchCmd a;
     a.execute("1 3 5");
-    Delete d;
+    DeleteCmd d;
     d.execute("1 2 3");
     vector<unsigned long> ret1 = FileIO::IdList(1,&userFile);
     vector<unsigned long> target = {4,5};
@@ -258,29 +258,29 @@ TEST(Delete,Valid_Proccess){
 }
 TEST(Delete,No_user){
     DelTemp();
-    Delete d;
+    DeleteCmd d;
     ASSERT_EQ(d.execute("1 2 3"), Validity::ValidityAlert(GenFail));
 }
 TEST(Delete,No_Movie){
     DelTemp();
-    Post n;
+    PostCmd n;
     n.execute("1 2 4 ");
-    Delete d;
+    DeleteCmd d;
     ASSERT_EQ(d.execute("1 2 3"), Validity::ValidityAlert(GenFail));
 }
 TEST(Delete,invalid_Commend){
     DelTemp();
-    Post n;
+    PostCmd n;
     n.execute("1 2 4 ");
-    Delete d;
+    DeleteCmd d;
     ASSERT_EQ(d.execute("KJD 12 DJ"), Validity::ValidityAlert(GenFail));
 }
 TEST(Delete,DelUser){
     DelTemp();
-    Post n;
+    PostCmd n;
     n.execute("1 2 4 ");
-    Delete d;
+    DeleteCmd d;
     d.execute("1 2 4");
     UserFile userFile;
-    ASSERT_EQ(Get::isExist(1,&userFile), false);
+    ASSERT_EQ(GetCmd::isExist(1, &userFile), false);
 }
