@@ -1,7 +1,6 @@
 using namespace std;
 #include "HelpCmd.h"
-#include <iostream>
-#include <fstream>
+#include "Validity.h"
 #include <string>
 
     Help::Help(){}
@@ -9,15 +8,16 @@ using namespace std;
     Help::~Help(){}
 std::string Help::execute(std::string str){
         if(str.length() > 0 || str==" ") { //if got more agument then "help" then invalid
-            throw std::invalid_argument("");
+            return Validity::ValidityAlert(syntaxErr);
         } else {
             //help command
-        cout << "DELETE, arguments: [userid] [movieid1] [movieid2] ..." << endl;
-            cout << "GET, arguments: [userid] [movieid]" << endl;
-            cout << "PATCH, arguments: [userid] [movieid1] [movieid2] ..." << endl;
-            cout << "POST, arguments: [userid] [movieid1] [movieid2] ..." << endl;
-            cout << "HELP" <<endl;
+            std::string res=
+         "DELETE, arguments: [userid] [movieid1] [movieid2] ...\n "
+         "GET, arguments: [userid] [movieid]\n"
+            "PATCH, arguments: [userid] [movieid1] [movieid2] ...\n"
+             "POST, arguments: [userid] [movieid1] [movieid2] ...\n"
+            "HELP\n";
+            return res;
         }
-    return "";
     }
 

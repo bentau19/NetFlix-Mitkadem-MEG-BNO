@@ -74,8 +74,7 @@ TEST(RecomedionCommand,Movie4){
     start.execute("1 100 101 102 103");
     start.execute("2 101 102 105 106");
     GetCmd hey;
-
-    EXPECT_THROW(hey.TestExFunc("1 104");, std::invalid_argument);
+    ASSERT_EQ(hey.execute("1 104"), Validity::ValidityAlert(GenFail));
 
 //    ASSERT_NO_THROW(MovieFile u);
 }
@@ -94,8 +93,7 @@ TEST(RecomedionCommand,Movie2){
     start.execute("9 100 103 105 107 112 113 115");
     start.execute("10 100 102 105 106 107 109 110 116");
     GetCmd hey;
-
-    EXPECT_THROW(hey.TestExFunc("1 1");, std::invalid_argument);
+    ASSERT_EQ(hey.execute("1 1"), Validity::ValidityAlert(GenFail));
 //    ASSERT_NO_THROW(MovieFile u);
 }
 
@@ -145,13 +143,13 @@ TEST(ADDCMD,commendNotValid1){
 //delete trash
     DelTemp();
     PostCmd a;
-    ASSERT_EQ(a.execute("1"), Validity::ValidityAlert(GenFail));
+    ASSERT_EQ(a.execute("1"), Validity::ValidityAlert(syntaxErr));
 }
 TEST(ADDCMD,commendNotValid2){
 //delete trash
     DelTemp();
     PostCmd a;
-    ASSERT_EQ(a.execute("hello its ben!"), Validity::ValidityAlert(GenFail));
+    ASSERT_EQ(a.execute("hello its ben!"), Validity::ValidityAlert(syntaxErr));
 }
 
 
@@ -196,7 +194,7 @@ TEST(Post,wrongInput){
     DelTemp();
     PostCmd a;
     a.execute("1 2 3");
-    ASSERT_EQ(a.execute("2"), Validity::ValidityAlert(GenFail));
+    ASSERT_EQ(a.execute("2"), Validity::ValidityAlert(syntaxErr));
 }
 
 
@@ -239,7 +237,7 @@ TEST(Patch,wrongInput){
     PostCmd b;
     b.execute("1          2              3");
     PatchCmd a;
-    ASSERT_EQ(a.execute("1"), Validity::ValidityAlert(GenFail));
+    ASSERT_EQ(a.execute("1"), Validity::ValidityAlert(syntaxErr));
 }
 
 TEST(Delete,Valid_Proccess){
@@ -273,7 +271,7 @@ TEST(Delete,invalid_Commend){
     PostCmd n;
     n.execute("1 2 4 ");
     DeleteCmd d;
-    ASSERT_EQ(d.execute("KJD 12 DJ"), Validity::ValidityAlert(GenFail));
+    ASSERT_EQ(d.execute("KJD 12 DJ"), Validity::ValidityAlert(syntaxErr));
 }
 TEST(Delete,DelUser){
     DelTemp();

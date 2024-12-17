@@ -15,13 +15,14 @@
 #define SUC204 "204 No Content \n"
 #define SUC200 "200 Ok \n"
 #define ERR404 "404 Not Found \n"
+#define ERR400 "400 Bad Request"
 enum ErrorType {
     PostSuc,
     PatchSuc,
     DeleteSuc,
     GetSuc,
-    GenFail
-
+    GenFail,
+    syntaxErr
 };
 
 class Validity {
@@ -31,12 +32,12 @@ public:
     }
     static std::vector<std::string> twoNumsVec(std::string str){
         std::vector<std::string> data = SplitToDigitVec(str);
-        if(data.size()!=2)throw std::invalid_argument("");
+        if(data.size()!=2)throw std::invalid_argument(ERR400);
         return data;
     }
     static std::vector<std::string> UserMoviesStringHandler(std::string str, unsigned long *id) {
         std::vector<std::string> userMovies = SplitToDigitVec(str);
-        if (userMovies.size() < 2) throw std::invalid_argument("");
+        if (userMovies.size() < 2) throw std::invalid_argument(ERR400);
         *id = stoul(userMovies[0]);
         userMovies.erase(userMovies.begin());
         return userMovies;
@@ -49,6 +50,7 @@ public:
             case DeleteSuc: return SUC204;
             case GetSuc: return SUC200;
             case GenFail: return ERR404;
+            case syntaxErr: return ERR400;
         }
 
     }
