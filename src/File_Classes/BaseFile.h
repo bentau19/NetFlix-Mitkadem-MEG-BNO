@@ -33,7 +33,7 @@ public:
     // Open the file in the specified mode
     void openFile(std::ios::openmode mode) override;
 
-    // Delete a file
+    // DeleteCmd a file
     void deleteItem() override;
 
     // Display file content
@@ -48,7 +48,7 @@ public:
     // Write to the file
     void Write(const std::string line) override;
 
-    // Get the file name
+    // GetCmd the file name
     std::string GetName() const override;
 };
 

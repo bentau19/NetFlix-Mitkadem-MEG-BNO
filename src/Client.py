@@ -29,7 +29,7 @@ def main():
 
             # Receive and print response from server
             response = s.recv(1024).decode()
-            print(f"Server response: {response}")
+            print(f"Server response: {response}", end='')
 
     except ConnectionError as e:
         print(f"Connection error: {e}")

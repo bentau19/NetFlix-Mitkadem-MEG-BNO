@@ -5,7 +5,7 @@
 
 std::mutex BaseFile::fileMutex;  // Define the static mutex
 
-// Constructor
+
 BaseFile::BaseFile(const std::string name) {
     std::string DATA_DIR = "/app/data/";
     loc = DATA_DIR + name;
@@ -45,7 +45,7 @@ void BaseFile::openFile(std::ios::openmode mode) {
     fileMutex.unlock();  // Unlock the mutex after the operation
 }
 
-// Delete a file
+// DeleteCmd a file
 void BaseFile::deleteItem() {
     if (doesFileExist()) {
         fileMutex.lock();  // Lock the mutex for thread safety
