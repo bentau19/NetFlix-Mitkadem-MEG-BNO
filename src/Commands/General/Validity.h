@@ -51,6 +51,7 @@ public:
             case GetSuc: return SUC200;
             case GenFail: return ERR404;
             case syntaxErr: return ERR400;
+            default: return ERR400;
         }
 
     }

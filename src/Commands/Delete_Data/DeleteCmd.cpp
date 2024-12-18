@@ -14,7 +14,6 @@ std::string DeleteCmd::execute(string str) {
         //init the data
         unsigned long usrId;
         std::vector<std::string> userMovies = Validity::UserMoviesStringHandler(str, &usrId);
-
         bool flag = AddBuilder::BuildRemove(usrId, userMovies);
         if (!flag)throw std::invalid_argument(ERR404);
     } catch (const std::invalid_argument& e) {

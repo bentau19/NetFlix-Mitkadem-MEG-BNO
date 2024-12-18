@@ -8,7 +8,7 @@ Data::Data() {
     buffer_size = 0;
     client_sock = -1;
 }
-Data::  Data(char* input_buffer, int size, int sock) : buffer_size(size), client_sock(sock) {
+Data:: Data(char* input_buffer, int size, int sock) : buffer_size(size), client_sock(sock) {
         // Ensure the buffer doesn't overflow
         if (size > sizeof(buffer)) {
             size = sizeof(buffer);
