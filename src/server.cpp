@@ -79,9 +79,7 @@ int main(int argc, char* argv[]) {
     cout << "Server is listening on port " << port << "..." << endl;
 
     // Initialize commands
-  //  commands["add"] = new AddCommand();
     commands["help"] = new HelpCmd();
- //   commands["recommend"] = new RecommendCommand();
     commands["GET"] = new GetCmd();
     commands["POST"] = new PostCmd();
     commands["PATCH"] = new PatchCmd();
@@ -99,7 +97,7 @@ int main(int argc, char* argv[]) {
 
         // Lock before accessing commands map
         command_mutex.lock();
-        App* app = new App(new ServerMenu(), commands, data);
+        App* app = new App(new ServerMenu(), commands, data); //create app
         command_mutex.unlock();
         data->client_sock = client_sock;
 
