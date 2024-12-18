@@ -18,17 +18,14 @@ def main():
 
         while True:
             # Get command from user
-            command = input("Enter command: ")
-            if command.lower() in ["exit"]:
-                print("Closing connection...")
-                break
+            command = input("")
 
             # Send command to server
             s.sendall(command.encode())
 
             # Receive and print response from server
             response = s.recv(1024).decode()
-            print(f"Server response: {response}", end='')
+            print(f"{response}", end='')
 
     except ConnectionError as e:
         print(f"Connection error: {e}")
