@@ -9,6 +9,7 @@ using namespace std;
 #include "UserFile.h"
 #include "MovieFile.h"
 #include "StringHandler.h"
+#include <mutex>
 class AddBuilder
 {
 private:

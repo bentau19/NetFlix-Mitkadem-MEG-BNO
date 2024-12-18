@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.14)
 project(netflix_project)
 
-# Use at least C++14
-set(CMAKE_CXX_STANDARD 14)
+# Use at least C++17
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Fetch GoogleTest
@@ -50,8 +50,9 @@ add_executable(
 add_executable(
   Tests
   src/tests/File_Classes_Tests.cpp
+  src/tests/MutexTests.cpp
   src/tests/Commends_Tests.cpp
-  #src/tests/InputTest.cpp
+  src/tests/InputTest.cpp
   src/Menu/ServerMenu.cpp
   src/App/App.cpp
   src/File_Classes/UserFile.cpp
@@ -87,4 +88,3 @@ target_link_libraries(
   gtest_main  # GoogleTest library (if you need it, otherwise remove this line)
   Threads::Threads  # Link pthreads
 )
-

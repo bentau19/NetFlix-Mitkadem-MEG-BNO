@@ -3,9 +3,11 @@
 #include "BaseFile.h"
 #include <vector>  // Include the vector header
 #include <string>  // Include string header
+#include <mutex>
 using namespace std;
 class FileIO {
 private:    
+    static std::mutex fileMutex;
     static vector<string> RemoveSimillar(const std::vector<string>& vec1, const vector<std::string>& vec2);
     static vector<string> PopId(unsigned long ToId,vector<string>* alldata,BaseFile* f);//find the id line return it and delete it from all data
     static vector<string> addUnique(const std::vector<string>& vec1, const vector<std::string>& vec2);

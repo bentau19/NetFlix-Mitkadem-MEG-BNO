@@ -1,5 +1,7 @@
 FROM gcc:10.2.0 AS builder
+FROM gcc:10.2.0 AS builder
 
+# Install dependencies for building
 # Install dependencies for building
 RUN apt-get update && apt-get install -y \
     cmake \
@@ -10,17 +12,21 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install a specific version of CMake (3.25.3)
+# Install a specific version of CMake (3.25.3)
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-x86_64.sh && \
     chmod +x cmake-3.25.3-linux-x86_64.sh && \
     ./cmake-3.25.3-linux-x86_64.sh --skip-license --prefix=/usr/local && \
     rm cmake-3.25.3-linux-x86_64.sh
 
 # Set the working directory
+# Set the working directory
 WORKDIR /app
 
 # Copy the project files
+# Copy the project files
 COPY . .
 
+# Build the project
 # Build the project
 RUN mkdir -p build && cd build && cmake .. && make
 
@@ -44,6 +50,7 @@ COPY --from=builder /app/src /app/src
 # Install Python dependencies
 RUN pip3 install requests
 
+# Expose the server port
 # Expose the server port
 EXPOSE 8080
 
