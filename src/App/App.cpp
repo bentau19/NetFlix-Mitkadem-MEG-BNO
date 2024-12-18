@@ -29,12 +29,13 @@ App::~App() {}
                         toPrint = "400 Bad Request\n";
                     }
                 } 
-                    catch(...){ //catch errors (dont print a thing)
+                catch(...) { //catch errors (dont print a thing)
                     toPrint = "400 Bad Request\n";
                 }
                  Data* outputData = new Data(toPrint, toPrint.length(), data->client_sock );
 
                 menu->getCommandOutput(outputData);
+                
         
     }
 }

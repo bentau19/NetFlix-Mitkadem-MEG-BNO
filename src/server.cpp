@@ -15,8 +15,10 @@
 #include "Commands/Add_Data/PostCmd.h"
 #include "Commands/Delete_Data/DeleteCmd.h"
 #include "Commands/Data_Manipulation/GetCmd.h"
-
+#include <mutex>
 using namespace std;
+
+std::mutex command_mutex;
 
 map<string, ICommand*> commands;
 
@@ -94,15 +96,20 @@ int main(int argc, char* argv[]) {
 
         // Allocate memory to store the received data
         Data* data = new Data();
-        App* app = new App(new ServerMenu(), commands, data);  // Pass commands and menu to App
+
+        // Lock before accessing commands map
+        command_mutex.lock();
+        App* app = new App(new ServerMenu(), commands, data);
+        command_mutex.unlock();
         data->client_sock = client_sock;
 
         // Create a new thread to handle this client
         pthread_t tid;
-        if (pthread_create(&tid, nullptr, threadFunc, &app) != 0) {
+        if (pthread_create(&tid, nullptr, threadFunc, app) != 0) {
             perror("Failed to create thread");
             close(client_sock);
             delete data;
+            delete app; // Cleanup App instance
             continue;
         }
         pthread_detach(tid);  // Detach the thread to allow automatic cleanup

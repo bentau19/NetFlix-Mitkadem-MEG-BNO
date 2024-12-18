@@ -37,14 +37,10 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
-<<<<<<< HEAD
-# Copy build artifacts
-=======
 # Create the data directory in the /app folder
 RUN mkdir -p /app/data
 
 # Copy build artifacts from the builder stage
->>>>>>> 2bdf842415c9278fdf8cf8e7604012ca1165c1de
 COPY --from=builder /app/build /app/build
 COPY --from=builder /app/src /app/src
 
@@ -54,10 +50,5 @@ RUN pip3 install requests
 # Expose the server port
 EXPOSE 8080
 
-<<<<<<< HEAD
-# Run server and client in tmux
-CMD ["bash", "-c", "./build/server"]
-=======
 # Run server and client in tmux, while opening the data directory as well
 CMD ["bash", "-c", "cd build && mkdir -p /app/data && exec bash"]
->>>>>>> 2bdf842415c9278fdf8cf8e7604012ca1165c1de

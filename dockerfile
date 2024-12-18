@@ -1,7 +1,5 @@
 FROM gcc:10.2.0 AS builder
-FROM gcc:10.2.0 AS builder
 
-# Install dependencies for building
 # Install dependencies for building
 RUN apt-get update && apt-get install -y \
     cmake \
@@ -12,21 +10,17 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install a specific version of CMake (3.25.3)
-# Install a specific version of CMake (3.25.3)
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-x86_64.sh && \
     chmod +x cmake-3.25.3-linux-x86_64.sh && \
     ./cmake-3.25.3-linux-x86_64.sh --skip-license --prefix=/usr/local && \
     rm cmake-3.25.3-linux-x86_64.sh
 
 # Set the working directory
-# Set the working directory
 WORKDIR /app
 
 # Copy the project files
-# Copy the project files
 COPY . .
 
-# Build the project
 # Build the project
 RUN mkdir -p build && cd build && cmake .. && make
 
@@ -43,7 +37,10 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
-# Copy build artifacts
+# Create the data directory in the /app folder
+RUN mkdir -p /app/data
+
+# Copy build artifacts from the builder stage
 COPY --from=builder /app/build /app/build
 COPY --from=builder /app/src /app/src
 
@@ -51,8 +48,7 @@ COPY --from=builder /app/src /app/src
 RUN pip3 install requests
 
 # Expose the server port
-# Expose the server port
 EXPOSE 8080
 
-# Run server and client in tmux
-CMD ["bash", "-c", "./build/server"]
+# Run server and client in tmux, while opening the data directory as well
+CMD ["bash", "-c", "cd build && mkdir -p /app/data && exec bash"]

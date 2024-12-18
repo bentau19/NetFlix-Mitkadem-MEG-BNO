@@ -29,7 +29,7 @@ program testing and running instractions:
        (if not run the tests) docker run -it --name CoolProjectContainer supercoolproject
        (if yes run the tests) docker exec -it CoolProjectContainer bash
                                 cd build
-       ./server 12345 
+       ./build/server 12345 
        12345 for port 12345
 
 
