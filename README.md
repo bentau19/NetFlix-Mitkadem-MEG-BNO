@@ -1,4 +1,4 @@
-# NetFlix-Mitkadem-MEG-BNO
+python3 ./src/Client.py 127.0.0.1 12345# NetFlix-Mitkadem-MEG-BNO
 
 second part of the project.
 
@@ -40,12 +40,18 @@ program testing and running instractions:
 
 running examples:
 regular run:
-
+![Description of Image](photos/multy1.png)
+![Description of Image](photos/multy2.png)
+![Description of Image](photos/multy3.png)
+![Description of Image](photos/multy4.png)
 
 exiting the app and returning:
+![Description of Image](photos/RESUME.png)
+![Description of Image](photos/RESUME2.png)
+
 
 tests runs:
-
+![Description of Image](photos/TESTS.png)
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
