@@ -19,9 +19,6 @@ def main():
         while True:
             # Get command from user
             command = input("")
-            if command.lower() in ["exit"]:
-                print("Closing connection...")
-                break
 
             # Send command to server
             s.sendall(command.encode())
