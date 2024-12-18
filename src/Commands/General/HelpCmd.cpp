@@ -11,7 +11,7 @@ std::string HelpCmd::execute(std::string str){
             return Validity::ValidityAlert(syntaxErr);
         } else {
             //help command
-            std::string res=
+            std::string res=Validity::ValidityAlert(GetSuc)+"\n"
            "DELETE, arguments: [userid] [movieid1] [movieid2] ...\n"
             "GET, arguments: [userid] [movieid]\n"
             "PATCH, arguments: [userid] [movieid1] [movieid2] ...\n"
