@@ -66,7 +66,7 @@ add_executable(
   src/File_Classes/FileIO.cpp
   src/File_Classes/MovieFile.cpp
   src/File_Classes/AddBuilder.cpp
-
+        src/dataClass/Data.cpp
         src/Commands/General/HelpCmd.cpp
         src/Commands/Data_Manipulation/GetCmd.cpp
         src/Commands/Add_Data/PostCmd.cpp

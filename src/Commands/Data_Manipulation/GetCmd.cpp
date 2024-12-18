@@ -42,8 +42,8 @@ std::vector<std::pair<unsigned long, unsigned long>> sortByValueThenKey(unordere
 std::string GetCmd::execute(std::string str) {
     try {
         vector<unsigned long> recommend = TestExFunc(str);
-      string res = Validity::ValidityAlert(GetSuc);
-      res += " \n";
+        string res = Validity::ValidityAlert(GetSuc);
+        res += " \n";
 
         for (unsigned long a : recommend) {
             res += std::to_string(a) + " "; // Convert number to string and append
