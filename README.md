@@ -46,11 +46,15 @@ regular run:
 ![Description of Image](photos/multy4.png)
 
 exiting the app and returning:
+
+
 ![Description of Image](photos/RESUME.png)
 ![Description of Image](photos/RESUME2.png)
 
 
 tests runs:
+
+
 ![Description of Image](photos/TESTS.png)
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
