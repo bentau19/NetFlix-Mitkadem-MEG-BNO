@@ -13,6 +13,7 @@ using namespace std;
 class AddBuilder
 {
 private:
+    static std::mutex fileMutex;
     static bool CheckValid(unsigned long userid,vector<string> movies,BaseFile* b);
 public:
     static bool BuildAdd(unsigned long userid,vector<string> movies);

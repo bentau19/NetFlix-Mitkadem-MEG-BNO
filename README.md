@@ -5,15 +5,15 @@ second part of the project.
 Each command was encapsulated as a separate class to adhere to the Command Design Pattern.
 
 Application Commands:
-- HelpCmd: Provides a list and explanation of all available commands in the application.
-
-- Recommend: Accepts a userid and a movieid as inputs and generates up to 10 movie recommendations based on user similarities.
-
-- Add: Accepts a userid and at least one movieid and associates the specified movies with the user in the system.
-
-* Invalid or unsupported commands result in appropriate error output
+- help: Provides a list and explanation of all available commands in the application.
+- GET: Accepts a userid and a movieid as inputs and generates up to 10 movie recommendations based on user similarities.
+- POST/PATCH: Accepts a userid and at least one movieid and associates the specified movies with the user in the system only if
+   the user is not/already exists.
+- DELETE: Accepts a userid and at least one movieid and delete the movies from the user watchlist.
+* Invalid or unsupported commands were explicitly skipped, as per the project requirements.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 program testing and running instractions:
     to build the project :)-
@@ -35,7 +35,7 @@ program testing and running instractions:
         python3 ./src/Client.py 127.0.0.1 12345
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+-----------------------------------------------------------------------------------------------------------------------------------------
 
 
 running examples:
@@ -78,3 +78,4 @@ Only minor changes were needed, such as adding a print function instead of havin
 file wise : the socket addition did pose a challange as reading and writing at the same time is problematic
             the easiest way to see it is if a user tries deleting a file and another adds one the writing of the adding could override the writing of the delete,
             this meant changing the code in basefile, as it was needed to add locks to basefile and addbuild
+
