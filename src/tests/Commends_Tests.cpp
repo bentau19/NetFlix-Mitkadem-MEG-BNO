@@ -75,7 +75,8 @@ TEST(RecomedionCommand,Movie4){
     start.execute("1 100 101 102 103");
     start.execute("2 101 102 105 106");
     GetCmd hey;
-    ASSERT_EQ(hey.execute("1 104"), Validity::ValidityAlert(GenFail));
+
+    ASSERT_EQ(hey.execute("1 104"),Validity::ValidityAlert(GetSuc)+" \n\n" );
 
 //    ASSERT_NO_THROW(MovieFile u);
 }
@@ -94,7 +95,7 @@ TEST(RecomedionCommand,Movie2){
     start.execute("9 100 103 105 107 112 113 115");
     start.execute("10 100 102 105 106 107 109 110 116");
     GetCmd hey;
-    ASSERT_EQ(hey.execute("1 1"), Validity::ValidityAlert(GenFail));
+    ASSERT_EQ(hey.execute("1 1"),Validity::ValidityAlert(GetSuc)+" \n\n" );
 //    ASSERT_NO_THROW(MovieFile u);
 }
 
@@ -286,8 +287,8 @@ TEST(Delete,DelUser){
 TEST(HelpCmd, valid){
     DelTemp();
     HelpCmd n;
-    std::string res=
-            "DELETE, arguments: [userid] [movieid1] [movieid2] ...\nGET, arguments: [userid] [movieid]\nPATCH, arguments: [userid] [movieid1] [movieid2] ...\nPOST, arguments: [userid] [movieid1] [movieid2] ...\nHELP\n";
+    std::string res=Validity::ValidityAlert(GetSuc)+
+            "\nDELETE, arguments: [userid] [movieid1] [movieid2] ...\nGET, arguments: [userid] [movieid]\nPATCH, arguments: [userid] [movieid1] [movieid2] ...\nPOST, arguments: [userid] [movieid1] [movieid2] ...\nHELP\n";
     ASSERT_EQ(n.execute(""), res);
 }
 TEST(HelpCmd, no_valid){
