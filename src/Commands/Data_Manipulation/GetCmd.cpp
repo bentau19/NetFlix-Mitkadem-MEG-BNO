@@ -42,8 +42,8 @@ std::vector<std::pair<unsigned long, unsigned long>> sortByValueThenKey(unordere
 std::string GetCmd::execute(std::string str) {
     try {
         vector<unsigned long> recommend = TestExFunc(str);
-      //  string res = Validity::ValidityAlert(GetSuc);
-      string  res = " \n";
+      string res = Validity::ValidityAlert(GetSuc);
+      res += " \n";
 
         for (unsigned long a : recommend) {
             res += std::to_string(a) + " "; // Convert number to string and append
@@ -73,8 +73,7 @@ std::vector<unsigned long> GetCmd::TestExFunc(std::string str) {
 
     try {
         //checks if the string input is valid
-        vector<std::string> data;
-        // = Validity::twoNumsVec(str);
+        vector<std::string> data = Validity::twoNumsVec(str);
         userId = stoul(data[0]);
         movieId = stoul(data[1]);
     }catch (...){
