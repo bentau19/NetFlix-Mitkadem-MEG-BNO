@@ -22,18 +22,26 @@ program testing and running instractions:
 
     to run the tests:
 
-        docker run -it supercoolproject
+        docker run -dit --name server_client_container cpp-python-server-client
+
         ./Tests
 
-    to run the main first time(after ctr+c or any way you get out of container):
+    to run the server (first time in contnier):
 
-        docker run --name WoWThisProjectIsSoGood -v ${pwd}/data:/app/data -it supercoolproject
-        ./main
+       docker run -dit --name server_client_container supercoolproject
+       ./build/server 8080
 
-    to run the main after first time(after ctr+c and ctr+z or any way you get out of container):
 
-        docker start -ai WoWThisProjectIsSoGood
+    to run the client:
 
+        docker exec -it server_client_container bash
+        python3 ./src/Client.py 127.0.0.1 12345
+
+
+    to run the server :
+
+        docker exec -it server_client_container bash
+       ./build/server 8080
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 
