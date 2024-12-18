@@ -16,8 +16,9 @@ std::string HelpCmd::execute(std::string str){
             "GET, arguments: [userid] [movieid]\n"
             "PATCH, arguments: [userid] [movieid1] [movieid2] ...\n"
             "POST, arguments: [userid] [movieid1] [movieid2] ...\n"
-            "HELP\n";
+            "help\n";
             return res;
         }
     }
+
 
