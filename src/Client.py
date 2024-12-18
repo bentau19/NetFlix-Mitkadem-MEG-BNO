@@ -18,7 +18,7 @@ def main():
 
         while True:
             # Get command from user
-            command = input("Enter command: ")
+            command = input("")
             if command.lower() in ["exit"]:
                 print("Closing connection...")
                 break
@@ -28,7 +28,7 @@ def main():
 
             # Receive and print response from server
             response = s.recv(1024).decode()
-            print(f"Server response: {response}", end='')
+            print(f"{response}", end='')
 
     except ConnectionError as e:
         print(f"Connection error: {e}")
