@@ -41,7 +41,13 @@ program testing and running instractions:
         for ip 127.0.0.1 and port 12345
 
 -----------------------------------------------------------------------------------------------------------------------------------------
-
+SOLID PART2 NOTES:
+    the files:
+        1) the addition of the function to delete only meant adding 1 more function to the fileio class,
+            which handles all the complex reading and writing.
+        2) the socket addition did pose a challange as reading and writing at the same time is problematic
+            the easiest way to see it is if a user tries deleting a file and another adds one the writing of the adding could override the writing of the delete,
+            this meant *changing the code in basefile*, as it was needed to add locks to basefile and addbuild
 
 
 running examples:
