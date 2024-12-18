@@ -22,7 +22,7 @@ std::string PostCmd::execute(std::string str) {
         //init the data
         unsigned long usrId;
         std::vector<std::string> userMovies = Validity::UserMoviesStringHandler(str, &usrId);
-        if (!GetCmd::isExist(usrId, &userFile))
+        if (!FileIO::isExists(usrId, &userFile))
             AddBuilder::BuildAdd(usrId, userMovies);
         else throw std::invalid_argument(ERR404);
     }catch(const std::invalid_argument& e){

@@ -281,7 +281,7 @@ TEST(Delete,DelUser){
     DeleteCmd d;
     d.execute("1 2 4");
     UserFile userFile;
-    ASSERT_EQ(GetCmd::isExist(1, &userFile), false);
+    ASSERT_EQ(FileIO::isExists(1, &userFile), true);
 }
 TEST(HelpCmd, valid){
     DelTemp();

@@ -39,7 +39,7 @@ add_executable(
   src/dataClass/Data.cpp
   src/Menu/ServerMenu.cpp
   src/App/App.cpp
-  src/Commands/General/Validity.h
+        src/Commands/General/Validity.h
     src/File_Classes/UserFile.cpp
   src/File_Classes/BaseFile.cpp
   src/File_Classes/StringHandler.cpp
@@ -51,6 +51,7 @@ add_executable(
   src/Commands/Add_Data/PostCmd.cpp
   src/Commands/Add_Data/PatchCmd.cpp
   src/Commands/Delete_Data/DeleteCmd.cpp
+        src/Commands/General/Validity.cpp
 )
 # Tests executable
 add_executable(
@@ -68,6 +69,7 @@ add_executable(
   src/File_Classes/AddBuilder.cpp
         src/dataClass/Data.cpp
         src/Commands/General/HelpCmd.cpp
+        src/Commands/General/Validity.cpp
         src/Commands/Data_Manipulation/GetCmd.cpp
         src/Commands/Add_Data/PostCmd.cpp
         src/Commands/Add_Data/PatchCmd.cpp

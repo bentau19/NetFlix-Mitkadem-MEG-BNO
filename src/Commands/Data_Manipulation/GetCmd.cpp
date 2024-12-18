@@ -79,8 +79,8 @@ std::vector<unsigned long> GetCmd::TestExFunc(std::string str) {
     }catch (...){
         throw std::invalid_argument(ERR400);
     }
-    if(!isExist(userId,&userFile)||
-       !isExist(movieId,&movieFile))throw std::invalid_argument(ERR404);
+    if(!FileIO::isExists(userId,&userFile)||
+       !FileIO::isExists(movieId,&movieFile))throw std::invalid_argument(ERR404);
 
     watchedList = FileIO::IdList(userId, &userFile);
     movieWatchers = FileIO::IdList(movieId, &movieFile);
