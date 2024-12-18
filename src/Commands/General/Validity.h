@@ -15,7 +15,7 @@
 #define SUC204 "204 No Content \n"
 #define SUC200 "200 Ok \n"
 #define ERR404 "404 Not Found \n"
-#define ERR400 "400 Bad Request"
+#define ERR400 "400 Bad Request\n"
 enum ErrorType {
     PostSuc,
     PatchSuc,
