@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
 
         // Allocate memory to store the received data
         Data* data = new Data();
-        App app(new ServerMenu(), commands, data);  // Pass commands and menu to App
+        App* app = new App(new ServerMenu(), commands, data);  // Pass commands and menu to App
         data->client_sock = client_sock;
 
         // Create a new thread to handle this client
