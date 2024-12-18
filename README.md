@@ -5,12 +5,13 @@ first part of the project.
 Each command was encapsulated as a separate class to adhere to the Command Design Pattern.
 
 Application Commands:
-- HelpCmd: Provides a list and explanation of all available commands in the application.
+- help: Provides a list and explanation of all available commands in the application.
 
-- Recommend: Accepts a userid and a movieid as inputs and generates up to 10 movie recommendations based on user similarities.
+- GET: Accepts a userid and a movieid as inputs and generates up to 10 movie recommendations based on user similarities.
 
-- Add: Accepts a userid and at least one movieid and associates the specified movies with the user in the system.
-
+- POST/PATCH: Accepts a userid and at least one movieid and associates the specified movies with the user in the system only if
+   the user is not/already exists.
+- DELETE: Accepts a userid and at least one movieid and delete the movies from the user watchlist.
 * Invalid or unsupported commands were explicitly skipped, as per the project requirements.
 
 -----------------------------------------------------------------------------------------------------------------------------------------
