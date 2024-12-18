@@ -288,7 +288,7 @@ TEST(HelpCmd, valid){
     DelTemp();
     HelpCmd n;
     std::string res=Validity::ValidityAlert(GetSuc)+
-            "\nDELETE, arguments: [userid] [movieid1] [movieid2] ...\nGET, arguments: [userid] [movieid]\nPATCH, arguments: [userid] [movieid1] [movieid2] ...\nPOST, arguments: [userid] [movieid1] [movieid2] ...\nHELP\n";
+            "\nDELETE, arguments: [userid] [movieid1] [movieid2] ...\nGET, arguments: [userid] [movieid]\nPATCH, arguments: [userid] [movieid1] [movieid2] ...\nPOST, arguments: [userid] [movieid1] [movieid2] ...\nhelp\n";
     ASSERT_EQ(n.execute(""), res);
 }
 TEST(HelpCmd, no_valid){

@@ -22,26 +22,23 @@ program testing and running instractions:
 
     to run the tests:
 
-        docker run -dit --name server_client_container cpp-python-server-client
-
+        docker run -it --name CoolProjectContainer supercoolproject
         ./Tests
 
-    to run the server (first time in contnier):
+    to run the server:
 
-       docker run -dit --name server_client_container supercoolproject
-       ./build/server 12345
+       (if not run the tests) docker run -it --name CoolProjectContainer supercoolproject
+       (if yes run the tests) docker exec -it CoolProjectContainer bash
+                                cd build
+       ./server 12345 
+       12345 for port 12345
 
 
     to run the client:
 
-        docker exec -it server_client_container bash
+        docker exec -it CoolProjectContainer bash
         python3 ./src/Client.py 127.0.0.1 12345
-
-
-    to run the server :
-
-        docker exec -it server_client_container bash
-       ./build/server 12345
+        for ip 127.0.0.1 and port 12345
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 

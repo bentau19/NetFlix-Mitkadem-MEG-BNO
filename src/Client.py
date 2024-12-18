@@ -5,7 +5,6 @@ def main():
     if len(sys.argv) != 3:
         print("put the ip and than the port")
         sys.exit(1)
-
     server_ip = sys.argv[1]
     server_port = int(sys.argv[2])
 

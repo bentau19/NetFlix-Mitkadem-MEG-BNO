@@ -59,7 +59,7 @@ add_executable(
   src/tests/File_Classes_Tests.cpp
   src/tests/MutexTests.cpp
   src/tests/Commends_Tests.cpp
-  #src/tests/InputTest.cpp
+  src/tests/InputTest.cpp
   src/Menu/ServerMenu.cpp
   src/App/App.cpp
   src/File_Classes/UserFile.cpp
@@ -101,4 +101,3 @@ target_link_libraries(
   gtest_main  # GoogleTest library (if you need it, otherwise remove this line)
   Threads::Threads  # Link pthreads
 )
-

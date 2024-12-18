@@ -1,6 +1,5 @@
 #include "AddBuilder.h"
 #include <mutex>
-std::mutex AddBuilder::fileMutex;  // Define the static mutex
 bool AddBuilder::CheckValid(unsigned long userid, std::vector<std::string> movies, BaseFile* b) {
     int i;
     std::string ListString = FileIO::IdLine(userid, &i, b);
@@ -29,9 +28,8 @@ bool AddBuilder::CheckValid(unsigned long userid, std::vector<std::string> movie
 bool AddBuilder::BuildAdd(unsigned long userid, vector<string> movies)
 {
     try{
-        fileMutex.lock();
         if(movies.size()==0){
-            fileMutex.unlock();
+
             return true;
         }
         UserFile uf;
@@ -45,11 +43,9 @@ bool AddBuilder::BuildAdd(unsigned long userid, vector<string> movies)
             long id = stoul(movies[i]);
             first &= FileIO::AddIdsToId(user,id ,&mf);
         }
-        fileMutex.unlock();
         return first;
     }
     catch(exception){
-        fileMutex.unlock();
         return false;
     }
 }
@@ -57,15 +53,14 @@ bool AddBuilder::BuildAdd(unsigned long userid, vector<string> movies)
 bool AddBuilder::BuildRemove(unsigned long userid, vector<string> movies)
 {
     try{
-        fileMutex.lock();
         if(movies.size()==0){
-            fileMutex.unlock();
+
             return true;
         }
         UserFile uf;
         MovieFile mf;
         if(!CheckValid(userid,movies,&uf)){
-            fileMutex.unlock();
+
             return false;
         }
         bool first = FileIO::RemoveIdList(movies, userid,&uf);
@@ -76,11 +71,9 @@ bool AddBuilder::BuildRemove(unsigned long userid, vector<string> movies)
             long id = stoul(movies[i]);
             first &= FileIO::RemoveIdList(user,id ,&mf);
         }
-        fileMutex.unlock();
         return first;
     }
     catch(exception){
-        fileMutex.unlock();
         return false;
     }
 }

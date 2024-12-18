@@ -1,40 +1,54 @@
-FROM gcc:10.2.0
+FROM gcc:10.2.0 AS builder
 
-# Install dependencies for C++ server and Python client
+# Install dependencies for building
 RUN apt-get update && apt-get install -y \
     cmake \
     build-essential \
-    python3 \
-    python3-pip \
     wget \
     libboost-system-dev \
     libboost-thread-dev \
-    tmux \
     && rm -rf /var/lib/apt/lists/*
 
-# Remove any existing old versions of CMake
-RUN rm -rf /usr/local/bin/cmake
-
-# Install specific version of CMake (v3.25.3)
+# Install a specific version of CMake (3.25.3)
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-x86_64.sh && \
     chmod +x cmake-3.25.3-linux-x86_64.sh && \
     ./cmake-3.25.3-linux-x86_64.sh --skip-license --prefix=/usr/local && \
     rm cmake-3.25.3-linux-x86_64.sh
 
-# Set the working directory inside the container
+# Set the working directory
 WORKDIR /app
 
-# Copy the entire project into the container
+# Copy the project files
 COPY . .
 
-# Create a build directory for C++ server and build it
+# Build the project
 RUN mkdir -p build && cd build && cmake .. && make
 
-# Install required Python packages
+# Runtime Stage
+FROM python:3.7-slim
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y \
+    libboost-system-dev \
+    libboost-thread-dev \
+    tmux \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Create the data directory in the /app folder
+RUN mkdir -p /app/data
+
+# Copy build artifacts from the builder stage
+COPY --from=builder /app/build /app/build
+COPY --from=builder /app/src /app/src
+
+# Install Python dependencies
 RUN pip3 install requests
 
-# Expose the port for the server (you can change the port as needed)
+# Expose the server port
 EXPOSE 8080
 
-# Set the default command to launch tmux, and split it into two panes for server and client
-CMD ["tmux", "new-session", "-d", "bash -c './build/server' && tmux split-window -h 'bash -c \"python3 ./src/Client.py 0.0.0.0 8080\"' && tmux -2 attach-session -d"]
+# Run server and client in tmux, while opening the data directory as well
+CMD ["bash", "-c", "cd build && mkdir -p /app/data && exec bash"]
