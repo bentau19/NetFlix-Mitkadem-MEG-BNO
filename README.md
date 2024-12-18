@@ -1,6 +1,6 @@
 # NetFlix-Mitkadem-MEG-BNO
 
-first part of the project.
+second part of the project.
 
 Each command was encapsulated as a separate class to adhere to the Command Design Pattern.
 
@@ -11,8 +11,7 @@ Application Commands:
 
 - Add: Accepts a userid and at least one movieid and associates the specified movies with the user in the system.
 
-* Invalid or unsupported commands were explicitly skipped, as per the project requirements.
-
+* Invalid or unsupported commands result in appropriate error output
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 program testing and running instractions:
@@ -30,7 +29,7 @@ program testing and running instractions:
        (if not run the tests) docker run -it --name CoolProjectContainer supercoolproject
        (if yes run the tests) docker exec -it CoolProjectContainer bash
                                 cd build
-       ./server 12345 
+       ./build/server 12345 
        12345 for port 12345
 
 
@@ -52,13 +51,12 @@ SOLID PART2 NOTES:
 
 running examples:
 regular run:
-![alt text](image.png)
+
 
 exiting the app and returning:
-![alt text](image-1.png)
 
 tests runs:
-![alt text](image-2.png)
+
 
 
 
@@ -79,3 +77,9 @@ because all the new commend is just an extended to the original one so we just c
   לשינויים אבל פתוח להרחבה״?
 3.Again not really, 
 we putted all the outputs in a define so it was just easy to change just the string of it and it change all the outputs all over the closed code
+  
+4. "האם העבודה שהקלט/פלט מגיע מסוקטים במקום  הקונסול מחייב ממכם לגעת בקוד שאמור להיות 'סגור לשינויים אבל פתוח להרחבה'?"
+
+4. 
+only minors changes as, add a print function instead of having excute print the output ,and add to the menu interface a print command for printing the result.
+Other than that, we only needed to extend it so there is a server menu where the actions of receiving input and printing are done via the server and client sockets instead of through the console.

@@ -21,13 +21,6 @@ include_directories(src)
 
 # Add the source files for the main executable
 add_executable(
-  client
-  src/client.cpp 
- # src/ConsoleMenu.cpp
-  #src/File_Classes/StringHandler.cpp
-)
-# Add the source files for the main executable
-add_executable(
   clientPy
   src/Client.py 
  # src/ConsoleMenu.cpp
@@ -84,12 +77,6 @@ target_link_libraries(
   gtest_main
 )
 
-# Link the main executable with GoogleTest (optional, remove if not needed)
-target_link_libraries(
-  client
-  gtest_main  # GoogleTest library (if you need it, otherwise remove this line)
-  Threads::Threads  # Link pthreads
-)
 # Link the main executable with GoogleTest (optional, remove if not needed)
 target_link_libraries(
   clientPy
