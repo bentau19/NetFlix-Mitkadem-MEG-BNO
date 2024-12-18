@@ -26,11 +26,11 @@ App::~App() {}
                     if (it != commands.end() && it->second != nullptr) { //check if command in the map
                         toPrint = commands[command]-> execute(remainingCommand); //execute according to the command
                     } else {
-                        toPrint = " 400 Bad Request";
+                        toPrint = "400 Bad Request\n";
                     }
                 } 
                     catch(...){ //catch errors (dont print a thing)
-                    toPrint = " 400 Bad Request";
+                    toPrint = "400 Bad Request\n";
                 }
                  Data* outputData = new Data(toPrint, toPrint.length(), data->client_sock );
 

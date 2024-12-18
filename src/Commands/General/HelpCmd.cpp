@@ -12,12 +12,13 @@ std::string HelpCmd::execute(std::string str){
         } else {
             //help command
             std::string res=
-           "DELETE, arguments: [userid] [movieid1] [movieid2] ...\n"
+            "DELETE, arguments: [userid] [movieid1] [movieid2] ...\n"
             "GET, arguments: [userid] [movieid]\n"
             "PATCH, arguments: [userid] [movieid1] [movieid2] ...\n"
             "POST, arguments: [userid] [movieid1] [movieid2] ...\n"
-            "HELP\n";
+            "help\n";
             return res;
         }
     }
+
 

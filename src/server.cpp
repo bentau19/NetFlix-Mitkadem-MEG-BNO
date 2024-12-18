@@ -78,7 +78,7 @@ int main(int argc, char* argv[]) {
 
     // Initialize commands
   //  commands["add"] = new AddCommand();
-    commands["HELP"] = new HelpCmd();
+    commands["help"] = new HelpCmd();
  //   commands["recommend"] = new RecommendCommand();
     commands["GET"] = new GetCmd();
     commands["POST"] = new PostCmd();
