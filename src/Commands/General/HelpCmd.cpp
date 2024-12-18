@@ -2,12 +2,13 @@ using namespace std;
 #include "HelpCmd.h"
 #include "Validity.h"
 #include <string>
+#include <algorithm>
 
-    HelpCmd::HelpCmd(){}
+HelpCmd::HelpCmd(){}
 
     HelpCmd::~HelpCmd(){}
 std::string HelpCmd::execute(std::string str){
-        if(str.length() > 0 || str==" ") { //if got more agument then "help" then invalid
+        if(str.length() > 0 && !std::all_of(str.begin(), str.end(), [](char c) { return c == ' '; })) { //if got more agument then "help" then invalid
             return Validity::ValidityAlert(syntaxErr);
         } else {
             //help command
@@ -20,5 +21,4 @@ std::string HelpCmd::execute(std::string str){
             return res;
         }
     }
-
 
