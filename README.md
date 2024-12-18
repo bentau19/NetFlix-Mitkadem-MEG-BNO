@@ -1,14 +1,12 @@
 # NetFlix-Mitkadem-MEG-BNO
 
-first part of the project.
+second part of the project.
 
 Each command was encapsulated as a separate class to adhere to the Command Design Pattern.
 
 Application Commands:
 - help: Provides a list and explanation of all available commands in the application.
-
 - GET: Accepts a userid and a movieid as inputs and generates up to 10 movie recommendations based on user similarities.
-
 - POST/PATCH: Accepts a userid and at least one movieid and associates the specified movies with the user in the system only if
    the user is not/already exists.
 - DELETE: Accepts a userid and at least one movieid and delete the movies from the user watchlist.
@@ -31,7 +29,7 @@ program testing and running instractions:
        (if not run the tests) docker run -it --name CoolProjectContainer supercoolproject
        (if yes run the tests) docker exec -it CoolProjectContainer bash
                                 cd build
-       ./server 12345 
+       ./build/server 12345 
        12345 for port 12345
 
 
@@ -42,18 +40,23 @@ program testing and running instractions:
         for ip 127.0.0.1 and port 12345
 
 -----------------------------------------------------------------------------------------------------------------------------------------
-
+SOLID PART2 NOTES:
+    the files:
+        1) the addition of the function to delete only meant adding 1 more function to the fileio class,
+            which handles all the complex reading and writing.
+        2) the socket addition did pose a challange as reading and writing at the same time is problematic
+            the easiest way to see it is if a user tries deleting a file and another adds one the writing of the adding could override the writing of the delete,
+            this meant *changing the code in basefile*, as it was needed to add locks to basefile and addbuild
 
 
 running examples:
 regular run:
-![alt text](image.png)
+
 
 exiting the app and returning:
-![alt text](image-1.png)
 
 tests runs:
-![alt text](image-2.png)
+
 
 
 
@@ -74,3 +77,9 @@ because all the new commend is just an extended to the original one so we just c
   לשינויים אבל פתוח להרחבה״?
 3.Again not really, 
 we putted all the outputs in a define so it was just easy to change just the string of it and it change all the outputs all over the closed code
+4. "האם העבודה שהקלט/פלט מגיע מסוקטים במקום  הקונסול מחייב ממכם לגעת בקוד שאמור להיות 'סגור לשינויים אבל פתוח להרחבה'?"
+
+4. 
+only minors changes as, add a print function instead of having excute print the output ,and add to the menu interface a print command for printing the result.
+Other than that, we only needed to extend it so there is a server menu where the actions of receiving input and printing are done via the server and client sockets instead of through the console.
+
