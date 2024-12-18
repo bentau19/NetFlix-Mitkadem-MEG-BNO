@@ -18,15 +18,15 @@ App::~App() {}
         if (data == nullptr || inputData ==nullptr) {
             break;  // Exit the loop if the client disconnects or an error occurs
         }
-        string task = inputData->buffer;
-        string command = menu->getCommand(task);
-        string remainingCommand = menu->getCommandAsk(task);
+        string task = inputData->buffer; //get the string from data = client input
+        string command = menu->getCommand(task); //first word of string
+        string remainingCommand = menu->getCommandAsk(task); //get the agument of the command
             try {          
-                    auto it = commands.find(command);
+                    auto it = commands.find(command); //search command 
                     if (it != commands.end() && it->second != nullptr) { //check if command in the map
                         toPrint = commands[command]-> execute(remainingCommand); //execute according to the command
                     } else {
-                        toPrint = "400 Bad Request\n";
+                        toPrint = "400 Bad Request\n"; //if command dont exist return error
                     }
                 } 
                 catch(...) { //catch errors (dont print a thing)
@@ -34,7 +34,7 @@ App::~App() {}
                 }
                  Data* outputData = new Data(toPrint, toPrint.length(), data->client_sock );
 
-                menu->getCommandOutput(outputData);
+                menu->getCommandOutput(outputData); //print the result
                 
         
     }
