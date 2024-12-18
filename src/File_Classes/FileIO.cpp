@@ -5,30 +5,39 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
-
+std::shared_mutex FileIO::fileMutex;
 bool FileIO::RemoveIdList(vector<string> ListId, unsigned long ToId, BaseFile *f)
 {
     try
     {
+        // Lock for thread-safety
+        std::unique_lock<std::shared_mutex> lock(fileMutex);  
+        
         vector<string> AllIdData; // a vector of all the Ids and their lists
         vector<string> IdData; // a vector of the specific Id,
-        // 1st arg is the Id 2nd arg will be all its list
-        vector<string> IdList;//all Ids in the list of the Toid
+        vector<string> IdList; //all Ids in the list of the Toid
         AllIdData = f->read(); // read from the file
-        IdData = PopId(ToId,&AllIdData,f); // get id data and delete from alliddata
+        IdData = PopId(ToId, &AllIdData, f); // get id data and delete from alliddata
         IdList = StringHandler::split(IdData[1], ' ');
-        //now we change the users movies
-        IdList = RemoveSimillar(IdList,ListId);
-        //now we add the new user to the vector
-        IdData[1] = StringHandler::join(IdList , ' ');
-        AllIdData.push_back(StringHandler::join(IdData,';'));
-        //delete the file to create a new one
+
+        // Now we change the user's movies
+        IdList = RemoveSimillar(IdList, ListId);
+        IdData[1] = StringHandler::join(IdList , ' '); // Update user data with new list
+        AllIdData.push_back(StringHandler::join(IdData, ';')); // Add updated data to AllIdData
+        
+        // Delete the file and recreate it
         f->deleteItem();
         f->create(f->GetName());
+        
+        // Write updated data back to the file
         for (size_t i = 0; i < AllIdData.size(); i++)
         {
             f->Write(AllIdData[i]);
         }
+
+        // Manually unlock the mutex
+        lock.unlock(); 
+
         return true;
     }
     catch(const std::exception& e)
@@ -37,6 +46,7 @@ bool FileIO::RemoveIdList(vector<string> ListId, unsigned long ToId, BaseFile *f
         return false;
     }
 }
+
 
 vector<unsigned long> FileIO::IdList(unsigned long Id, BaseFile *f)
 {
@@ -88,7 +98,7 @@ std::vector<string> FileIO::PopId(unsigned long ToId, vector<string> *alldata, B
         else{//if the id didnt exist make it
             IdData[0]=to_string(ToId);
             IdData.push_back("");
-        }
+        } 
         return  IdData;
     }
     catch(const std::exception& e)
@@ -101,6 +111,7 @@ bool FileIO::AddIdsToId(vector<string> ListId, unsigned long ToId, BaseFile* f)
 {
     try
     {
+        unique_lock<std::shared_mutex> lock(fileMutex);  // Lock for thread-safety during write
         vector<string> AllIdData; // a vector of all the Ids and their lists
         vector<string> IdData; // a vector of the specific Id,
         // 1st arg is the Id 2nd arg will be all its list
@@ -120,6 +131,7 @@ bool FileIO::AddIdsToId(vector<string> ListId, unsigned long ToId, BaseFile* f)
         {
             f->Write(line);
         }
+        lock.unlock();
         return true;
     }
     catch (const std::exception& e)
