@@ -5,13 +5,13 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
-std::shared_mutex FileIO::fileMutex;
+std::mutex FileIO::fileMutex;
 bool FileIO::RemoveIdList(vector<string> ListId, unsigned long ToId, BaseFile *f)
 {
     try
     {
         // Lock for thread-safety
-        std::unique_lock<std::shared_mutex> lock(fileMutex);  
+        fileMutex.lock();
         
         vector<string> AllIdData; // a vector of all the Ids and their lists
         vector<string> IdData; // a vector of the specific Id,
@@ -36,12 +36,13 @@ bool FileIO::RemoveIdList(vector<string> ListId, unsigned long ToId, BaseFile *f
         }
 
         // Manually unlock the mutex
-        lock.unlock(); 
+        fileMutex.unlock(); 
 
         return true;
     }
     catch(const std::exception& e)
     {
+        fileMutex.unlock();
         std::cerr << e.what() << '\n';
         return false;
     }
@@ -111,7 +112,7 @@ bool FileIO::AddIdsToId(vector<string> ListId, unsigned long ToId, BaseFile* f)
 {
     try
     {
-        unique_lock<std::shared_mutex> lock(fileMutex);  // Lock for thread-safety during write
+        fileMutex.lock();
         vector<string> AllIdData; // a vector of all the Ids and their lists
         vector<string> IdData; // a vector of the specific Id,
         // 1st arg is the Id 2nd arg will be all its list
@@ -131,11 +132,12 @@ bool FileIO::AddIdsToId(vector<string> ListId, unsigned long ToId, BaseFile* f)
         {
             f->Write(line);
         }
-        lock.unlock();
+        fileMutex.unlock();
         return true;
     }
     catch (const std::exception& e)
     {
+        fileMutex.unlock();
         std::cerr << "throw in iididtoid" << '\n';
         return false;
     }
