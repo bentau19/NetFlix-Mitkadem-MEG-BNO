@@ -9,9 +9,11 @@ using namespace std;
 #include "UserFile.h"
 #include "MovieFile.h"
 #include "StringHandler.h"
+#include <mutex>
 class AddBuilder
 {
 private:
+    static std::mutex fileMutex;
     static bool CheckValid(unsigned long userid,vector<string> movies,BaseFile* b);
 public:
     static bool BuildAdd(unsigned long userid,vector<string> movies);

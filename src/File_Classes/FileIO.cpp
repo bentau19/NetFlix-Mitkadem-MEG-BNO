@@ -5,13 +5,12 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
-std::mutex FileIO::fileMutex;
+
 bool FileIO::RemoveIdList(vector<string> ListId, unsigned long ToId, BaseFile *f)
 {
     try
     {
-        // Lock for thread-safety
-        fileMutex.lock();
+
         
         vector<string> AllIdData; // a vector of all the Ids and their lists
         vector<string> IdData; // a vector of the specific Id,
@@ -36,13 +35,13 @@ bool FileIO::RemoveIdList(vector<string> ListId, unsigned long ToId, BaseFile *f
         }
 
         // Manually unlock the mutex
-        fileMutex.unlock(); 
+
 
         return true;
     }
     catch(const std::exception& e)
     {
-        fileMutex.unlock();
+
         std::cerr << e.what() << '\n';
         return false;
     }
@@ -112,7 +111,6 @@ bool FileIO::AddIdsToId(vector<string> ListId, unsigned long ToId, BaseFile* f)
 {
     try
     {
-        fileMutex.lock();
         vector<string> AllIdData; // a vector of all the Ids and their lists
         vector<string> IdData; // a vector of the specific Id,
         // 1st arg is the Id 2nd arg will be all its list
@@ -132,12 +130,11 @@ bool FileIO::AddIdsToId(vector<string> ListId, unsigned long ToId, BaseFile* f)
         {
             f->Write(line);
         }
-        fileMutex.unlock();
         return true;
     }
     catch (const std::exception& e)
     {
-        fileMutex.unlock();
+
         std::cerr << "throw in iididtoid" << '\n';
         return false;
     }
@@ -203,7 +200,7 @@ vector<unsigned long> FileIO::StringTounsignedlongVector(const std::vector<std::
             unsignedlongVec.push_back(std::stoul(str));
         } catch (const std::invalid_argument& e) {
         } catch (const std::out_of_range& e) {
-            std::cerr << "Out of range: " << str << std::endl;
+            
         }
     }
     return unsignedlongVec;

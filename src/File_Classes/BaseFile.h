@@ -16,7 +16,7 @@ protected:
     std::string fileName;
     bool    OpenLock;
 
-    static std::mutex fileMutex;  // Shared mutex for read-write lock
+    static std::mutex fileMutex;
 private:
 
     std::string loc;
