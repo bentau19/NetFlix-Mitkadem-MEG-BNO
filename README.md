@@ -29,7 +29,7 @@ program testing and running instractions:
     to run the server (first time in contnier):
 
        docker run -dit --name server_client_container supercoolproject
-       ./build/server 8080
+       ./build/server 12345
 
 
     to run the client:
@@ -41,7 +41,7 @@ program testing and running instractions:
     to run the server :
 
         docker exec -it server_client_container bash
-       ./build/server 8080
+       ./build/server 12345
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 
