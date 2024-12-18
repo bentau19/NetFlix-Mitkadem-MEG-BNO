@@ -56,3 +56,23 @@ exiting the app and returning:
 
 tests runs:
 ![alt text](image-2.png)
+
+
+
+answer to guideline questions:
+1. האם העובדה ששמות הפקודות השתנו הצריך מכם לגעת בקוד שאמור להיות ״סגור
+   לשינויים אבל פתוח להרחבה״?
+
+1. This fact didn’t make us to touch the closed code (the add func or the recommend func), 
+we just had to check first that the new rules are valid (the extended) and then call to the closed code.
+
+
+2.האם העובדה שנוספו פקודות חדשות הצריך מכם לגעת בקוד שאמור להיות ״סגור
+לשינויים אבל פתוח להרחבה״?
+2. This fact again didn’t really make us touch the closed code, 
+because all the new commend is just an extended to the original one so we just checked the new rules and called to the prev commends.
+
+3. האם העובדה שפלט הפקודות השתנה הצריך מכם לגעת בקוד שאמור להיות ״סגור
+  לשינויים אבל פתוח להרחבה״?
+3.Again not really, 
+we putted all the outputs in a define so it was just easy to change just the string of it and it change all the outputs all over the closed code
