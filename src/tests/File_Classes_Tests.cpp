@@ -78,10 +78,16 @@ TEST(IdExists,MoviesAndUser){
     ASSERT_FALSE(FileIO::isExists(777,&m));
 }
 TEST(RemoveList,RemoveMoviesFromUser){
+    UserFile u;
     vector<string> movies3;
     movies3.push_back("32");
     movies3.push_back("33");
     ASSERT_TRUE(AddBuilder::BuildRemove(3,movies3));
+    vector<unsigned long> listu = FileIO::IdList(3,&u);
+    ASSERT_EQ(listu.size(),1);
     ASSERT_FALSE(AddBuilder::BuildRemove(1,movies3));
     ASSERT_FALSE(AddBuilder::BuildRemove(5,movies3));
+    ASSERT_NO_THROW(u.deleteItem());
+    MovieFile m;
+    ASSERT_NO_THROW(m.deleteItem());
 }

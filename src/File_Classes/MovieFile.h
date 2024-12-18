@@ -3,7 +3,7 @@
 
 #include "BaseFile.h"
 #include <string>
-
+#include <mutex>
 class MovieFile : public BaseFile {
 public:
     // Constructor: Initialize fileName

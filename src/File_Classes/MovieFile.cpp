@@ -18,6 +18,7 @@ string MovieFile::display() {
     }
 
     openFile(std::ios::in);
+    std::lock_guard<std::mutex> lock(fileMutex);
     if (file.is_open()) {
         std::string line;
         std::string alline = "Movies: ";  // Initialize with a title

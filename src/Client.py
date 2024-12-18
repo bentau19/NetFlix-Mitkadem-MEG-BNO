@@ -5,7 +5,6 @@ def main():
     if len(sys.argv) != 3:
         print("put the ip and than the port")
         sys.exit(1)
-
     server_ip = sys.argv[1]
     server_port = int(sys.argv[2])
 
@@ -29,7 +28,7 @@ def main():
 
             # Receive and print response from server
             response = s.recv(1024).decode()
-            print(f"Server response: {response}")
+            print(f"Server response: {response}", end='')
 
     except ConnectionError as e:
         print(f"Connection error: {e}")

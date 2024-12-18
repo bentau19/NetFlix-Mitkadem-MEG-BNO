@@ -2,6 +2,7 @@
 #define USERFILE_H
 
 #include "BaseFile.h"
+#include <mutex>
 #include <string>
 
 class UserFile : public BaseFile {

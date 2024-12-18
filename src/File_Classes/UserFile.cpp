@@ -15,10 +15,12 @@ std::string UserFile::GetName() const
 }
 string UserFile::display()
 {
+    
     if (fileName.empty()) {
         return "Users";
     }
     openFile(std::ios::in);
+    std::lock_guard<std::mutex> lock(fileMutex);
     if (file.is_open()) {
         std::string line;
         string alline = "Users " + line;

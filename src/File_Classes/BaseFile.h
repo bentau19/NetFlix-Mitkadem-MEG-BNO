@@ -6,12 +6,19 @@
 #include <vector>
 #include <iostream>
 #include "IFile.h"
+#include <mutex>
+#include <shared_mutex>
+
 
 class BaseFile : public IFile {
 protected:
     std::fstream file;
     std::string fileName;
+    bool    OpenLock;
+
+    static std::mutex fileMutex;
 private:
+
     std::string loc;
 public:
     // Constructor: Initialize the file name

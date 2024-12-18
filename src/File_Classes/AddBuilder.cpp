@@ -1,6 +1,5 @@
 #include "AddBuilder.h"
-
-
+#include <mutex>
 bool AddBuilder::CheckValid(unsigned long userid, std::vector<std::string> movies, BaseFile* b) {
     int i;
     std::string ListString = FileIO::IdLine(userid, &i, b);
@@ -30,6 +29,7 @@ bool AddBuilder::BuildAdd(unsigned long userid, vector<string> movies)
 {
     try{
         if(movies.size()==0){
+
             return true;
         }
         UserFile uf;
@@ -54,11 +54,13 @@ bool AddBuilder::BuildRemove(unsigned long userid, vector<string> movies)
 {
     try{
         if(movies.size()==0){
+
             return true;
         }
         UserFile uf;
         MovieFile mf;
         if(!CheckValid(userid,movies,&uf)){
+
             return false;
         }
         bool first = FileIO::RemoveIdList(movies, userid,&uf);

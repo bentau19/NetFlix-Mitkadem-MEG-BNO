@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
-#include "../Menu/ConsoleMenu.h"
+#include "../Menu/ServerMenu.h"
 #include <string>        // Include string
 
 TEST(InputTest, Basic){
-   ConsoleMenu* menu = new ConsoleMenu();
-   EXPECT_NO_THROW(ConsoleMenu* menu = new ConsoleMenu());
+   ServerMenu* menu = new ServerMenu();
+   EXPECT_NO_THROW(ServerMenu* menu = new ServerMenu());
    string str = "thats that me esspreso";
    EXPECT_EQ(menu->getCommand(str), "thats");
    EXPECT_EQ(menu->getCommandAsk(str), "that me esspreso");
