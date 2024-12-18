@@ -27,35 +27,10 @@ enum ErrorType {
 
 class Validity {
 public:
-    static std::vector<std::string> SplitToDigitVec (const std::string& str){
-        return StringHandler::splitString(str);
-    }
-    static std::vector<std::string> twoNumsVec(std::string str){
-        std::vector<std::string> data = SplitToDigitVec(str);
-        if(data.size()!=2)throw std::invalid_argument(ERR400);
-        return data;
-    }
-    static std::vector<std::string> UserMoviesStringHandler(std::string str, unsigned long *id) {
-        std::vector<std::string> userMovies = SplitToDigitVec(str);
-        if (userMovies.size() < 2) throw std::invalid_argument(ERR400);
-        *id = stoul(userMovies[0]);
-        userMovies.erase(userMovies.begin());
-        return userMovies;
-    }
+    static std::vector<std::string> SplitToDigitVec (const std::string& str);
+    static std::vector<std::string> twoNumsVec(std::string str);
+    static std::vector<std::string> UserMoviesStringHandler(std::string str, unsigned long *id) ;
 
-    static std::string ValidityAlert(ErrorType type){
-        switch (type){
-            case PostSuc: return SUC201;
-            case PatchSuc: return SUC204;
-            case DeleteSuc: return SUC204;
-            case GetSuc: return SUC200;
-            case GenFail: return ERR404;
-            case syntaxErr: return ERR400;
-            default: return ERR400;
-        }
-
-    }
-
-    };
-
+    static std::string ValidityAlert(ErrorType type);
+};
 #endif //NETFLIX_PROJECT_VALIDITY_H

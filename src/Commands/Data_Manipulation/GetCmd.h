@@ -15,10 +15,6 @@ public:
     std::string execute(std::string str) override; // Use "override" keyword
     std::vector<unsigned long> TestExFunc(std::string str);
 
-    static bool isExist(unsigned long id, BaseFile *f){
-        vector<unsigned long> res =  FileIO::IdList(id, f);
-        return !res.empty();
-    }
 };
 
 #endif
