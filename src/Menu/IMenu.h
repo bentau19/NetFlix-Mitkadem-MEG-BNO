@@ -1,6 +1,7 @@
 #ifndef IMenu_H
 #define IMenu_H
 #include <iostream>
+#include "../dataClass/Data.h"
 using namespace std;
 
 class IMenu {

@@ -1,8 +1,13 @@
 FROM gcc:10.2.0
 # Install CMake and any other required tools
 RUN ls -R
-RUN apt-get update && apt-get install -y cmake build-essential wget
-
+RUN apt-get update && apt-get install -y \
+    cmake \
+    build-essential \
+    python3 \
+    python3-pip \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
 # Install specific version of CMake (if needed)
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.25.3/cmake-3.25.3-linux-x86_64.sh && \
     chmod +x cmake-3.25.3-linux-x86_64.sh && \

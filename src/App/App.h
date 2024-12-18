@@ -4,7 +4,8 @@
 #include <map>
 #include <string>
 #include "../Menu/IMenu.h"
-#include "Commands/General/ICommand.h"
+#include "../dataClass/Data.h"
+#include "../Commands/General/ICommand.h"
 
 class App {
 private:
@@ -14,6 +15,8 @@ private:
 
 public:
     App(IMenu* menu, std::map<std::string, ICommand*> commands); // Constructor
+    App(IMenu* menu, std::map<std::string, ICommand*> commands, Data* data); // New constructor
+
             ~App(); // Destructor
     void run(); // Main logic
 };

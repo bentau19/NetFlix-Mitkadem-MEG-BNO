@@ -8,15 +8,13 @@
 #include "dataClass/Data.h"
 #include "Menu/ServerMenu.h"
 #include "File_Classes/StringHandler.h"
-#include "Commands/ICommand.h"
-#include "Commands/HelpCommand.h"
-#include "Commands/AddCommand.h"
+#include "Commands/General/ICommand.h"
+#include "Commands/General/HelpCmd.h"
 #include "App/App.h"
-#include "Commands/RecommendCommand.h"
-//#include "Commands/Add_Data/PatchCmd.h"
-//#include "Commands/Add_Data/PostCmd.h"
-//#include "Commands/Delete_Data/DeleteCmd.h"
-//#include "Commands/Data_Manipulation/GetCmd.h"
+#include "Commands/Add_Data/PatchCmd.h"
+#include "Commands/Add_Data/PostCmd.h"
+#include "Commands/Delete_Data/DeleteCmd.h"
+#include "Commands/Data_Manipulation/GetCmd.h"
 
 using namespace std;
 
@@ -79,13 +77,13 @@ int main(int argc, char* argv[]) {
     cout << "Server is listening on port " << port << "..." << endl;
 
     // Initialize commands
-    commands["add"] = new AddCommand();
-    commands["help"] = new HelpCommand();
-    commands["recommend"] = new RecommendCommand();
-    //commands["GET"] = new GetCmd();
-    //commands["POST"] = new PostCmd();
-    //commands["PATCH"] = new PatchCmd();
-    //commands["DELETE"] = new DeleteCmd();
+  //  commands["add"] = new AddCommand();
+    commands["HELP"] = new HelpCmd();
+ //   commands["recommend"] = new RecommendCommand();
+    commands["GET"] = new GetCmd();
+    commands["POST"] = new PostCmd();
+    commands["PATCH"] = new PatchCmd();
+    commands["DELETE"] = new DeleteCmd();
     while (true) {
         // Accept a client connection
         int client_sock = accept(server_sock, (struct sockaddr *)&client_addr, &client_len);

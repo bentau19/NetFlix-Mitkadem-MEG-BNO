@@ -1,6 +1,6 @@
 #include "StringHandler.h"
 #include <string>
-#include "../Menu/ConsoleMenu.h"
+#include "../Menu/ServerMenu.h"
 #include "Commands/General/Validity.h"
 #include <iostream>
 #include <fstream>

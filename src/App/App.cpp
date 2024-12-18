@@ -6,6 +6,8 @@
 
 App::App(IMenu* menu, std::map<std::string, ICommand*> commands)
     : menu(menu), commands(commands){}
+App::App(IMenu* menu, std::map<std::string, ICommand*> commands, Data* data): menu(menu), commands(commands), data(data){} // New constructor
+
 App::~App() {}
 
     void App::run() {

@@ -26,11 +26,38 @@ add_executable(
  # src/ConsoleMenu.cpp
   #src/File_Classes/StringHandler.cpp
 )
-
+# Add the source files for the main executable
+add_executable(
+  clientPy
+  src/Client.py 
+ # src/ConsoleMenu.cpp
+  #src/File_Classes/StringHandler.cpp
+)
 add_executable(
   server
   src/server.cpp
   src/dataClass/Data.cpp
+  src/Menu/ServerMenu.cpp
+  src/App/App.cpp
+  src/Commands/General/Validity.h
+    src/File_Classes/UserFile.cpp
+  src/File_Classes/BaseFile.cpp
+  src/File_Classes/StringHandler.cpp
+  src/File_Classes/FileIO.cpp
+  src/File_Classes/MovieFile.cpp
+  src/File_Classes/AddBuilder.cpp
+  src/Commands/General/HelpCmd.cpp
+  src/Commands/Data_Manipulation/GetCmd.cpp
+  src/Commands/Add_Data/PostCmd.cpp
+  src/Commands/Add_Data/PatchCmd.cpp
+  src/Commands/Delete_Data/DeleteCmd.cpp
+)
+# Tests executable
+add_executable(
+  Tests
+  src/tests/File_Classes_Tests.cpp
+  src/tests/Commends_Tests.cpp
+  #src/tests/InputTest.cpp
   src/Menu/ServerMenu.cpp
   src/App/App.cpp
   src/File_Classes/UserFile.cpp
@@ -39,13 +66,19 @@ add_executable(
   src/File_Classes/FileIO.cpp
   src/File_Classes/MovieFile.cpp
   src/File_Classes/AddBuilder.cpp
-  src/Commands/AddCommand.cpp
-  src/Commands/HelpCommand.cpp
-  src/Commands/RecommendCommand.cpp
-  #src/Commands/Data_Manipulation/GetCmd.cpp
-  #src/Commands/Add_Data/PostCmd.cpp
- # src/Commands/Add_Data/PatchCmd.cpp
-  #src/Commands/Delete_Data/DeleteCmd.cpp
+
+        src/Commands/General/HelpCmd.cpp
+        src/Commands/Data_Manipulation/GetCmd.cpp
+        src/Commands/Add_Data/PostCmd.cpp
+        src/Commands/Add_Data/PatchCmd.cpp
+        src/Commands/Delete_Data/DeleteCmd.cpp
+
+)
+
+# Link GoogleTest to the test target
+target_link_libraries(
+  Tests
+  gtest_main
 )
 
 # Link the main executable with GoogleTest (optional, remove if not needed)
@@ -54,7 +87,12 @@ target_link_libraries(
   gtest_main  # GoogleTest library (if you need it, otherwise remove this line)
   Threads::Threads  # Link pthreads
 )
-
+# Link the main executable with GoogleTest (optional, remove if not needed)
+target_link_libraries(
+  clientPy
+  gtest_main  # GoogleTest library (if you need it, otherwise remove this line)
+  Threads::Threads  # Link pthreads
+)
 target_link_libraries(
   server
   gtest_main  # GoogleTest library (if you need it, otherwise remove this line)

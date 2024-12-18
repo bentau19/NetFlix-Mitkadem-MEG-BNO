@@ -3,7 +3,7 @@
 using namespace std;
 #include <string>
 #include <vector>
-#include "Commands/ICommand.h"
+#include "../General/ICommand.h"
 #include "File_Classes/UserFile.h"
 #include "File_Classes/BaseFile.h"
 #include "File_Classes/FileIO.h"

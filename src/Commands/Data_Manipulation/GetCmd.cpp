@@ -8,7 +8,7 @@
 #include "File_Classes/UserFile.h"
 #include "File_Classes/MovieFile.h"
 #include "File_Classes/FileIO.h"
-//#include "Commands/General/Validity.h"
+#include "Commands/General/Validity.h"
 
 
 using namespace std;
