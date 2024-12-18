@@ -6,8 +6,7 @@
 
 BaseFile::BaseFile(const std::string name){
 
-    std::string DATA_DIR = "/app/data/";
-    
+    std::string DATA_DIR ="/app/data/";
 
     loc = DATA_DIR + name;
     create(name);

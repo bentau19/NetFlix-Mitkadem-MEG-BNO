@@ -22,13 +22,16 @@ std::string PostCmd::execute(std::string str) {
         //init the data
         unsigned long usrId;
         std::vector<std::string> userMovies = Validity::UserMoviesStringHandler(str, &usrId);
-        if (!GetCmd::isExist(usrId, &userFile))
+        if (!FileIO::isExists(usrId, &userFile))
             AddBuilder::BuildAdd(usrId, userMovies);
-        else throw std::invalid_argument("");
-    }
-    catch (...){
+        else throw std::invalid_argument(ERR404);
+    }catch(const std::invalid_argument& e){
+    if (e.what() == std::string(ERR404)) {
         return Validity::ValidityAlert(GenFail);
+    } else {
+        return Validity::ValidityAlert(syntaxErr);
     }
+}
     return Validity::ValidityAlert(PostSuc);
 }
 

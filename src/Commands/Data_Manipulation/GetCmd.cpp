@@ -43,7 +43,7 @@ std::string GetCmd::execute(std::string str) {
     try {
         vector<unsigned long> recommend = TestExFunc(str);
         string res = Validity::ValidityAlert(GetSuc);
-        res+=" \n";
+        res += " \n";
 
         for (unsigned long a : recommend) {
             res += std::to_string(a) + " "; // Convert number to string and append
@@ -51,8 +51,12 @@ std::string GetCmd::execute(std::string str) {
         res +="\n";
         return res;
 
-    }catch(...){
-        return Validity::ValidityAlert(GenFail);
+    }catch(const std::invalid_argument& e){
+        if (e.what() == std::string(ERR404)) {
+            return Validity::ValidityAlert(GenFail);
+        } else {
+            return Validity::ValidityAlert(syntaxErr);
+        }
     }
 }
 
@@ -72,14 +76,14 @@ std::vector<unsigned long> GetCmd::TestExFunc(std::string str) {
         vector<std::string> data = Validity::twoNumsVec(str);
         userId = stoul(data[0]);
         movieId = stoul(data[1]);
-        if(!isExist(userId,&userFile)||
-           !isExist(movieId,&movieFile))throw std::invalid_argument("");
-
-        watchedList = FileIO::IdList(userId, &userFile);
-        movieWatchers = FileIO::IdList(movieId, &movieFile);
     }catch (...){
-        throw std::invalid_argument("");
+        throw std::invalid_argument(ERR400);
     }
+    if(!FileIO::isExists(userId,&userFile)||
+       !FileIO::isExists(movieId,&movieFile))throw std::invalid_argument(ERR404);
+
+    watchedList = FileIO::IdList(userId, &userFile);
+    movieWatchers = FileIO::IdList(movieId, &movieFile);
     //similarity calc
     unordered_map<unsigned long, unsigned long> numOfCommon;//dict of user nums of common movies with our user (user->sum of common movies)
     // make the heavy calc about how much common movie with which user
