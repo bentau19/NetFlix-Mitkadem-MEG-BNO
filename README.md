@@ -38,6 +38,7 @@ Application Commands:
     to run the server (12345 for port 12345):
        (if not run the tests) docker run -it --name CoolProjectContainer supercoolproject
        (if yes run the tests) docker exec -it CoolProjectContainer bash
+       cd build
        ./server 12345 
 
 
