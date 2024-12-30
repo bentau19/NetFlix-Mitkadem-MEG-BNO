@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-const User = new Schema({
+const UserSchema = new Schema({
     _id: { 
-        type: Number, 
-        required: true 
+        type: Number 
     },
-    name:{
+    name: {
         type: String,
         required: true
     },
@@ -14,7 +14,7 @@ const User = new Schema({
         type: Buffer, // Store binary data
         default: null
     },
-    password:{
+    password: {
         type: String,
         required: true
     },
@@ -31,7 +31,9 @@ const User = new Schema({
             }
         }
     ]
-
 });
 
-module.exports = mongoose.model('User', User);
+// Attach auto-increment plugin to generate unique `_id` values
+UserSchema.plugin(AutoIncrement, { id: 'user_seq', inc_field: '_id', start_seq: 0 });
+
+module.exports = mongoose.model('User', UserSchema);
