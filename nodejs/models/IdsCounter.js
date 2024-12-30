@@ -7,4 +7,4 @@ const IdsCounter = new Schema({
     reusableIds: { type: [Number], default: [] } // Pool of reusable IDs
 });
 
-const Counter = mongoose.model('Counter', IdsCounter);
+module.exports = mongoose.model('Counter', IdsCounter);
