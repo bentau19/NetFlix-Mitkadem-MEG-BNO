@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-const UserSchema = new Schema({
+const { generateId } = require('../utils/idManager');
+const User = new Schema({
+
     _id: { 
         type: Number 
     },
@@ -33,7 +34,11 @@ const UserSchema = new Schema({
     ]
 });
 
-// Attach auto-increment plugin to generate unique `_id` values
-UserSchema.plugin(AutoIncrement, { id: 'user_seq', inc_field: '_id', start_seq: 0 });
+User.pre('save', async function (next) {
+    if (this.isNew) {
+        this._id = await generateId('userId');
+    }
+    next();
+});
+module.exports = mongoose.model('User', User);
 
-module.exports = mongoose.model('User', UserSchema);
