@@ -1,6 +1,15 @@
 {
   "dependencies": {
+    "cors": "^2.8.5",
+    "custom-env": "^2.0.6",
     "express": "^4.21.2",
-    "net": "^1.0.2"
+    "lstat": "^1.0.0",
+    "mongoose": "^8.9.2",
+    "mongoose-sequence": "^6.0.1",
+    "net": "^1.0.2",
+    "uuid": "^11.0.3"
+  },
+  "scripts": {
+    "start": "SET NODE_ENV=local && node ./nodejs/app.js"
   }
 }

@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+
 const { generateId } = require('../utils/idManager');
 const User = new Schema({
+
     _id: { 
-        type: Number, 
-        required: true 
+        type: Number 
     },
-    name:{
+    name: {
         type: String,
         required: true
     },
@@ -14,7 +15,7 @@ const User = new Schema({
         type: Buffer, // Store binary data
         default: null
     },
-    password:{
+    password: {
         type: String,
         required: true
     },
@@ -31,8 +32,8 @@ const User = new Schema({
             }
         }
     ]
-
 });
+
 User.pre('save', async function (next) {
     if (this.isNew) {
         this._id = await generateId('userId');
@@ -40,3 +41,4 @@ User.pre('save', async function (next) {
     next();
 });
 module.exports = mongoose.model('User', User);
+
