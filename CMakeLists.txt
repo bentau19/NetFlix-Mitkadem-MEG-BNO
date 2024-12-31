@@ -17,7 +17,12 @@ find_package(Threads REQUIRED)
 
 # Include directories
 include_directories(src)
-
+ 
+# Add the source files for the main executable
+add_executable(
+  clientPool
+  src/ThreadPool/client.cpp 
+)
 
 # Add the source files for the main executable
 add_executable(
@@ -25,6 +30,27 @@ add_executable(
   src/Client.py 
  # src/ConsoleMenu.cpp
   #src/File_Classes/StringHandler.cpp
+)
+add_executable(
+  serverPool
+  src/ThreadPool/server.cpp
+  src/ThreadPool/ThreadPool.cpp
+  src/dataClass/Data.cpp
+  src/Menu/ServerMenu.cpp
+  src/App/App.cpp
+        src/Commands/General/Validity.h
+    src/File_Classes/UserFile.cpp
+  src/File_Classes/BaseFile.cpp
+  src/File_Classes/StringHandler.cpp
+  src/File_Classes/FileIO.cpp
+  src/File_Classes/MovieFile.cpp
+  src/File_Classes/AddBuilder.cpp
+  src/Commands/General/HelpCmd.cpp
+  src/Commands/Data_Manipulation/GetCmd.cpp
+  src/Commands/Add_Data/PostCmd.cpp
+  src/Commands/Add_Data/PatchCmd.cpp
+  src/Commands/Delete_Data/DeleteCmd.cpp
+        src/Commands/General/Validity.cpp
 )
 add_executable(
   server
@@ -86,5 +112,13 @@ target_link_libraries(
 target_link_libraries(
   server
   gtest_main  # GoogleTest library (if you need it, otherwise remove this line)
+  Threads::Threads  # Link pthreads
+)
+target_link_libraries(
+  serverPool
+  Threads::Threads  # Link pthreads
+)
+target_link_libraries(
+  clientPool
   Threads::Threads  # Link pthreads
 )
