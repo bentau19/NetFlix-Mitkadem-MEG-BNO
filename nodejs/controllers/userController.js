@@ -10,8 +10,10 @@ const createUser = async (req, res) => {
         );
         if (result) {
             try{
-            const addToLoc =await serverData.communicateWithServer("POST "+result._id+" 0");
-            const sec =await serverData.communicateWithServer("Delete "+result._id+" 0");
+             await serverData.communicateWithServer("POST "+result._id+" 0");
+            await serverData.communicateWithServer("DELETE "+result._id+" 0");
+            
+            
             res.status(201).json({ message: 'User created successfully',_id:result._id });
             }catch(error){
                 console.error(error); // Log the error for debugging
@@ -35,7 +37,7 @@ const getUser = async (req, res) => {
         );
         if (result) {
             // Assuming createUser returns a truthy value on success
-            res.status(201).json({ name: result.name, password:result.password,image:result.image });
+            res.status(201).json({ name: result.name,image:result.image });
         } else {
             // If createUser returns a falsy value (e.g., null or undefined)
             res.status(400).json({ message: 'User creation failed' });

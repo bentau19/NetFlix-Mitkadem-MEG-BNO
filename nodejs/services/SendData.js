@@ -12,18 +12,20 @@ function communicateWithServer(dataToSend) {
   
       let responseData = '';
   
-      // Handle incoming data
       client.on('data', (data) => {
         responseData += data.toString();
-      });
-  
-      // Handle connection end
-      client.on('end', () => {
         resolve(responseData);
+        client.end();
       });
-      client.on('error', (err) => {
-        reject(`Error: ${err.message}`);
-      });
+
+      
+      // 
+
+      // client.setTimeout(5000, () => {
+      //   console.error('Communication timed out');
+      //   reject(new Error('Communication timed out'));
+      //   client.end();
+      // });
     });
 }
 module.exports = {communicateWithServer};

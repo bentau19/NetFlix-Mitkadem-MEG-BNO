@@ -4,7 +4,6 @@ const { generateId } = require('../utils/idManager');
 const Categorie = new Schema({
     _id: { 
         type: Number, 
-        required: true 
     },
     name: { 
         type: String, 
@@ -16,7 +15,7 @@ const Categorie = new Schema({
             ref: 'movie'
         }
     ],
-    recommended:{
+    promoted:{
         type: Boolean,
         default: false
     }

@@ -4,11 +4,17 @@ const { generateId } = require('../utils/idManager');
 const Movie = new Schema({
     _id: { 
         type: Number, 
-        required: true 
     },
     title: { 
         type: String, 
         required: true 
+    },
+    logline: { 
+        type: String,
+    },
+    image: {
+        type: Buffer, // Store binary data
+        default: null
     },
     categories: [
         {

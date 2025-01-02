@@ -1,8 +1,9 @@
 const User = require('../models/user');
 
 const createUser = async (name, image, password) => {
-    
-    const user = new User({ name : name,image:image,password:password });
+    const temp = { name : name, password:password };
+    if (image) temp.image = image;
+    const user = new User(temp);
     return await user.save();
 }
 
