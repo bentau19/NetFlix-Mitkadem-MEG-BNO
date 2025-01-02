@@ -26,6 +26,7 @@ function communicateWithServer(dataToSend) {
       //   reject(new Error('Communication timed out'));
       //   client.end();
       // });
+
     });
 }
 module.exports = {communicateWithServer};
