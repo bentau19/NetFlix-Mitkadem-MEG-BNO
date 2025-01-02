@@ -1,28 +1,28 @@
 #ifndef THREADPOOL_H
 #define THREADPOOL_H
 
+#include <thread>
 #include <vector>
 #include <queue>
-#include <thread>
 #include <mutex>
-#include <atomic>
 #include <condition_variable>
+#include <functional>  // For std::function
 
 class ThreadPool {
-private:
-    std::vector<std::thread> workers; // Worker threads
-    std::queue<int> tasks;           // Queue of tasks (client sockets)
-    std::mutex queueMutex;           // Mutex for task queue
-    std::condition_variable condition; // Condition variable for worker notification
-    std::atomic<bool> stop;          // Stop flag
-
-    void workerFunction();           // Function executed by workers
-    void handleClient(int clientSocket); // Handle a client connection
-
 public:
-    ThreadPool(size_t numThreads);   // Constructor
-    ~ThreadPool();                   // Destructor
-    void addTask(int clientSocket);  // Add a task to the queue
+    ThreadPool(size_t numThreads);
+    ~ThreadPool();
+
+    void addTask(std::function<void()> task);  // Accept callable tasks
+
+private:
+    void workerFunction();
+
+    std::vector<std::thread> workers;
+    std::queue<std::function<void()>> tasks;  // Queue of tasks
+    std::mutex queueMutex;
+    std::condition_variable condition;
+    bool stop;
 };
 
-#endif
+#endif  // THREADPOOL_H

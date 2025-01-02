@@ -10,107 +10,47 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include "ThreadPool.h"
+#include "../App/App.h"
+#include "../Menu/ServerMenu.h"
+#include "../Commands/General/ICommand.h"
+#include "../Commands/General/HelpCmd.h"
+#include "../Commands/Add_Data/PatchCmd.h"
+#include "../Commands/Add_Data/PostCmd.h"
+#include "../Commands/Delete_Data/DeleteCmd.h"
+#include "../Commands/Data_Manipulation/GetCmd.h"
+
 
 #define PORT 8082
 #define MAX_CLIENTS 3
-#define BUFFER_SIZE 1024
 
-// Thread pool to manage worker threads
-class ThreadPool {
-private:
-    std::vector<std::thread> workers;
-    std::queue<int> tasks; // Queue of client sockets
-    std::mutex queueMutex;
-    std::condition_variable condition;
-    std::atomic<bool> stop;
+// Declare global commands and mutex
+std::mutex command_mutex;
+std::map<std::string, ICommand*> commands;
 
-    void workerFunction() {
-        while (true) {
-            int clientSocket;
-            {
-                std::unique_lock<std::mutex> lock(queueMutex);
-                condition.wait(lock, [this]() { return stop || !tasks.empty(); });
+ThreadPool threadPool(MAX_CLIENTS);  // Create a thread pool
 
-                if (stop && tasks.empty())
-                    return;
+void handleClient(int clientSocket) {
+    Data* data = new Data();
+    data->client_sock = clientSocket;
 
-                clientSocket = tasks.front();
-                tasks.pop(); // Mutex is unlocked here
-                // std::unique_lock<std::mutex> lock(queueMutex);
+    // Initialize commands
+    commands["help"] = new HelpCmd();
+    commands["GET"] = new GetCmd();
+    commands["POST"] = new PostCmd();
+    commands["PATCH"] = new PatchCmd();
+    commands["DELETE"] = new DeleteCmd();
 
-            }
+    // Create App instance and run
+    App* app = new App(new ServerMenu(), commands, data);
+    app->run();  // This will handle the client request
 
-            // Process the client outside the critical section
-            handleClient(clientSocket);
+    // Clean up after client interaction
+    delete app;
+    delete data;
 
-            // Close the client socket after processing
-            close(clientSocket);
-        }
-    }
-
-
-    void handleClient(int clientSocket) {
-        static thread_local int messageCount = 0; // Each thread tracks its own count
-        char buffer[BUFFER_SIZE] = {0};
-
-        while (true) {
-            int bytesRead = read(clientSocket, buffer, BUFFER_SIZE);
-            if (bytesRead <= 0) {
-                std::cout << "Client " << clientSocket << " disconnected.\n";
-                close(clientSocket);
-                break;
-            }
-
-            std::string clientMessage(buffer);
-            messageCount++;
-
-            // Check if the client sent "goodbye"
-            if (clientMessage.find("goodbye") != std::string::npos) {
-                std::string goodbyeResponse = "goodbye :)";
-                send(clientSocket, goodbyeResponse.c_str(), goodbyeResponse.size(), 0);
-                std::cout << "Client said goodbye. Connection closed.\n";
-                close(clientSocket);
-                break;
-            }
-
-            // Respond to other messages
-            std::cout << "Client "<< clientSocket << " send: " << clientMessage << std::endl;
-            std::string response = "Message " + std::to_string(messageCount) + ": " + clientMessage + " :)";
-            send(clientSocket, response.c_str(), response.size(), 0);
-
-            memset(buffer, 0, BUFFER_SIZE);
-        }
-    }
-
-public:
-    ThreadPool(size_t numThreads) : stop(false) {
-        for (size_t i = 0; i < numThreads; ++i) {
-            workers.emplace_back([this]() { workerFunction(); });
-        }
-    }
-
-    ~ThreadPool() {
-        {
-            std::unique_lock<std::mutex> lock(queueMutex);
-            stop = true;
-        }
-
-        condition.notify_all();
-        for (std::thread &worker : workers) {
-            if (worker.joinable()) {
-                worker.join();
-            }
-        }
-    }
-
-    void addTask(int clientSocket) {
-        {
-            std::unique_lock<std::mutex> lock(queueMutex);
-            tasks.push(clientSocket);
-        }
-        condition.notify_one();
-    }
-};
+    close(clientSocket);  // Close the socket after handling
+}
 
 int main() {
     int serverSocket, clientSocket;
@@ -142,9 +82,6 @@ int main() {
 
     std::cout << "Server is listening on port " << PORT << std::endl;
 
-    // Initialize thread pool
-    ThreadPool threadPool(MAX_CLIENTS); // 3 worker threads
-
     while (true) {
         if ((clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddr, &clientAddrLen)) < 0) {
             perror("Accept failed");
@@ -153,10 +90,12 @@ int main() {
 
         std::cout << "New connection: " << inet_ntoa(clientAddr.sin_addr) << ":" << ntohs(clientAddr.sin_port) << std::endl;
 
-        // Add client socket to the thread pool
-        threadPool.addTask(clientSocket);
+        // Add the client handler as a task for the thread pool
+        threadPool.addTask([clientSocket]() {
+            handleClient(clientSocket);  // Pass client socket to the client handler
+        });
     }
 
-    close(serverSocket); // Close the server socket
+    close(serverSocket);  // Close the server socket
     return 0;
 }
