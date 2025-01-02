@@ -1,10 +1,12 @@
 const Movies = require('../models/movies');
 const Categories = require('../models/categories');
 const Users = require('../models/user');
+const movies = require('../models/movies');
+const serverData = require('./SendData');
 const getMoviesByCategory = async (userId) => {
     try {
       // Step 1: Get the user's watched movies
-      const user = await User.findById(userId);
+      const user = await Users.findById(userId);
       if (!user) {
         throw new Error('User not found');
       }
@@ -21,7 +23,7 @@ const getMoviesByCategory = async (userId) => {
       const unwatchedCategories = await Promise.all(categories.map(async (category) => {
         // Filter movies to exclude those the user has watched
         const unwatchedMovies = category.movies.filter(
-          (movieId) => !watchedMovies.includes(movieId.toString())
+          (movieId) => !watchedMovies.includes(movieId)
         );
   
         // Limit to 20 unwatched movies
@@ -60,23 +62,40 @@ const getMovieById = async (id) => {
             return null;
         }
 };
-const createMovie = async (title,logline,image) => {
+const createMovie = async (title,logline,image,categories) => {
   const movies = new Movies({ title : title});
+  if (categories&&categories!=[]){
+    for (const categoryName of categories) {
+      const category = await Categories.findOne({ name: categoryName });
+      if(!category)throw new Error("No Cat find!");
+    }
+  }
+
   if (logline) movies.logline = logline;
   if (image) movies.image = image;
-  return await movies.save();
+  const res =await movies.save();
+    for (const categoryName of categories) {
+      const category = await Categories.findOne({ name: categoryName });
+      if(category){
+        category.movies.push(res._id);
+        res.categories.push(category._id);
+        await category.save();
+      }
+    }
+
+  return await res.save();
 };
 
 const updateMovie = async (movieId, updateData) => {
   try {
     // Step 1: Get the movie by its _id
-    const movie = await Movie.findById(movieId);
+    const movie = await movies.findById(movieId);
     if (!movie) {
       throw new Error('Movie not found');
     }
 
       // First, remove the movie from all categories
-      await Category.updateMany(
+      await Categories.updateMany(
         { movies: movieId },  // Find categories where the movie is listed
         { $pull: { movies: movieId } }  // Remove the movie from the category's `movies` array
       );
@@ -84,23 +103,22 @@ const updateMovie = async (movieId, updateData) => {
 
     // Step 3: Prepare the updated movie data
     const updatedMovie = { ...updateData };
+    updateData._id=movieId;
 
-    // Remove fields that are undefined or null
-    for (const key in updatedMovie) {
-      if (updatedMovie[key] === undefined || updatedMovie[key] === null) {
-        delete updatedMovie[key]; // Remove the key if its value is undefined or null
-      }
-    }
-    await Category.updateMany(
-      { _id: { $in: categoryIds } },  // Find categories with the given IDs
+    if(updatedMovie.categories){
+    await Categories.updateMany(
+      { _id: { $in: updatedMovie.categories } },  // Find categories with the given IDs
       { $addToSet: { movies: movieId } }  // Add movieId to the `movies` array if not already present
     );
+  }
+
     // Step 4: Update the movie document with the new data
-    const updated = await Movie.findOneAndUpdate(
-      { _id: movieId },
-      { $set: updatedMovie },
-      { new: true } // Return the updated movie after the operation
-    );
+const updated = await Movies.findOneAndReplace(
+  { _id: movieId }, // Filter to find the document
+  updatedMovie,     // The new object to replace the document with
+  { new: true }     // Return the replaced document after the operation
+);
+
 
     if (!updated) {
       throw new Error('Failed to update movie');
@@ -134,9 +152,10 @@ const deleteMovie = async (id) => {
         { $pull: { movies: { movie: id } } } // Remove the movie from the movies array
       );
       await Categories.updateMany(
-        { 'movies': id }, // Find users who watched the movie
-        { $pull: { movies: { movie: id } } } // Remove the movie from the movies array
+        { 'movies': id }, // Find categories that have the movie ID in their 'movies' array
+        { $pull: { movies: id } } // Remove the movie ID from the 'movies' array
       );
+    
       await Movies.deleteOne({ _id: id });
       return movie; // Will return the user or null if not found
   } catch (err) {
@@ -155,7 +174,7 @@ const addMovieToUser = async (userId,movieId) => {
   try {
 
       const res=await serverData.communicateWithServer("PATCH "+userId+" "+movieId);                
-      const result = await User.updateOne(
+      const result = await Users.updateOne(
         { _id: userId }, // Find the user by their _id
         { $push: { movies: { movie: movieId, whenWatched: new Date() } } } // Add movieId to the movies array
       );
@@ -166,26 +185,18 @@ const addMovieToUser = async (userId,movieId) => {
 };
 const getQueryMovie = async (query) => {
   try {
-   // Filter for string fields only
-   const stringFields = movieFields.filter(field => {
-    const fieldType = Movies.paths[field].instance;
-    return fieldType === 'String'; // Only search in string fields
-  });
+    // Search for movies where the query string is found in any of the specified fields
+    const movies = await Movies.find({
+      $or: [
+        { title: { $regex: query, $options: 'i' } },  // Case-insensitive search on title
+        { logline: { $regex: query, $options: 'i' } } // Case-insensitive search on logline
+      ]
+    });
 
-  // Dynamically build the query
-  const searchQuery = {};
-  stringFields.forEach(field => {
-    searchQuery[field] = { $regex: query, $options: 'i' }; // Case-insensitive search in each string field
-  });
-
-  // Search movies with the constructed query
-  const movies = await Movies.find(searchQuery);
-
-  // Return the found movies
-  return res.json(movies);
-}
- catch (err) {
-      return null;
+    return movies; // Return the found movies
+  } catch (error) {
+    console.error('Error searching movies:', error);
+    throw error; // Handle or propagate the error
   }
 };         
 module.exports = {getMoviesByCategory,getMovieById,createMovie,updateMovie

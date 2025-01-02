@@ -8,9 +8,9 @@ router.route('/:id')
 .get(movieController.getMovieById)
 .put(movieController.switchMovie)
 .delete(movieController.deleteMovie);
-router.route('/:id/recommend/')
+router.route('/:id/recommend')
 .get(movieController.getRecommendMovie)
 .post(movieController.addMovieToUser);
-router.route('/search/:query/')
+router.route('/search/:query')
 .get(movieController.getQueryMovie)
 module.exports = router;

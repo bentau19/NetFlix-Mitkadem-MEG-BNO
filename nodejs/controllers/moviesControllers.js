@@ -3,7 +3,7 @@ const MovieService = require('../services/MoviesService');
 
 const getMoviesByCategories = async (req, res) => {
     try {
-        const result = await MovieService.getMovieById(
+        const result = await MovieService.getMoviesByCategory(
             req.body.userId
         );
         if (result) {
@@ -24,7 +24,8 @@ const createMovie = async (req, res) => {
         const result = await MovieService.createMovie(
             req.body.title,
             req.body.logline,
-            req.body.image
+            req.body.image,
+            req.body.categories
         );
         if (result) {
             try{
@@ -41,7 +42,7 @@ const createMovie = async (req, res) => {
     } catch (error) {
         // Handle unexpected errors
         console.error(error); // Log the error for debugging
-        res.status(500).json({ message: 'An internal server error occurred', error: error.message });
+        res.status(400).json({ message: 'An internal server error occurred', error: error.message });
     }
 }
 
