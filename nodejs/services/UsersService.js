@@ -1,14 +1,28 @@
 const User = require('../models/user');
-
+const ERROR_MESSAGES = require('../validation/errorMessages');
 const createUser = async (name, image, password) => {
+    const test = await User.findOne({ name, password });
+    if (test) throw new Error(ERROR_MESSAGES.Existing("user"));
+    if(!(name&&password)) throw ERROR_MESSAGES.DBFail;
     const temp = { name : name, password:password };
     if (image) temp.image = image;
     const user = new User(temp);
-    return await user.save();
+    try{
+        const res =await user.save();
+        return res;
+    }catch(err){
+        throw ERROR_MESSAGES.VALIDATION_FAILED;
+    }
+    
 }
 
 const getUser = async (id) => {
-    return await User.findById(id);
+    try{
+        const res =await User.findById(id);;
+        return res;
+    }catch(err){
+        throw ERROR_MESSAGES.VALIDATION_FAILED;
+    }
 };
 
 
