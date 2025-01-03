@@ -18,7 +18,7 @@ app.use('/api/tokens', token);
 app.use('/api/categories', categories);
 app.use('/api/movies', movies);
 // Undefined route handler
-app.use((res) => {
+app.use((req, res, next) => {
   res.status(400).json({ message: 'Route not found' });
 
 });
