@@ -1,6 +1,6 @@
 const net = require('net');
 const mongoose = require('mongoose');
-require('custom-env').env(process.env.NODE_ENV, './config');
+require('custom-env').env(process.env.NODE_ENV, './nodejs/config');
 mongoose.connect(process.env.CONNECTION_STRING);
 function communicateWithServer(dataToSend) {
     host = process.env.hostClient
@@ -12,18 +12,21 @@ function communicateWithServer(dataToSend) {
   
       let responseData = '';
   
-      // Handle incoming data
       client.on('data', (data) => {
         responseData += data.toString();
-      });
-  
-      // Handle connection end
-      client.on('end', () => {
         resolve(responseData);
+        client.end();
       });
-      client.on('error', (err) => {
-        reject(`Error: ${err.message}`);
-      });
+
+      
+      // 
+
+      // client.setTimeout(5000, () => {
+      //   console.error('Communication timed out');
+      //   reject(new Error('Communication timed out'));
+      //   client.end();
+      // });
+
     });
 }
 module.exports = {communicateWithServer};

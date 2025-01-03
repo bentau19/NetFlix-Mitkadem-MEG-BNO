@@ -30,13 +30,13 @@ Application Commands:
 
     to run the tests:
 
-        docker run -it --name CoolProjectContainer supercoolproject
+        docker run -it -p 12345:12345 --name CoolProjectContainer supercoolproject
         ./Tests
 
 
 
     to run the server (12345 for port 12345):
-       (if not run the tests) docker run -it --name CoolProjectContainer supercoolproject
+       (if not run the tests) docker run -it -p 12345:12345 --name CoolProjectContainer supercoolproject
        (if yes run the tests) docker exec -it CoolProjectContainer bash -c "cd /app/build && exec bash"
        ./server 12345 
 
