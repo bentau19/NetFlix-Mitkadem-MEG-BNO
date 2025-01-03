@@ -18,12 +18,9 @@ app.use('/api/tokens', token);
 app.use('/api/categories', categories);
 app.use('/api/movies', movies);
 // Undefined route handler
-app.use((req, res, next) => {
-  res.status(404).json({
-      error: {
-          message: '404 : Route not found',
-      },
-  });
+app.use((res) => {
+  res.status(400).json({ message: 'Route not found' });
+
 });
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
