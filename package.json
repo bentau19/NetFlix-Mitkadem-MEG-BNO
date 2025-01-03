@@ -1,5 +1,46 @@
 {
+
   "dependencies": {
-    "express": "^4.21.2"
-  }
+
+    "body-parser": "^1.20.3",
+
+    "cors": "^2.8.5",
+
+    "custom-env": "^2.0.6",
+
+    "dotenv": "^16.4.7",
+
+    "ejs": "^3.1.10",
+
+    "express": "^4.21.2",
+
+    "mongodb": "^6.12.0",
+
+    "mongoose": "^8.9.3"
+
+  },
+
+  "scripts": {
+
+    "start": "SET NODE_ENV=local && node nodejs/app.js",
+
+    "test": "SET NODE_ENV=test && node app.js"
+
+  },
+
+  "name": "server",
+
+  "version": "1.0.0",
+
+  "main": "app.js",
+
+  "keywords": [],
+
+  "author": "",
+
+  "license": "ISC",
+
+  "description": ""
+
 }
+
