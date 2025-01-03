@@ -172,7 +172,6 @@ const getRecommendMovie = async (userId,movieId) => {
 };
 const addMovieToUser = async (userId,movieId) => {
   try {
-
       const res=await serverData.communicateWithServer("PATCH "+userId+" "+movieId);                
       const result = await Users.updateOne(
         { _id: userId }, // Find the user by their _id
