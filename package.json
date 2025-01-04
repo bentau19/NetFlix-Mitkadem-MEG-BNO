@@ -24,7 +24,7 @@
 
     "start": "SET NODE_ENV=local && node nodejs/app.js",
 
-    "test": "SET NODE_ENV=test && node app.js"
+    "test": "SET NODE_ENV=test && node nodejs/app.js"
 
   },
 
