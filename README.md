@@ -26,6 +26,7 @@ Application Commands:
 
     to build the project :
         docker-compose build
+        docker-compose up -d
     to run cpp tests:
         docker exec -it netflix-mitkadem-meg-bno-cpp-1 /bin/bash
         cd build
