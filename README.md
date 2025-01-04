@@ -25,26 +25,21 @@ Application Commands:
 ### program testing and running instractions:
 
     to build the project :
-        docker build -t supercoolproject .
-
-
-    to run the tests:
-
-        docker run -it -p 12345:12345 --name CoolProjectContainer supercoolproject
+        docker-compose build
+    to run cpp tests:
+        docker exec -it netflix-mitkadem-meg-bno-cpp-1 /bin/bash
+        cd build
         ./Tests
 
-
-
-    to run the server (12345 for port 12345):
-       (if not run the tests) docker run -it -p 12345:12345 --name CoolProjectContainer supercoolproject
-       (if yes run the tests) docker exec -it CoolProjectContainer bash -c "cd /app/build && exec bash"
+    to run the cpp server:
+       docker exec -it netflix-mitkadem-meg-bno-cpp-1 /bin/bash
+       cd build
        ./server 12345 
 
-
-
-    to run the client(for ip 127.0.0.1 and port 12345):
-        docker exec -it CoolProjectContainer bash
-        python3 ./src/Client.py 127.0.0.1 12345
+    to run the nodejs:
+        docker exec -it netflix-mitkadem-meg-bno-nodejs-1 /bin/bash
+        cd nodejs
+        npm start
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
