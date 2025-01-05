@@ -1,0 +1,31 @@
+services:
+  nodejs:
+    build:
+      context: .
+      dockerfile: dockerfile.nodejs
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./nodejs:/usr/src/app/nodejs
+    stdin_open: true
+    tty: true
+    environment:
+      - NODE_ENV=docker  # Indicate this is the Docker environment
+      - hostClient=host.docker.internal  # Set the Docker-specific host
+      - portClient=12345
+      - CONNECTION_STRING=mongodb://host.docker.internal:27017/  # MongoDB connection for Docker
+      - PORT=3000
+  cpp:
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "12345:12345"
+    stdin_open: true
+    tty: true
+networks:
+  my_custom_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.18.0.0/16"  # Use a different subnet to avoid overlap
