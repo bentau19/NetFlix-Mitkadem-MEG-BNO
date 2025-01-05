@@ -23,10 +23,10 @@ const createUser = async (req, res) => {
             res.status(400).json({ message: 'User creation failed' });
         }
     } catch (error) {
-        if (err === ERROR_MESSAGES.VALIDATION_FAILED) {
-            console.error("Caught validation error:", err);
+        if (error === ERROR_MESSAGES.VALIDATION_FAILED) {
+            console.error("Caught validation error:", error);
         } else {
-            console.error("Caught an unknown error:", err);
+            console.error("Caught an unknown error:", error);
         }
         // Handle unexpected errors
         res.status(500).json({ message: 'An internal server error occurred', error: error.message });

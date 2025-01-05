@@ -7,4 +7,5 @@ const ERROR_MESSAGES = {
     VALIDATION_FAILED: "Validation failed: Please check your input",
 };
 
-export default ERROR_MESSAGES;
+// Export the ERROR_MESSAGES object using CommonJS
+module.exports = ERROR_MESSAGES;
