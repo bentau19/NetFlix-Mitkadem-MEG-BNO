@@ -20,8 +20,8 @@ const Movie = new Schema({
         {
             type: Number,
             ref: 'cat'
-        }
-    ]
+        },
+    ],
 });
 Movie.pre('save', async function (next) {
     if (this.isNew) {

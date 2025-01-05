@@ -1,10 +1,10 @@
 const ERROR_MESSAGES = {
-    Existing: (type) => `the ${type} is already existing`,
-    DBFail: "Fail to save in DB",
-    FORBIDDEN: "Error 403: Forbidden",
-    SERVER_ERROR: "Error 500: Internal server error",
-    BAD_REQUEST: "Error 400: Bad request",
-    VALIDATION_FAILED: "Validation failed: Please check your input",
+    Existing: (type) => `The ${type} already exists.`,
+    DBFail: "Failed to save to the database.",
+    FORBIDDEN: "Error 403: Forbidden.",
+    SERVER_ERROR: "Error 500: Internal server error.",
+    BAD_REQUEST: "Error 400: Bad request.",
+    VALIDATION_FAILED: "Validation failed: Please check your input.",
 };
 
-export default ERROR_MESSAGES;
+module.exports = ERROR_MESSAGES;

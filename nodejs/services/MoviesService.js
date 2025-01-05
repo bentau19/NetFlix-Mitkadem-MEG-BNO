@@ -3,12 +3,16 @@ const Categories = require('../models/categories');
 const Users = require('../models/user');
 const movies = require('../models/movies');
 const serverData = require('./SendData');
+const ERROR_MESSAGES = require('../validation/errorMessages');
 const getMoviesByCategory = async (userId) => {
     try {
+      if (!userId) {
+        throw ERROR_MESSAGES.BAD_REQUEST;
+      }
       // Step 1: Get the user's watched movies
       const user = await Users.findById(userId);
       if (!user) {
-        throw new Error('User not found');
+        throw 'User not found';
       }
       const watchedMovies = user.movies.map((movie) => movie.movie); // Extract movie IDs
       const lastWatchedMovies = user.movies
@@ -47,51 +51,53 @@ const getMoviesByCategory = async (userId) => {
       return result;
   
     } catch (error) {
-      console.error('Error fetching movies by category:', error);
-      return [];
+      throw ERROR_MESSAGES.SERVER_ERROR;
     }
   };
   
 
 const getMovieById = async (id) => {
-        try {
-            // Query the database for a user with matching name and password
+  if (!id) {
+    throw ERROR_MESSAGES.BAD_REQUEST;
+  }
             const movie = await Movies.findById(id);
-            return movie; // Will return the user or null if not found
-        } catch (err) {
-            return null;
-        }
+            return movie; 
 };
 const createMovie = async (title,logline,image,categories) => {
+  if(!title)throw ERROR_MESSAGES.BAD_REQUEST;
+  const test = await Movies.findOne({ title:title });
+  if (test) throw ERROR_MESSAGES.Existing("movie");
   const movies = new Movies({ title : title});
-  if (categories&&categories!=[]){
+  if(categories)
+  if (categories!=[]){
     for (const categoryName of categories) {
       const category = await Categories.findOne({ name: categoryName });
-      if(!category)throw new Error("No Cat find!");
-    }
-  }
+      if(!category)throw ERROR_MESSAGES.BAD_REQUEST;
+    }}
+
 
   if (logline) movies.logline = logline;
   if (image) movies.image = image;
   const res =await movies.save();
-    for (const categoryName of categories) {
-      const category = await Categories.findOne({ name: categoryName });
-      if(category){
+  if(categories)
+    if (categories!=[]){
+      for (const categoryName of categories) {
+        const category = await Categories.findOne({ name: categoryName });
         category.movies.push(res._id);
         res.categories.push(category._id);
         await category.save();
-      }
-    }
+      }}
 
   return await res.save();
 };
 
 const updateMovie = async (movieId, updateData) => {
-  try {
-    // Step 1: Get the movie by its _id
+  if (!movieId) {
+    throw ERROR_MESSAGES.BAD_REQUEST;
+  }
     const movie = await movies.findById(movieId);
     if (!movie) {
-      throw new Error('Movie not found');
+      throw ERROR_MESSAGES.BAD_REQUEST;
     }
 
       // First, remove the movie from all categories
@@ -121,20 +127,15 @@ const updated = await Movies.findOneAndReplace(
 
 
     if (!updated) {
-      throw new Error('Failed to update movie');
+      throw 'Failed to update movie';
     }
 
     return updated; // Return the updated movie object
-
-  } catch (error) {
-    console.error('Error updating movie:', error);
-    throw error; // Rethrow the error to handle it where needed
-  }
 };
 const deleteMovie = async (id) => {
-  try {
-      // Query the database for a user with matching name and password
+
       const movie = await Movies.findById(id);
+      if(!movie)throw ERROR_MESSAGES.BAD_REQUEST;
       const users = await Users.find(
         { 'movies.movie': id }, // Find users who have watched the movie
         { _id: 1 } // Only return the _id field
@@ -158,32 +159,39 @@ const deleteMovie = async (id) => {
     
       await Movies.deleteOne({ _id: id });
       return movie; // Will return the user or null if not found
-  } catch (err) {
-      return null;
-  }
 };
 const getRecommendMovie = async (userId,movieId) => {
-  try {
+
+  if(!userId||!movieId)throw ERROR_MESSAGES.BAD_REQUEST;
+  const user = await Users.findOne({ _id: userId });
+  if (!user) throw ERROR_MESSAGES.BAD_REQUEST;
+
+  // Check if the movie exists
+  const movie = await Movies.findOne({ _id: movieId });
+  if (!movie) throw  ERROR_MESSAGES.BAD_REQUEST;
       const res=await serverData.communicateWithServer("GET "+userId+" "+movieId);                
       return res; // Will return the user or null if not found
-  } catch (err) {
-      return null;
-  }
 };
 const addMovieToUser = async (userId,movieId) => {
-  try {
-      const res=await serverData.communicateWithServer("PATCH "+userId+" "+movieId);                
+      if(!userId||!movieId)throw ERROR_MESSAGES.BAD_REQUEST;
+      const user = await Users.findOne({ _id: userId });
+      if (!user) throw ERROR_MESSAGES.BAD_REQUEST;
+  
+      // Check if the movie exists
+      const movie = await Movies.findOne({ _id: movieId });
+      if (!movie) throw  ERROR_MESSAGES.BAD_REQUEST;
+    
+       const test = await Users.findOne({'_id':userId, 'movies.movie': movieId });
+      if (test) throw ERROR_MESSAGES.Existing("movie");   
       const result = await Users.updateOne(
         { _id: userId }, // Find the user by their _id
         { $push: { movies: { movie: movieId, whenWatched: new Date() } } } // Add movieId to the movies array
       );
+      const res=await serverData.communicateWithServer("PATCH "+userId+" "+movieId);
       return res; // Will return the user or null if not found
-  } catch (err) {
-      return null;
-  }
 };
 const getQueryMovie = async (query) => {
-  try {
+  if(!query)throw ERROR_MESSAGES.BAD_REQUEST;
     // Search for movies where the query string is found in any of the specified fields
     const movies = await Movies.find({
       $or: [
@@ -193,10 +201,6 @@ const getQueryMovie = async (query) => {
     });
 
     return movies; // Return the found movies
-  } catch (error) {
-    console.error('Error searching movies:', error);
-    throw error; // Handle or propagate the error
-  }
 };         
 module.exports = {getMoviesByCategory,getMovieById,createMovie,updateMovie
   ,getRecommendMovie,deleteMovie,addMovieToUser,getQueryMovie
