@@ -70,8 +70,8 @@ const createMovie = async (title,logline,image,categories) => {
   const movies = new Movies({ title : title});
   if(categories)
   if (categories!=[]){
-    for (const categoryName of categories) {
-      const category = await Categories.findOne({ name: categoryName });
+    for (const id of categories) {
+      const category = await Categories.findOne({ _id: id });
       if(!category)throw ERROR_MESSAGES.BAD_REQUEST;
     }}
 
@@ -81,10 +81,9 @@ const createMovie = async (title,logline,image,categories) => {
   const res =await movies.save();
   if(categories)
     if (categories!=[]){
-      for (const categoryName of categories) {
-        const category = await Categories.findOne({ name: categoryName });
+      for (const id of categories) {
         category.movies.push(res._id);
-        res.categories.push(category._id);
+        res.categories.push(id);
         await category.save();
       }}
 
