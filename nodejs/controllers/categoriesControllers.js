@@ -5,7 +5,7 @@ const getCategories = async (req, res) => {
     try {
         const result = await CategoriesService.getCategories()
         if (result) {
-            res.status(201).json({ message: result});
+            res.status(200).json({ message: result});
         } else {
             res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST });
         }
@@ -34,7 +34,7 @@ const getCategorieById = async (req, res) => {
     try {
         const result = await CategoriesService.getCategoriesById(req.params.id);
         if (result) {
-            res.status(201).json({ message: result});
+            res.status(200).json({ message: result});
         } else {
             res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST });
         }
@@ -48,7 +48,7 @@ const updateCategory = async (req, res) => {
     try {
         const result =await CategoriesService.updateCategories(req.params.id,req.body.name,req.body.promoted);
         if (result) {
-            res.status(201).json({ message: result});
+            res.status(204).json({ message: result});
         } else {
             res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST });
         }
@@ -62,7 +62,7 @@ const deleteCategory = async (req, res) => {
     try {
         const result =await CategoriesService.deleteCategories(req.params.id);
         if (result) {
-            res.status(201).json({ message: result});
+            res.status(204).json({ message: result});
         } else {
             res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST });
         }

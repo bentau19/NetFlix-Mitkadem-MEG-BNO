@@ -82,9 +82,10 @@ const createMovie = async (title,logline,image,categories) => {
   const res =await movies.save();
   if(categories)
     if (categories!=[]){
-      for (const id of categories) {
+      for (const categoryName of categories) {
+        const category = await Categories.findOne({ _id: categoryName });
         category.movies.push(res._id);
-        res.categories.push(id);
+        res.categories.push(category._id);
         await category.save();
       }}
 
@@ -197,7 +198,8 @@ const getQueryMovie = async (query) => {
     const movies = await Movies.find({
       $or: [
         { title: { $regex: query, $options: 'i' } },  // Case-insensitive search on title
-        { logline: { $regex: query, $options: 'i' } } // Case-insensitive search on logline
+        { logline: { $regex: query, $options: 'i' } }, // Case-insensitive search on logline
+      { categories: query } 
       ]
     });
 
