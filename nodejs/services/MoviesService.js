@@ -1,3 +1,4 @@
+const counter = require('../utils/idManager');
 const Movies = require('../models/movies');
 const Categories = require('../models/categories');
 const Users = require('../models/user');
@@ -158,6 +159,7 @@ const deleteMovie = async (id) => {
       );
     
       await Movies.deleteOne({ _id: id });
+      counter.addReusableId("movieId", id);
       return movie; // Will return the user or null if not found
 };
 const getRecommendMovie = async (userId,movieId) => {
