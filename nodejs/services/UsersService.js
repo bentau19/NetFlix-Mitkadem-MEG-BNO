@@ -1,14 +1,24 @@
 const User = require('../models/user');
+const serverData = require('../services/SendData');
 const ERROR_MESSAGES = require('../validation/errorMessages');
-const createUser = async (name, image, password) => {
-    const test = await User.findOne({ name, password });
-    if (test) throw new Error(ERROR_MESSAGES.Existing("user"));
+const createUser = async (name,email, image, password) => {
+    if(!name||!email||!password)throw ERROR_MESSAGES.VALIDATION_FAILED;
+    const test = await User.findOne({ email: email });
+    if (test) throw ERROR_MESSAGES.Existing("user");
     if(!(name&&password)) throw ERROR_MESSAGES.DBFail;
-    const temp = { name : name, password:password };
+    const temp = { name : name,email: email, password:password };
     if (image) temp.image = image;
     const user = new User(temp);
     try{
         const res =await user.save();
+        try{
+            await serverData.communicateWithServer("POST "+res._id+" 0");
+            await serverData.communicateWithServer("DELETE "+res._id+" 0");
+        }catch(error){
+            await User.deleteOne({ email: email });
+            throw ERROR_MESSAGES.SERVER_ERROR;
+        }
+
         return res;
     }catch(err){
         throw ERROR_MESSAGES.VALIDATION_FAILED;
@@ -26,11 +36,10 @@ const getUser = async (id) => {
 };
 
 
-const findUserByNP = async (name, password) => {
+const findUserByNP = async (email, password) => {
     try {
-        // Query the database for a user with matching name and password
-        const user = await User.findOne({ name, password });
-        return user; // Will return the user or null if not found
+        const user = await User.findOne({ email: email, password: password });
+        return user; 
     } catch (err) {
         return null;
     }

@@ -1,23 +1,75 @@
 
 const CategoriesService = require('../services/CategoriesService');
-
+const ERROR_MESSAGES = require('../validation/errorMessages');
 const getCategories = async (req, res) => {
-    res.json(await CategoriesService.getCategories());
+    try {
+        const result = await CategoriesService.getCategories()
+        if (result) {
+            res.status(200).json({ message: result});
+        } else {
+            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST });
+        }
+    } catch (error) {
+        if( ERROR_MESSAGES.BAD_REQUEST==error)
+            res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
+    }
 };
 const createCategory = async (req, res) => {
-    res.json(await CategoriesService.createCategories(req.body.name,req.body.promoted));
+    try {
+        const result=await CategoriesService.createCategories(req.body.name,req.body.promoted);
+        if (result) {
+            res.status(201).json({ message: result});
+        } else {
+            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST });
+        }
+    } catch (error) {
+        if( ERROR_MESSAGES.BAD_REQUEST==error||ERROR_MESSAGES.Existing("category")==error)
+            res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
+    }
+    
 };
 const getCategorieById = async (req, res) => {
-    const article = await CategoriesService.getCategoriesById(req.params.id);
-        if (!article) {
-        return res.status(404).json({ errors: ['Categories not found'] });
+    try {
+        const result = await CategoriesService.getCategoriesById(req.params.id);
+        if (result) {
+            res.status(200).json({ message: result});
+        } else {
+            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST });
         }
-        res.json(article);
+    } catch (error) {
+        if( ERROR_MESSAGES.BAD_REQUEST==error)
+            res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
+    }
 };
 const updateCategory = async (req, res) => {
-    res.json(await CategoriesService.updateCategories(req.params.id,req.body.name,req.body.promoted));
+    try {
+        const result =await CategoriesService.updateCategories(req.params.id,req.body.name,req.body.promoted);
+        if (result) {
+            res.status(204).json({ message: result});
+        } else {
+            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST });
+        }
+    } catch (error) {
+        if( ERROR_MESSAGES.BAD_REQUEST==error)
+            res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
+    }
 };
 const deleteCategory = async (req, res) => {
-    res.json(await CategoriesService.deleteCategories(req.params.id));
+    try {
+        const result =await CategoriesService.deleteCategories(req.params.id);
+        if (result) {
+            res.status(204).json({ message: result});
+        } else {
+            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST });
+        }
+    } catch (error) {
+        if( ERROR_MESSAGES.BAD_REQUEST==error)
+            res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
+    }
 };
 module.exports = {getCategories, createCategory, getCategorieById,updateCategory,deleteCategory };
