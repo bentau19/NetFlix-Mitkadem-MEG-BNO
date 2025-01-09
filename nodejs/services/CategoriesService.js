@@ -1,3 +1,4 @@
+const counter = require('../utils/idManager');
 const Categories = require('../models/categories');
 const Movie = require('../models/movies');
 const ERROR_MESSAGES = require('../validation/errorMessages');
@@ -31,6 +32,7 @@ await  Movie.updateMany(
     { $pull: { categories: id } } // Remove the category ID from the 'categories' array
 );
 await categories.deleteOne();
+counter.addReusableId("categorieId", id);
 return categories;
 };
 module.exports = {createCategories, getCategoriesById, getCategories, updateCategories, deleteCategories }
