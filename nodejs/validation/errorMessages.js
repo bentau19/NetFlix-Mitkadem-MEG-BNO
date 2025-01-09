@@ -7,4 +7,5 @@ const ERROR_MESSAGES = {
     VALIDATION_FAILED: "Validation failed: Please check your input.",
 };
 
+
 module.exports = ERROR_MESSAGES;

@@ -12,10 +12,12 @@ const createUser = async (req, res) => {
         );
         res.status(201).json({ message: 'User created successfully',_id:result._id });
     } catch (error) {
+
         if (error === ERROR_MESSAGES.VALIDATION_FAILED||ERROR_MESSAGES.Existing("user")==error) {
             res.status(400).json({ message: error });
         } else {
             res.status(500).json({ message: error });
+
         }
     }
 }
