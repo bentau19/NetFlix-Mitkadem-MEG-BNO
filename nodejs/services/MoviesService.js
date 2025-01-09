@@ -198,7 +198,8 @@ const getQueryMovie = async (query) => {
     const movies = await Movies.find({
       $or: [
         { title: { $regex: query, $options: 'i' } },  // Case-insensitive search on title
-        { logline: { $regex: query, $options: 'i' } } // Case-insensitive search on logline
+        { logline: { $regex: query, $options: 'i' } }, // Case-insensitive search on logline
+      { categories: query } 
       ]
     });
 
