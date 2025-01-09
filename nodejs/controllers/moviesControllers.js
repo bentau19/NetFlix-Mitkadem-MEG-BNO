@@ -1,22 +1,19 @@
 
 const MovieService = require('../services/MoviesService');
+const ERROR_MESSAGES = require('../validation/errorMessages');
 
 const getMoviesByCategories = async (req, res) => {
     try {
         const result = await MovieService.getMoviesByCategory(
-            req.body.userId
+            req.headers['userid']
         );
-        if (result) {
-            // Assuming createUser returns a truthy value on success
-            res.status(201).json(result);
-        } else {
-            // If createUser returns a falsy value (e.g., null or undefined)
-            res.status(400).json({ message: 'Movie creation failed' });
-        }
+
+        res.status(201).json(result);
+        
     } catch (error) {
-        // Handle unexpected errors
-        console.error(error); // Log the error for debugging
-        res.status(500).json({ message: 'An internal server error occurred', error: error.message });
+        if(error==ERROR_MESSAGES.SERVER_ERROR)
+        res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR });
+        else res.status(400).json({ message: error });
     }
 };
 const createMovie = async (req, res) => {
@@ -28,21 +25,14 @@ const createMovie = async (req, res) => {
             req.body.categories
         );
         if (result) {
-            try{
             res.status(201).json({ message: 'Movie created successfully',_id:result._id });
-            }catch(error){
-                console.error(error); // Log the error for debugging
-                res.status(500).json({ message: 'An internal server error occurred', error: error.message });
-            }
-            // Assuming createUser returns a truthy value on success
         } else {
-            // If createUser returns a falsy value (e.g., null or undefined)
             res.status(400).json({ message: 'Movie creation failed' });
         }
     } catch (error) {
-        // Handle unexpected errors
-        console.error(error); // Log the error for debugging
-        res.status(400).json({ message: 'An internal server error occurred', error: error.message });
+        if( ERROR_MESSAGES.BAD_REQUEST==error||ERROR_MESSAGES.Existing("movie")==error)
+            res.status(400).json({ message: error});
+        else res.status(500).json({ message: error});
     }
 }
 
@@ -53,14 +43,12 @@ const getMovieById = async (req, res) => {
             );
             if (result) {
                 // Assuming createUser returns a truthy value on success
-                res.status(201).json({ name: result.title,categories:result.categories });
+                res.status(201).json(result);
             } else {
                 // If createUser returns a falsy value (e.g., null or undefined)
-                res.status(400).json({ message: 'Movie creation failed' });
+                res.status(400).json({ message: 'no movie at this value' });
             }
         } catch (error) {
-            // Handle unexpected errors
-            console.error(error); // Log the error for debugging
             res.status(500).json({ message: 'An internal server error occurred', error: error.message });
         }
     };
@@ -70,16 +58,14 @@ const switchMovie = async (req, res) => {
             req.params.id,req.body
         );
         if (result) {
-            // Assuming createUser returns a truthy value on success
             res.status(201).json(result);
         } else {
-            // If createUser returns a falsy value (e.g., null or undefined)
-            res.status(400).json({ message: 'Movie creation failed' });
+            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
         }
     } catch (error) {
-        // Handle unexpected errors
-        console.error(error); // Log the error for debugging
-        res.status(500).json({ message: 'An internal server error occurred', error: error.message });
+        if( ERROR_MESSAGES.BAD_REQUEST==error)
+            res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
     }
 };
 const deleteMovie = async (req, res) => {
@@ -87,60 +73,47 @@ const deleteMovie = async (req, res) => {
             const result = await MovieService.deleteMovie(
                 req.params.id
             );
-            if (result) {
-                try{
-                res.status(201).json({ message: 'User created successfully',_id:result._id });
-                }catch(error){
-                    console.error(error); // Log the error for debugging
-                    res.status(500).json({ message: 'An internal server error occurred', error: error.message });
-                }
-                // Assuming createUser returns a truthy value on success
-            } else {
-                // If createUser returns a falsy value (e.g., null or undefined)
-                res.status(400).json({ message: 'User creation failed' });
-            }
+            if (result)
+            res.status(201).json({ message: 'User created successfully',_id:result._id });
+            else res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
         } catch (error) {
-            // Handle unexpected errors
-            console.error(error); // Log the error for debugging
-            res.status(500).json({ message: 'An internal server error occurred', error: error.message });
+            if( ERROR_MESSAGES.BAD_REQUEST==error)
+                res.status(400).json({ message: error});
+            else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
         }
 };
 const getRecommendMovie = async (req, res) => {
     try {
         const result = await MovieService.getRecommendMovie(
-            req.body.userId,
+            req.headers['userid'],
             req.params.id
         );
         if (result) {
-            // Assuming createUser returns a truthy value on success
             res.status(201).json(result);
         } else {
-            // If createUser returns a falsy value (e.g., null or undefined)
-            res.status(400).json({ message: 'Movie creation failed' });
+            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
         }
     } catch (error) {
-        // Handle unexpected errors
-        console.error(error); // Log the error for debugging
-        res.status(500).json({ message: 'An internal server error occurred', error: error.message });
+        if( ERROR_MESSAGES.BAD_REQUEST==error||ERROR_MESSAGES.Existing("user")==error)
+            res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
     }
 };
 const addMovieToUser = async (req, res) => {
     try {
         const result = await MovieService.addMovieToUser(
-            req.body.userId,
+            req.headers['userid'],
             req.params.id
         );
         if (result) {
-            // Assuming createUser returns a truthy value on success
             res.status(201).json(result);
         } else {
-            // If createUser returns a falsy value (e.g., null or undefined)
-            res.status(400).json({ message: 'Movie creation failed' });
+            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
         }
     } catch (error) {
-        // Handle unexpected errors
-        console.error(error); // Log the error for debugging
-        res.status(500).json({ message: 'An internal server error occurred', error: error.message });
+        if( ERROR_MESSAGES.BAD_REQUEST==error||ERROR_MESSAGES.Existing("movie")==error)
+            res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
     }
 };
 const getQueryMovie = async (req, res) => {
@@ -154,13 +127,12 @@ const getQueryMovie = async (req, res) => {
             // Assuming createUser returns a truthy value on success
             res.status(201).json(result);
         } else {
-            // If createUser returns a falsy value (e.g., null or undefined)
-            res.status(400).json({ message: 'Movie creation failed' });
+            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
         }
     } catch (error) {
-        // Handle unexpected errors
-        console.error(error); // Log the error for debugging
-        res.status(500).json({ message: 'An internal server error occurred', error: error.message });
+        if( ERROR_MESSAGES.BAD_REQUEST==error)
+            res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
     }
 };
 

@@ -7,6 +7,10 @@ const User = new Schema({
     _id: { 
         type: Number 
     },
+    email: {
+        type: String,
+        required: true
+    },
     name: {
         type: String,
         required: true
