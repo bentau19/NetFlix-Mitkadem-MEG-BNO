@@ -5,7 +5,7 @@ const ERROR_MESSAGES = require('../validation/errorMessages');
 const getMoviesByCategories = async (req, res) => {
     try {
         const result = await MovieService.getMoviesByCategory(
-            req.body.userId
+            req.headers['userid']
         );
 
         res.status(201).json(result);
@@ -85,7 +85,7 @@ const deleteMovie = async (req, res) => {
 const getRecommendMovie = async (req, res) => {
     try {
         const result = await MovieService.getRecommendMovie(
-            req.body.userId,
+            req.headers['userid'],
             req.params.id
         );
         if (result) {
@@ -102,7 +102,7 @@ const getRecommendMovie = async (req, res) => {
 const addMovieToUser = async (req, res) => {
     try {
         const result = await MovieService.addMovieToUser(
-            req.body.userId,
+            req.headers['userid'],
             req.params.id
         );
         if (result) {
