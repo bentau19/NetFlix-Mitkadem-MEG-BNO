@@ -74,7 +74,7 @@ const deleteMovie = async (req, res) => {
                 req.params.id
             );
             if (result)
-            res.status(201).json({ message: 'User created successfully',_id:result._id });
+            res.status(201).json({ message: 'Movie deleted successfully' });
             else res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
         } catch (error) {
             if( ERROR_MESSAGES.BAD_REQUEST==error)
