@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <cstdlib> // For std::stoi
 #include "ThreadPool/ThreadPool.h"
 #include "App/App.h"
 #include "Menu/ServerMenu.h"
@@ -20,8 +21,7 @@
 #include "Commands/Delete_Data/DeleteCmd.h"
 #include "Commands/Data_Manipulation/GetCmd.h"
 
-
-#define PORT 8082
+#define DEFAULT_PORT 8082
 #define MAX_CLIENTS 3
 
 // Declare global commands and mutex
@@ -52,7 +52,19 @@ void handleClient(int clientSocket) {
     close(clientSocket);  // Close the socket after handling
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    int port = DEFAULT_PORT;
+
+    // Check if a port number is provided as a command-line argument
+    if (argc > 1) {
+        try {
+            port = std::stoi(argv[1]);  // Convert argument to integer
+        } catch (std::exception& e) {
+            std::cerr << "Invalid port number. Using default port " << DEFAULT_PORT << std::endl;
+            port = DEFAULT_PORT;
+        }
+    }
+
     int serverSocket, clientSocket;
     struct sockaddr_in serverAddr, clientAddr;
     socklen_t clientAddrLen = sizeof(clientAddr);
@@ -66,7 +78,7 @@ int main() {
     // Configure server address
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_addr.s_addr = INADDR_ANY;
-    serverAddr.sin_port = htons(PORT);
+    serverAddr.sin_port = htons(port);
 
     // Bind the socket
     if (bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0) {
@@ -80,7 +92,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    std::cout << "Server is listening on port " << PORT << std::endl;
+    std::cout << "Server is listening on port " << port << std::endl;
 
     while (true) {
         if ((clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddr, &clientAddrLen)) < 0) {

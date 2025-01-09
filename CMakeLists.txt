@@ -58,6 +58,8 @@ add_executable(
   src/dataClass/Data.cpp
   src/Menu/ServerMenu.cpp
   src/App/App.cpp
+  src/ThreadPool/ThreadPool.cpp
+
         src/Commands/General/Validity.h
     src/File_Classes/UserFile.cpp
   src/File_Classes/BaseFile.cpp
