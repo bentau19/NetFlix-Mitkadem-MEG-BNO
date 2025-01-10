@@ -1,12 +1,13 @@
 # NetFlix-Mitkadem-MEG-BNO
 third part of the project.
-
+(secend part is now in branch Sprint2complete)
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### updates:
 - pogram now running on New Node.js server , using RESTful API and mongoDB data base.
 - old server now is use as recommendation system.
 - The recommendation server is now using a thread pool instead of multi-threading (3 threads).
+
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Each command in the recommendation system was encapsulated as a separate class to adhere to the Command Design Pattern.
