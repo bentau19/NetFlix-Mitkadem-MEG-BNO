@@ -29,7 +29,7 @@ const getUser = async (req, res) => {
         if (result) {
             result.password="unrelevent";
             // Assuming createUser returns a truthy value on success
-            res.status(201).json(result);
+            res.status(200).json(result);
         } else {
             // If createUser returns a falsy value (e.g., null or undefined)
             res.status(400).json({ message: 'User doesnt exist' });
@@ -47,7 +47,7 @@ const signIn = async (req, res) => {
         );
         if (result) {
             // Assuming createUser returns a truthy value on success
-            res.status(201).json({ id:result._id});
+            res.status(200).json({ id:result._id});
         } else {
             // If createUser returns a falsy value (e.g., null or undefined)
             res.status(400).json({ message: 'wrong Username or password' });

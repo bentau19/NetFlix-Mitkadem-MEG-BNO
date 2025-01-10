@@ -1,3 +1,4 @@
+const counter = require('../utils/idManager');
 const Movies = require('../models/movies');
 const Categories = require('../models/categories');
 const Users = require('../models/user');
@@ -70,8 +71,8 @@ const createMovie = async (title,logline,image,categories) => {
   const movies = new Movies({ title : title});
   if(categories)
   if (categories!=[]){
-    for (const categoryName of categories) {
-      const category = await Categories.findOne({ name: categoryName });
+    for (const id of categories) {
+      const category = await Categories.findOne({ _id: id });
       if(!category)throw ERROR_MESSAGES.BAD_REQUEST;
     }}
 
@@ -82,7 +83,7 @@ const createMovie = async (title,logline,image,categories) => {
   if(categories)
     if (categories!=[]){
       for (const categoryName of categories) {
-        const category = await Categories.findOne({ name: categoryName });
+        const category = await Categories.findOne({ _id: categoryName });
         category.movies.push(res._id);
         res.categories.push(category._id);
         await category.save();
@@ -158,6 +159,7 @@ const deleteMovie = async (id) => {
       );
     
       await Movies.deleteOne({ _id: id });
+      counter.addReusableId("movieId", id);
       return movie; // Will return the user or null if not found
 };
 const getRecommendMovie = async (userId,movieId) => {
@@ -196,7 +198,8 @@ const getQueryMovie = async (query) => {
     const movies = await Movies.find({
       $or: [
         { title: { $regex: query, $options: 'i' } },  // Case-insensitive search on title
-        { logline: { $regex: query, $options: 'i' } } // Case-insensitive search on logline
+        { logline: { $regex: query, $options: 'i' } }, // Case-insensitive search on logline
+      { categories: query } 
       ]
     });
 

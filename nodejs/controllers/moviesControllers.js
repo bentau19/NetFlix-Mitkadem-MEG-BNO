@@ -8,7 +8,7 @@ const getMoviesByCategories = async (req, res) => {
             req.headers['userid']
         );
 
-        res.status(201).json(result);
+        res.status(200).json(result);
         
     } catch (error) {
         if(error==ERROR_MESSAGES.SERVER_ERROR)
@@ -43,7 +43,7 @@ const getMovieById = async (req, res) => {
             );
             if (result) {
                 // Assuming createUser returns a truthy value on success
-                res.status(201).json(result);
+                res.status(200).json(result);
             } else {
                 // If createUser returns a falsy value (e.g., null or undefined)
                 res.status(400).json({ message: 'no movie at this value' });
@@ -58,7 +58,7 @@ const switchMovie = async (req, res) => {
             req.params.id,req.body
         );
         if (result) {
-            res.status(201).json(result);
+            res.status(204).json(result);
         } else {
             res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
         }
@@ -74,7 +74,7 @@ const deleteMovie = async (req, res) => {
                 req.params.id
             );
             if (result)
-            res.status(201).json({ message: 'User created successfully',_id:result._id });
+            res.status(204).json({ message: 'Movie deleted successfully' });
             else res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
         } catch (error) {
             if( ERROR_MESSAGES.BAD_REQUEST==error)
@@ -89,7 +89,7 @@ const getRecommendMovie = async (req, res) => {
             req.params.id
         );
         if (result) {
-            res.status(201).json(result);
+            res.status(200).json(result);
         } else {
             res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
         }
@@ -106,7 +106,7 @@ const addMovieToUser = async (req, res) => {
             req.params.id
         );
         if (result) {
-            res.status(201).json(result);
+            res.status(204).json(result);
         } else {
             res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
         }
@@ -125,7 +125,7 @@ const getQueryMovie = async (req, res) => {
         );
         if (result) {
             // Assuming createUser returns a truthy value on success
-            res.status(201).json(result);
+            res.status(200).json(result);
         } else {
             res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
         }

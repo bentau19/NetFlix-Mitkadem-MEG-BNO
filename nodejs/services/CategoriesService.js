@@ -1,4 +1,6 @@
+const counter = require('../utils/idManager');
 const Categories = require('../models/categories');
+const Movie = require('../models/movies');
 const ERROR_MESSAGES = require('../validation/errorMessages');
 const createCategories = async (name, promoted) => {
 if(!name)throw ERROR_MESSAGES.BAD_REQUEST;
@@ -25,7 +27,12 @@ const deleteCategories = async (id) => {
 if(!id)throw ERROR_MESSAGES.BAD_REQUEST;
 const categories = await getCategoriesById(id);
 if (!categories) throw ERROR_MESSAGES.BAD_REQUEST;
+await  Movie.updateMany(
+    { categories: id }, // Find movies where the category ID exists in the 'categories' array
+    { $pull: { categories: id } } // Remove the category ID from the 'categories' array
+);
 await categories.deleteOne();
+counter.addReusableId("categorieId", id);
 return categories;
 };
 module.exports = {createCategories, getCategoriesById, getCategories, updateCategories, deleteCategories }
