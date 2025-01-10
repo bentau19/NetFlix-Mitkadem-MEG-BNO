@@ -4,11 +4,10 @@ second part of the project.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### updates:
--  The server and client applications (use threads to allow multiple clients to connect simultaneously).
--  The delete command is now supported.
-  
+- The recommendation server is now using a thread pool instead of multi-threading (3 threads).
+- New Node.js server.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-### Each command was encapsulated as a separate class to adhere to the Command Design Pattern.
+### Each command in the recomend systum was encapsulated as a separate class to adhere to the Command Design Pattern.
 
 Application Commands:
 - help: Provides a list and explanation of all available commands in the application.
@@ -20,7 +19,31 @@ Application Commands:
 *Invalid or unsupported commands are met with a corresponding error message.
   
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### The new Node.js application was implemented using the MVC structure.
 
+Alow the flowing roots:
+- http://localhost:3000/api/users
+    suport: POST
+- http://localhost:3000/api/users/:id
+    suport: GET
+  - http://localhost:3000/api/tokens
+    suport: POST 
+  - http://localhost:3000/api/categories
+    suport: GET , POST
+- http://localhost:3000/api/categories/:id
+    suport: GET , PATCH ,DELETE
+  - http://localhost:3000/api/movies
+    suport: GET , POST
+- http://localhost:3000/api/movies/:id
+    suport: GET , PUT ,DELETE
+  - http://localhost:3000/api/movies/:id/recommend/
+    suport: GET , POST
+- http://localhost:3000/api/search/:query/
+    suport: GET
+  
+*Invalid or unsupported roots are met with a corresponding error message.
+  
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### program testing and running instractions:
 
@@ -66,37 +89,4 @@ tests runs:
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
- **answer to guideline questions:**
-
-1. *"Did the fact that the command names changed require you to modify code that is supposed to be 'closed to changes but open to extensions'?"*
-
-This fact didn’t require us to touch the closed code (e.g., the add function or the recommend function). We just had to verify that 
-the new rules were valid (the extended ones) and then call the closed code.
-
-
-
-2. *"Did the fact that new commands were added require you to modify code that is supposed to be 'closed to changes but open to extensions'?"*
-
-This fact again didn’t really require us to touch the closed code because all the new commands are just an extension of the original ones. We simply checked the new rules and then called the previous commands.
-
-file wise:  the addition of the function to delete only meant adding 1 more function to the fileio class,
-            which handles all the complex reading and writing.
-
-
-
-3. *"Did the fact that the output of the commands changed require you to modify code that is supposed to be 'closed to changes but open to extensions'?"*
-
-Again, not really. We placed all the outputs in a define statement, so it was easy to just change the string there, and it updated 
-all the outputs across the closed code.
-
-
-
-4. *"Did the fact that the input/output now comes from sockets instead of the console require you to modify code that is supposed to be 'closed to changes but open to extensions'?"*
-
-Only minor changes were needed, such as adding a print function instead of having the execute method print the output directly, and adding a print command to the menu interface. Other than that, we only extended the functionality by creating a server menu where receiving input and printing results are done via server and client sockets instead of through the console.
-Also  a mutex is implemented to control access to the app data, ensuring that client threads do not override each other.
- 
-file wise : the socket addition did pose a challange as reading and writing at the same time is problematic
-            the easiest way to see it is if a user tries deleting a file and another adds one the writing of the adding could override the writing of the delete,
-            this meant changing the code in basefile, as it was needed to add locks to basefile and addbuild
 
