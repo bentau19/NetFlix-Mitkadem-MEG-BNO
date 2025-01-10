@@ -4,10 +4,12 @@ third part of the project.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### updates:
+- pogram now running on New Node.js server , using RESTful API and mongoDB data base.
+- old server now is use as recommendation system.
 - The recommendation server is now using a thread pool instead of multi-threading (3 threads).
-- New Node.js server.
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-### Each command in the recomend systum was encapsulated as a separate class to adhere to the Command Design Pattern.
+### Each command in the recommendation system was encapsulated as a separate class to adhere to the Command Design Pattern.
 
 Application Commands:
 - help: Provides a list and explanation of all available commands in the application.
