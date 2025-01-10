@@ -10,7 +10,7 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <cstdlib> // For std::stoi
+#include <cstdlib> 
 #include "ThreadPool/ThreadPool.h"
 #include "App/App.h"
 #include "Menu/ServerMenu.h"
@@ -21,8 +21,8 @@
 #include "Commands/Delete_Data/DeleteCmd.h"
 #include "Commands/Data_Manipulation/GetCmd.h"
 
-#define DEFAULT_PORT 8082
-#define MAX_CLIENTS 3
+#define DEFAULT_PORT 12345 //defolt port
+#define MAX_CLIENTS 3 //define max threads num
 
 // Declare global commands and mutex
 std::mutex command_mutex;
@@ -31,7 +31,7 @@ std::map<std::string, ICommand*> commands;
 ThreadPool threadPool(MAX_CLIENTS);  // Create a thread pool
 
 void handleClient(int clientSocket) {
-    Data* data = new Data();
+    Data* data = new Data(); //create data
     data->client_sock = clientSocket;
 
     // Initialize commands
@@ -91,15 +91,16 @@ int main(int argc, char* argv[]) {
         perror("Listen failed");
         exit(EXIT_FAILURE);
     }
-
+     //inform that the server is indeed running
     std::cout << "Server is listening on port " << port << std::endl;
-
+    //infinate loop
     while (true) {
+        //if negatine means an error happend
         if ((clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddr, &clientAddrLen)) < 0) {
             perror("Accept failed");
             continue;
         }
-
+        //print un sever that anew connection happend
         std::cout << "New connection: " << inet_ntoa(clientAddr.sin_addr) << ":" << ntohs(clientAddr.sin_port) << std::endl;
 
         // Add the client handler as a task for the thread pool
@@ -109,5 +110,5 @@ int main(int argc, char* argv[]) {
     }
 
     close(serverSocket);  // Close the server socket
-    return 0;
+    return 0; //end pogram
 }
