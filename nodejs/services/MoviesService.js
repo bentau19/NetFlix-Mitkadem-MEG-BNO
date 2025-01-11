@@ -193,18 +193,33 @@ const addMovieToUser = async (userId,movieId) => {
       return res; // Will return the user or null if not found
 };
 const getQueryMovie = async (query) => {
-  if(!query)throw ERROR_MESSAGES.BAD_REQUEST;
-    // Search for movies where the query string is found in any of the specified fields
-    const movies = await Movies.find({
-      $or: [
-        { title: { $regex: query, $options: 'i' } },  // Case-insensitive search on title
-        { logline: { $regex: query, $options: 'i' } }, // Case-insensitive search on logline
-      { categories: query } 
-      ]
-    });
+  if (!query) throw new Error(ERROR_MESSAGES.BAD_REQUEST);
 
-    return movies; // Return the found movies
-};         
+  // Convert query to an integer for category search (if valid number)
+  const categoryQuery = parseInt(query, 10);
+
+  // Start constructing the conditions object with title and logline regex search
+  const conditions = {
+    $or: [
+      { title: { $regex: query, $options: 'i' } },  // Case-insensitive search on title
+      { logline: { $regex: query, $options: 'i' } }  // Case-insensitive search on logline
+    ]
+  };
+
+  // If the query is a valid number, add the categories condition to the search
+  if (!isNaN(categoryQuery)) {
+    // Here, we need to combine the conditions without replacing anything
+    conditions.$or.push({ categories: { $in: [categoryQuery] } });  // Add categories to the existing $or
+  }
+
+  // Perform the search with the constructed conditions
+  const testQuery = await Movies.find(conditions);
+
+  return testQuery;
+};
+
+
+ 
 module.exports = {getMoviesByCategory,getMovieById,createMovie,updateMovie
   ,getRecommendMovie,deleteMovie,addMovieToUser,getQueryMovie
 }
