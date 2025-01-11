@@ -59,7 +59,7 @@ Alow the flowing roots:
         ./Tests
 
     to run the cpp server:
-       docker exec -it netflix-mitkadem-meg-bno-cpp-1 /bin/bash
+       
        cd build
        ./server 12345 
 
@@ -73,23 +73,48 @@ Alow the flowing roots:
 (For the clearty we made the running test with enter command and server respose, at the actual project we not printing it as the guide says)
 ### running examples:
 
-regular run:
+## Running Servers
+1. **Run C++ Server**  
+   ![Run C++ Server](photos/curlcommands/1%20(run%20cpp%20server).png)
 
-![Description of Image](photos/multy1.png)
-![Description of Image](photos/multy2.png)
-![Description of Image](photos/multy3.png)
-![Description of Image](photos/multy4.png)
+2. **Run Node.js Server**  
+   ![Run Node.js Server](photos/curlcommands/2%20(run%20nodejs%20server).png)
 
-exiting the app and returning:
+## Curl Commands
+3. **Create User**  
+   ![Create User](photos/curlcommands/3%20(create%20user).png)
 
-![Description of Image](photos/RESUME.png)
-![Description of Image](photos/RESUME2.png)
+4. **Get User**  
+   ![Get User](photos/curlcommands/4%20(get%20user).png)
 
+5. **Tokens POST**  
+   ![Tokens POST](photos/curlcommands/5%20(tokens%20POST).png)
+
+6. **POST Categories**  
+   ![POST Categories](photos/curlcommands/6%20(POST%20categories).png)
+
+7. **GET Categories**  
+   ![GET Categories](photos/curlcommands/7%20(GET%20categories).png)
+
+8. **GET All Categories**  
+   ![GET All Categories](photos/curlcommands/8%20(GET%20all%20categories).png)
+
+9. **PATCH Categories**  
+   ![PATCH Categories](photos/curlcommands/9%20(PATCH%20categories).png)
+
+10. **POST Movies**  
+    ![POST Movies](photos/curlcommands/10%20(POST%20movies).png)
+
+11. **GET Movies**  
+    ![GET Movies](photos/curlcommands/11%20(GET%20movies).png)
+
+12. **GET Recommend**  
+    ![GET Recommend](photos/curlcommands/12%20(GET%20recommend).png)
 
 tests runs:
 
 ![Description of Image](photos/TESTS.png)
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------docker exec -it netflix-mitkadem-meg-bno-cpp-1 /bin/bash-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
