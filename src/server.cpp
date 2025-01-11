@@ -1,82 +1,38 @@
 #include <iostream>
+#include <thread>
+#include <mutex>
+#include <atomic>
+#include <vector>
+#include <queue>
+#include <condition_variable>
+#include <string>
 #include <cstring>
-#include <pthread.h>
-#include <arpa/inet.h>
 #include <unistd.h>
-#include <cstdlib>  // For std::stoi
-#include <map>
-#include "dataClass/Data.h"
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <cstdlib> 
+#include "ThreadPool/ThreadPool.h"
+#include "App/App.h"
 #include "Menu/ServerMenu.h"
-#include "File_Classes/StringHandler.h"
 #include "Commands/General/ICommand.h"
 #include "Commands/General/HelpCmd.h"
-#include "App/App.h"
 #include "Commands/Add_Data/PatchCmd.h"
 #include "Commands/Add_Data/PostCmd.h"
 #include "Commands/Delete_Data/DeleteCmd.h"
 #include "Commands/Data_Manipulation/GetCmd.h"
-#include <mutex>
-using namespace std;
 
+#define DEFAULT_PORT 12345 //defolt port
+#define MAX_CLIENTS 3 //define max threads num
+
+// Declare global commands and mutex
 std::mutex command_mutex;
+std::map<std::string, ICommand*> commands;
 
-map<string, ICommand*> commands;
+ThreadPool threadPool(MAX_CLIENTS);  // Create a thread pool
 
-int server_sock; // Server socket descriptor
-
-void* threadFunc(void* arg) {
-    App* app = static_cast<App*>(arg);
-    app->run();
-    return nullptr;
-}
-
-int main(int argc, char* argv[]) {
-    if (argc != 2) {
-        cerr << "Usage: " << argv[0] << " <port>" << endl;
-        return 1;
-    }
-
-    int port;
-    try {
-        port = stoi(argv[1]);
-        if (port <= 0 || port > 65535) {
-            throw invalid_argument("Invalid port number");
-        }
-    } catch (...) {
-        cerr << "Error: Please provide a valid port number between 1 and 65535." << endl;
-        return 1;
-    }
-
-    struct sockaddr_in server_addr, client_addr;
-    unsigned int client_len = sizeof(client_addr);
-
-    // Create TCP socket
-    if ((server_sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        perror("Error creating socket");
-        return 1;
-    }
-
-    // Set up server address structure
-    memset(&server_addr, 0, sizeof(server_addr));
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(port);  // Listening port from command line
-    server_addr.sin_addr.s_addr = INADDR_ANY;  // Any interface
-
-    // Bind the socket to the address
-    if (bind(server_sock, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
-        perror("Bind failed");
-        close(server_sock);
-        return 1;
-    }
-
-    // Start listening for incoming client connections
-    if (listen(server_sock, 5) < 0) {
-        perror("Listen failed");
-        close(server_sock);
-        return 1;
-    }
-
-    cout << "Server is listening on port " << port << "..." << endl;
+void handleClient(int clientSocket) {
+    Data* data = new Data(); //create data
+    data->client_sock = clientSocket;
 
     // Initialize commands
     commands["help"] = new HelpCmd();
@@ -84,37 +40,75 @@ int main(int argc, char* argv[]) {
     commands["POST"] = new PostCmd();
     commands["PATCH"] = new PatchCmd();
     commands["DELETE"] = new DeleteCmd();
+
+    // Create App instance and run
+    App* app = new App(new ServerMenu(), commands, data);
+    app->run();  // This will handle the client request
+
+    // Clean up after client interaction
+    delete app;
+    delete data;
+
+    close(clientSocket);  // Close the socket after handling
+}
+
+int main(int argc, char* argv[]) {
+    int port = DEFAULT_PORT;
+
+    // Check if a port number is provided as a command-line argument
+    if (argc > 1) {
+        try {
+            port = std::stoi(argv[1]);  // Convert argument to integer
+        } catch (std::exception& e) {
+            std::cerr << "Invalid port number. Using default port " << DEFAULT_PORT << std::endl;
+            port = DEFAULT_PORT;
+        }
+    }
+
+    int serverSocket, clientSocket;
+    struct sockaddr_in serverAddr, clientAddr;
+    socklen_t clientAddrLen = sizeof(clientAddr);
+
+    // Create socket
+    if ((serverSocket = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+        perror("Socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+
+    // Configure server address
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_addr.s_addr = INADDR_ANY;
+    serverAddr.sin_port = htons(port);
+
+    // Bind the socket
+    if (bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0) {
+        perror("Bind failed");
+        exit(EXIT_FAILURE);
+    }
+
+    // Listen for incoming connections
+    if (listen(serverSocket, MAX_CLIENTS) < 0) {
+        perror("Listen failed");
+        exit(EXIT_FAILURE);
+    }
+     //inform that the server is indeed running
+    std::cout << "Server is listening on port " << port << std::endl;
+    //infinate loop
     while (true) {
-        // Accept a client connection
-        int client_sock = accept(server_sock, (struct sockaddr *)&client_addr, &client_len);
-        if (client_sock < 0) {
+        //if negatine means an error happend
+        if ((clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddr, &clientAddrLen)) < 0) {
             perror("Accept failed");
             continue;
         }
+        //print un sever that anew connection happend
+        std::cout << "New connection: " << inet_ntoa(clientAddr.sin_addr) << ":" << ntohs(clientAddr.sin_port) << std::endl;
 
-        // Allocate memory to store the received data
-        Data* data = new Data();
-
-        // Lock before accessing commands map
-        command_mutex.lock();
-        App* app = new App(new ServerMenu(), commands, data); //create app
-        command_mutex.unlock();
-        data->client_sock = client_sock;
-
-        // Create a new thread to handle this client
-        pthread_t tid;
-        if (pthread_create(&tid, nullptr, threadFunc, app) != 0) {
-            perror("Failed to create thread");
-            close(client_sock);
-            delete data;
-            delete app; // Cleanup App instance
-            continue;
-        }
-        pthread_detach(tid);  // Detach the thread to allow automatic cleanup
+        // Add the client handler as a task for the thread pool
+        threadPool.addTask([clientSocket]() {
+            handleClient(clientSocket);  // Pass client socket to the client handler
+        });
     }
 
-    // Close the server socket (not reached in this case due to infinite loop)
-    close(server_sock);
-
-    return 0;
+    close(serverSocket);  // Close the server socket
+    return 0; //end pogram
 }

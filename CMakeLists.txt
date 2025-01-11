@@ -23,17 +23,17 @@ include_directories(src)
 add_executable(
   clientPy
   src/Client.py 
- # src/ConsoleMenu.cpp
-  #src/File_Classes/StringHandler.cpp
 )
+
 add_executable(
   server
   src/server.cpp
   src/dataClass/Data.cpp
   src/Menu/ServerMenu.cpp
   src/App/App.cpp
-        src/Commands/General/Validity.h
-    src/File_Classes/UserFile.cpp
+  src/ThreadPool/ThreadPool.cpp
+  src/Commands/General/Validity.h
+  src/File_Classes/UserFile.cpp
   src/File_Classes/BaseFile.cpp
   src/File_Classes/StringHandler.cpp
   src/File_Classes/FileIO.cpp
@@ -61,13 +61,13 @@ add_executable(
   src/File_Classes/FileIO.cpp
   src/File_Classes/MovieFile.cpp
   src/File_Classes/AddBuilder.cpp
-        src/dataClass/Data.cpp
-        src/Commands/General/HelpCmd.cpp
-        src/Commands/General/Validity.cpp
-        src/Commands/Data_Manipulation/GetCmd.cpp
-        src/Commands/Add_Data/PostCmd.cpp
-        src/Commands/Add_Data/PatchCmd.cpp
-        src/Commands/Delete_Data/DeleteCmd.cpp
+  src/dataClass/Data.cpp
+  src/Commands/General/HelpCmd.cpp
+  src/Commands/General/Validity.cpp
+  src/Commands/Data_Manipulation/GetCmd.cpp
+  src/Commands/Add_Data/PostCmd.cpp
+  src/Commands/Add_Data/PatchCmd.cpp
+  src/Commands/Delete_Data/DeleteCmd.cpp
 
 )
 

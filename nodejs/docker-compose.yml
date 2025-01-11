@@ -1,0 +1,19 @@
+services:
+  app:
+    build:
+      context: ..
+    ports:
+      - "3000:3000"
+    environment:
+      - CONNECTION_STRING="mongodb://mongo:27017/"
+      - PORT=3000
+      - CUSTOM_DOMAIN=foo.com
+  mongo:
+    image: mongo:latest  # Use the official MongoDB image
+    volumes:
+      - mongodb_data:/data/db  # Persist MongoDB data
+    ports:
+      - "27017:27017"  # Expose MongoDB port
+
+volumes:
+  mongodb_data:  # Named volume for MongoDB data persistence
