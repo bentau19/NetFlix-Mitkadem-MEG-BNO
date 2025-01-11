@@ -59,7 +59,7 @@ Alow the flowing roots:
         ./Tests
 
     to run the cpp server:
-       
+        docker exec -it netflix-mitkadem-meg-bno-cpp-1 /bin/bash
        cd build
        ./server 12345 
 
