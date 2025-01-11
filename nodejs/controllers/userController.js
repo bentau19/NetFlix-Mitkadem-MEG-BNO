@@ -42,7 +42,7 @@ const getUser = async (req, res) => {
 const signIn = async (req, res) => {
     try {
         const result = await userService.findUserByNP(
-            req.body.name,
+            req.body.email,
             req.body.password
         );
         if (result) {
