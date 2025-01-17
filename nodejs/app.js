@@ -7,7 +7,7 @@ const token = require('./routes/token');
 const categories = require('./routes/categories');
 const movies = require('./routes/movies');
 
-require('custom-env').env(process.env.NODE_ENV, './nodejs/config');
+require('custom-env').env(process.env.NODE_ENV, './config');
 mongoose.connect(process.env.CONNECTION_STRING);
 var app = express();
 app.use(cors());
@@ -27,5 +27,5 @@ app.use((req, res, next) => {
 });
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
-  });
+});
   

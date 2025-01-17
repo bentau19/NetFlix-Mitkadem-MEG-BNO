@@ -1,0 +1,24 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "cross-spawn": "^7.0.6",
+    "isexe": "^2.0.0",
+    "path-key": "^3.1.1",
+    "shebang-command": "^2.0.0",
+    "shebang-regex": "^3.0.0",
+    "which": "^2.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "SET NODE_ENV=windows && node app.js",
+
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
