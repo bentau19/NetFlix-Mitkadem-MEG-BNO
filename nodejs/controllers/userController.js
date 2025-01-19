@@ -4,6 +4,7 @@ const userService = require('../services/UsersService');
 const ERROR_MESSAGES = require('../validation/errorMessages');
 const createUser = async (req, res) => {
     try {
+        console.log('yup');
         const result = await userService.createUser(
             req.body.name,
             req.body.email,

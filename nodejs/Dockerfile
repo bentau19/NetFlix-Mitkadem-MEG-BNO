@@ -14,7 +14,7 @@ RUN npm install
 COPY nodejs/ .
 
 # Expose the port the app runs on
-EXPOSE 3000
+EXPOSE 5000
 
 RUN npm install wait-on
 
