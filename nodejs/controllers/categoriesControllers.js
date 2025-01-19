@@ -72,4 +72,24 @@ const deleteCategory = async (req, res) => {
         else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
     }
 };
-module.exports = {getCategories, createCategory, getCategorieById,updateCategory,deleteCategory };
+
+const getQueryCat = async (req, res) => {
+    try {
+        const query = req.params.query; // Get the query parameter from the URL
+
+        const result = await CategoriesService.getQueryCat(
+            query
+        );
+        if (result) {
+            // Assuming createUser returns a truthy value on success
+            res.status(200).json(result);
+        } else {
+            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
+        }
+    } catch (error) {
+        if( ERROR_MESSAGES.BAD_REQUEST==error)
+            res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
+    }
+};
+module.exports = {getCategories, createCategory, getCategorieById,updateCategory,deleteCategory,getQueryCat };

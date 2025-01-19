@@ -8,4 +8,6 @@ router.route('/:id')
 .get(categoryController.getCategorieById)
 .patch(categoryController.updateCategory)
 .delete(categoryController.deleteCategory);
+router.route('/search/:query')
+.get(categoryController.getQueryCat)
 module.exports = router;
