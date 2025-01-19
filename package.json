@@ -19,11 +19,10 @@
     "mongoose": "^8.9.3"
 
   },
-
   "scripts": {
 
-    "start": "set NODE_ENV=windows && node ./nodejs/pages/server.js"
 
+    "start": "SET NODE_ENV=windows && node ./nodejs/app.js"
   }
 
 }

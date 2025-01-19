@@ -158,10 +158,10 @@ async function loadCategories() {
         alert('Failed to load categories');
     }
 }
-
 async function loadMovies() {
     try {
-        const response = await fetch('/api/movies');
+    
+        const response = await fetch('/api/movies/search/ ');
         const data = await response.json();
         
         if (!Array.isArray(data.message)) {
@@ -169,17 +169,15 @@ async function loadMovies() {
         }
 
         const movieList = document.getElementById('movieList');
-        movieList.innerHTML = '';  // Clear previous categories
+        movieList.innerHTML = '';
 
         data.message.forEach(movie => {
             const movieItem = document.createElement('li');
-            movieItem.innerHTML = `<strong>(title: ${movie.title}) (ID: ${movie._id})</strong>`;
+            movieItem.innerHTML = `<strong>${movie.title} (ID: ${movie._id})</strong>`;
             movieList.appendChild(movieItem);
         });
     } catch (error) {
         console.error('Error loading movies:', error);
         alert('Failed to load movies');
     }
-    window.onload = loadMovies;
-
 }
