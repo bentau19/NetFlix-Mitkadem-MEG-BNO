@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
 const MovieForm = ({ onClose }) => {
   const [title, setTitle] = useState('');
@@ -24,7 +23,12 @@ const MovieForm = ({ onClose }) => {
       
       const data = await response.json(); // Parse the response as JSON
 
+      if(response.ok){
       alert('Movie created successfully!');
+      }
+      else{
+        alert('basa:'+data.message);
+      }
       onClose();
     } catch (error) {
       alert('Failed to create movie: ' + error.message);

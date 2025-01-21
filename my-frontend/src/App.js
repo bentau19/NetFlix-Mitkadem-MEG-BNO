@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Admin from "./pages/Admin";
-import Admin2 from "./pages/Admin2";
 
 const App = () => {
   return (
@@ -10,7 +9,6 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Signup />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="/admin2" element={<Admin2 />} />
 
       </Routes>
     </Router>
