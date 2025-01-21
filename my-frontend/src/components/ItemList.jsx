@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
-const ItemList = ({ type, query }) => {
+const ItemList = ({ type, query, onEdit }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,11 +24,6 @@ const ItemList = ({ type, query }) => {
       fetchItems();
     }
   }, [type, query]);
-
-  const handleEdit = (id) => {
-    alert(`Edit item with ID: ${id}`);
-    // Add your edit logic here, e.g., opening a popup or navigating to an edit page
-  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -62,7 +56,7 @@ const ItemList = ({ type, query }) => {
           {type === 'category' && (
             <p><strong>Promoted:</strong> {item.promoted ? 'Yes' : 'No'}</p>
           )}
-          <button onClick={() => handleEdit(item._id)} className="edit-button">
+          <button onClick={() => onEdit(item)} className="edit-button">
             Edit
           </button>
         </div>

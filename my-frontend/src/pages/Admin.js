@@ -5,26 +5,29 @@ import CategoryForm from '../components/CategoryForm';
 import ItemList from '../components/ItemList';
 import SearchBar from '../components/SearchBar';
 import './stylesb.css';
-
 const Admin = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [formType, setFormType] = useState('movie');
   const [viewType, setViewType] = useState('movie');
   const [searchQuery, setSearchQuery] = useState('');
+  const [editingItem, setEditingItem] = useState(null); // Holds the item to edit
 
   useEffect(() => {
     setSearchQuery('');
   }, [viewType]);
 
-  const openPopup = (type) => {
+  const openPopup = (type, item = null) => {
     setFormType(type);
+    setEditingItem(item);
     setIsPopupOpen(true);
   };
 
-  const closePopup = () => setIsPopupOpen(false);
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    setEditingItem(null);
+  };
 
   const handleSearch = (query) => {
-    console.log('Search Query:', query);
     setSearchQuery(query);
   };
 
@@ -42,11 +45,19 @@ const Admin = () => {
           </div>
         </div>
         <div className="item-list-container">
-          <ItemList type={viewType} query={searchQuery} />
+        <ItemList
+            type={viewType}
+            query={searchQuery}
+            onEdit={(item) => openPopup(viewType, item)}
+          />
         </div>
       </div>
       <Popup isOpen={isPopupOpen} onClose={closePopup}>
-        {formType === 'movie' ? <MovieForm onClose={closePopup} /> : <CategoryForm onClose={closePopup} />}
+        {formType === 'movie' ? (
+          <MovieForm onClose={closePopup} initialValues={editingItem} />
+        ) : (
+          <CategoryForm onClose={closePopup} initialValues={editingItem} />
+        )}
       </Popup>
     </div>
   );
