@@ -26,6 +26,7 @@ public class UserRepository {
 
         APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
         apiRequest.post(callback);
+
     }
 
     public void login(String password, String email) {
