@@ -7,11 +7,11 @@ const User = new Schema({
     _id: { 
         type: Number 
     },
-    email: {
+    userName: {
         type: String,
         required: true
     },
-    name: {
+    displayName: {
         type: String,
         required: true
     },
@@ -22,6 +22,10 @@ const User = new Schema({
     password: {
         type: String,
         required: true
+    },
+    admin:{
+        type:Boolean,
+        default:false
     },
     movies: [
         {

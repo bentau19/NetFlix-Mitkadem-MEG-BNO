@@ -19,13 +19,7 @@ function communicateWithServer(dataToSend) {
       });
 
       
-      // 
 
-      // client.setTimeout(5000, () => {
-      //   console.error('Communication timed out');
-      //   reject(new Error('Communication timed out'));
-      //   client.end();
-      // });
 
     });
 }
