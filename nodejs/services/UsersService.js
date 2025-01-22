@@ -5,8 +5,21 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const SECRET_KEY = process.env.SECRET_KEY;
 
+function isPasswordValid(password) {
+    // Ensure password is a string and meets criteria
+    if (typeof password !== 'string') {
+        return false;
+    }
+    const hasLetters = /[a-zA-Z]/.test(password); // Check if it contains letters
+    const hasNumbers = /\d/.test(password);       // Check if it contains numbers
+    const isAtLeast8Chars = password.length >= 8; // Check if it's at least 8 characters long
+    
+    return hasLetters && hasNumbers && isAtLeast8Chars;
+}
+
 const createUser = async (displayName,userName, image, password) => {
     if(!displayName||!userName||!password)throw ERROR_MESSAGES.VALIDATION_FAILED;
+    if(!isPasswordValid(password))throw ERROR_MESSAGES.VALIDATION_FAILED;
     const test = await User.findOne({ userName: userName });
     if (test) throw ERROR_MESSAGES.Existing("user");
     const temp = { displayName : displayName,userName: userName, password:password };
