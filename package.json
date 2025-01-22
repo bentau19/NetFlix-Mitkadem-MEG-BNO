@@ -14,6 +14,8 @@
 
     "express": "^4.21.2",
 
+    "jsonwebtoken": "^9.0.2",
+
     "mongodb": "^6.12.0",
 
     "mongoose": "^8.9.3"
@@ -21,7 +23,10 @@
   },
 
   "scripts": {
+
     "start": "SET NODE_ENV=windows && node ./nodejs/app.js"
+
   }
+
 }
 

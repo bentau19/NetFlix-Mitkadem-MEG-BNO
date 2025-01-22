@@ -4,10 +4,9 @@ const userService = require('../services/UsersService');
 const ERROR_MESSAGES = require('../validation/errorMessages');
 const createUser = async (req, res) => {
     try {
-        console.log('yup');
         const result = await userService.createUser(
-            req.body.name,
-            req.body.email,
+            req.body.displayName,
+            req.body.userName,
             req.body.image,
             req.body.password
         );
@@ -36,26 +35,48 @@ const getUser = async (req, res) => {
             res.status(400).json({ message: 'User doesnt exist' });
         }
     } catch (error) {
-        res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR });
+        if(error==ERROR_MESSAGES.BAD_REQUEST) res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR });
     }
 };
+const getUserByToken = async (req, res) => {
+    try {
+        if(!req.headers['token'])res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
+        const result = await userService.getUserbyToken(
+            req.headers['token']
+        );
+        if (result) {
+            result.password="unrelevent";
+            // Assuming createUser returns a truthy value on success
+            res.status(200).json(result);
+        } else {
+            // If createUser returns a falsy value (e.g., null or undefined)
+            res.status(400).json({ message: 'User doesnt exist' });
+        }
+    } catch (error) {
+        if(error==ERROR_MESSAGES.BAD_REQUEST) res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR });
+    }
+};
+
 
 const signIn = async (req, res) => {
     try {
         const result = await userService.findUserByNP(
-            req.body.email,
+            req.body.userName,
             req.body.password
         );
         if (result) {
             // Assuming createUser returns a truthy value on success
-            res.status(200).json({ id:result._id});
+            res.status(200).json(result);
         } else {
             // If createUser returns a falsy value (e.g., null or undefined)
             res.status(400).json({ message: 'wrong Username or password' });
         }
     } catch (error) {
-        res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR });
+        if(error==ERROR_MESSAGES.BAD_REQUEST) res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR });
     }
 };
 
-module.exports = {createUser, getUser,signIn};
+module.exports = {createUser, getUser,signIn,getUserByToken};

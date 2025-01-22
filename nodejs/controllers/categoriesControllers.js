@@ -1,6 +1,7 @@
 
 const CategoriesService = require('../services/CategoriesService');
 const ERROR_MESSAGES = require('../validation/errorMessages');
+const UserService = require('../services/UsersService');
 const getCategories = async (req, res) => {
     try {
         const result = await CategoriesService.getCategories()
@@ -17,6 +18,9 @@ const getCategories = async (req, res) => {
 };
 const createCategory = async (req, res) => {
     try {
+        if(!UserService.isManager(req.headers['token'])){
+            throw ERROR_MESSAGES.BAD_REQUEST;
+        }
         const result=await CategoriesService.createCategories(req.body.name,req.body.promoted);
         if (result) {
             res.status(201).json({ message: result});
@@ -46,6 +50,9 @@ const getCategorieById = async (req, res) => {
 };
 const updateCategory = async (req, res) => {
     try {
+        if(!UserService.isManager(req.headers['token'])){
+            throw ERROR_MESSAGES.BAD_REQUEST;
+        }
         const result =await CategoriesService.updateCategories(req.params.id,req.body.name,req.body.promoted);
         if (result) {
             res.status(204).json({ message: result});
@@ -60,6 +67,9 @@ const updateCategory = async (req, res) => {
 };
 const deleteCategory = async (req, res) => {
     try {
+        if(!UserService.isManager(req.headers['token'])){
+            throw ERROR_MESSAGES.BAD_REQUEST;
+        }
         const result =await CategoriesService.deleteCategories(req.params.id);
         if (result) {
             res.status(204).json({ message: result});
