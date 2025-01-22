@@ -193,8 +193,8 @@ const addMovieToUser = async (userId,movieId) => {
       return res; // Will return the user or null if not found
 };
 const getQueryMovie = async (query) => {
-  if (!query) throw new Error(ERROR_MESSAGES.BAD_REQUEST);
-
+  if(!query)
+    return await Movies.find({}); 
   // Convert query to an integer for category search (if valid number)
   const categoryQuery = parseInt(query, 10);
 
