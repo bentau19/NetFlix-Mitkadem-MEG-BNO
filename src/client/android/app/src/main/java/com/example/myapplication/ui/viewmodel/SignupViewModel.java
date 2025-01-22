@@ -18,13 +18,10 @@ public class SignupViewModel extends ViewModel {
         userRepository = new UserRepository(new ApiResponseCallback() {
             @Override
             public void onSuccess(Object response) {
-                // On success, update the LiveData with a success message
                 signupStatus.setValue("Signup successful!");
             }
-
             @Override
             public void onError(String error) {
-                // On error, update the LiveData with an error message
                 signupStatus.setValue("Signup failed: " + error);
             }
         });

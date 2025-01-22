@@ -15,38 +15,30 @@ public class UserRepository {
 
     // Signup User
     public void signup(String username, String password, String email) {
-        String endpoint = "users/";  // Example endpoint for signup
+        String endpoint = "users/";
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
 
-        // Create JSON body for signup
         Map<String, String> jsonBody = new HashMap<>();
         jsonBody.put("name", username);
         jsonBody.put("password", password);
         jsonBody.put("email", email);
 
-        // Create APIRequest for POST method
         APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
         apiRequest.post(callback);
     }
 
-    // Login User
     public void login(String password, String email) {
         String endpoint = "users/";
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-
-        // Create JSON body for login
         Map<String, String> jsonBody = new HashMap<>();
         jsonBody.put("email", email);
         jsonBody.put("password", password);
-
-        // Create APIRequest for POST method
         APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
         apiRequest.get(callback);
     }
 
-    // Fetch User Data
     public void fetchUserData(String userId) {
         String endpoint = "users/" + userId;  // Example endpoint for fetching user data
         Map<String, String> headers = new HashMap<>();
