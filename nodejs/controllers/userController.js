@@ -6,8 +6,8 @@ const createUser = async (req, res) => {
     try {
         console.log('yup');
         const result = await userService.createUser(
-            req.body.name,
-            req.body.email,
+            req.body.displayName,
+            req.body.userName,
             req.body.image,
             req.body.password
         );
@@ -43,7 +43,7 @@ const getUser = async (req, res) => {
 const signIn = async (req, res) => {
     try {
         const result = await userService.findUserByNP(
-            req.body.email,
+            req.body.userName,
             req.body.password
         );
         if (result) {
