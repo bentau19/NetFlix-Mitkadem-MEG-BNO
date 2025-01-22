@@ -118,8 +118,8 @@ const addMovieToUser = async (req, res) => {
 };
 const getQueryMovie = async (req, res) => {
     try {
-        const query = req.params.query; // Get the query parameter from the URL
-
+        const query = req.params.query||''; // Get the query parameter from the URL
+        
         const result = await MovieService.getQueryMovie(
             query
         );
