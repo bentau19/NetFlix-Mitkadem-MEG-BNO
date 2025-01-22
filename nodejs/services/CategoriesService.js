@@ -35,4 +35,19 @@ await categories.deleteOne();
 counter.addReusableId("categorieId", id);
 return categories;
 };
-module.exports = {createCategories, getCategoriesById, getCategories, updateCategories, deleteCategories }
+
+const getQueryCat = async (query) => {
+  if(!query)
+    return await Categories.find({}); 
+
+  const conditions = {
+    $or: [
+      { name: { $regex: query, $options: 'i' } } // Case-insensitive search on logline
+    ]
+  };
+  const testQuery = await Categories.find(conditions);
+
+  return testQuery;
+};
+
+module.exports = {createCategories, getCategoriesById, getCategories, updateCategories, deleteCategories,getQueryCat }
