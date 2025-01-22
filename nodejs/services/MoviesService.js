@@ -130,7 +130,6 @@ const updated = await Movies.findOneAndReplace(
     if (!updated) {
       throw 'Failed to update movie';
     }
-
     return updated; // Return the updated movie object
 };
 const deleteMovie = async (id) => {

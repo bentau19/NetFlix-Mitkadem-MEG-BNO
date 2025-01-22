@@ -38,17 +38,25 @@ const getUser = async (id) => {
     }
 };
 
+const getUserbyToken = async (token) => {
+    try{
+        const userName= getUserName(token);
+        const res = await User.findOne({ userName: userName});
+        return res;
+    }catch(err){
+        if(err==ERROR_MESSAGES.BAD_REQUEST)throw err;
+        throw ERROR_MESSAGES.VALIDATION_FAILED;
+    }
+};
 
 async function generateJWT(user) {
     const payload = {
-        _id: user._id,
+        _id:user._id,
         userName: user.userName,
-        displayName: user.displayName,
         admin: user.admin,
     };
-
     const token = jwt.sign(payload, SECRET_KEY, {
-        expiresIn: '1h', // Token expiration time
+        expiresIn: '7d', // Token expiration time
     });
 
     return token;
@@ -58,18 +66,12 @@ const findUserByNP = async (userName, password) => {
     try {
         const user = await User.findOne({ userName: userName, password: password });
         if(!user)return null;
-        (async () => {
-            try {
                 const token = await generateJWT(user); // Replace 123 with the desired user ID
                 return(token);
             } catch (err) {
                 return null;
             }
-        })();
-    } catch (err) {
-        return null;
-    }
-}
+        }
 
 function verifyToken(token) {
     try {
@@ -81,14 +83,29 @@ function verifyToken(token) {
 
 
 function isManager(token) {
-    const decoded = verifyToken(token);
-    return decoded.admin === true; // Check the admin field in the token payload
+    try{
+        const decoded = verifyToken(token);
+        return decoded.admin === true;
+    }catch(e){
+        throw ERROR_MESSAGES.BAD_REQUEST;
+    }
+}
+function isUser(token) {
+    try{
+        const decoded= verifyToken(token);
+        return decoded._id;
+    }catch(e){
+        throw ERROR_MESSAGES.BAD_REQUEST;
+    }
 }
 
-
-function getUserId(token) {
-    const decoded = verifyToken(token);
-    return decoded._id; // Extract the user ID from the token payload
+function getUserName(token) {
+    try{
+        const decoded = verifyToken(token);
+        return decoded.userName; 
+    }catch(e){
+        throw ERROR_MESSAGES.BAD_REQUEST;
+    }
 }
 
-module.exports = {createUser,getUser,findUserByNP}
+module.exports = {createUser,getUser,findUserByNP,getUserbyToken,isUser,isManager}
