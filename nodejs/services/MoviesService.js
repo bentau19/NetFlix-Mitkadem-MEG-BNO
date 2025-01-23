@@ -69,7 +69,12 @@ const getMovieById = async (id) => {
 };
 
 const createMovie = async (title,logline,image,categories) => {
-  if(!title)throw ERROR_MESSAGES.BAD_REQUEST;
+  alert('in');
+  if(!title){
+    alert('no title');
+    throw ERROR_MESSAGES.BAD_REQUEST;
+
+  }
   const test = await Movies.findOne({ title:title });
   if (test) throw ERROR_MESSAGES.Existing("movie");
   const movies = new Movies({ title : title});
@@ -77,7 +82,10 @@ const createMovie = async (title,logline,image,categories) => {
   if (categories!=[]){
     for (const id of categories) {
       const category = await Categories.findOne({ _id: id });
-      if(!category)throw ERROR_MESSAGES.BAD_REQUEST;
+      if(!category){
+        alert('no cat');
+        throw ERROR_MESSAGES.BAD_REQUEST;
+      }
     }}
 
 
@@ -110,7 +118,6 @@ const createMovieWithImage = async (title, logline, imageFile, categories) => {
     });
 
     const savedMovie = await movie.save();
-    fs.unlinkSync(imageFile.path);
     return savedMovie;
   } catch (error) {
     throw error;

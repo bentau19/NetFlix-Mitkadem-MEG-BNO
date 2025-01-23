@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.AdminActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.data.Rooms.DB.AppDatabase;
 import com.example.myapplication.data.Rooms.dao.TokenDao;
@@ -44,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
         Button btnGoToSignup = findViewById(R.id.button);
         btnGoToSignup.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, SignupActivity.class);
+            startActivity(intent);
+        });
+        Button btnGoToAdmin = findViewById(R.id.adminButton);
+        btnGoToAdmin.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, AdminActivity.class);
             startActivity(intent);
         });
 

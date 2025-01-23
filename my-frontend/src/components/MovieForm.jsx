@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { convertFileToHex } from '../utils/imageConverter';
 
 const MovieForm = ({ onClose, initialValues = {} }) => {
   const { title, logline, image, categories } = initialValues || {};
@@ -21,16 +22,12 @@ const handleSubmit = async () => {
     const formData = new FormData();
     formData.append('title', titleState);
     formData.append('logline', loglineState);
-    
-    // Parse categories into array
-    const categoriesArray = categoriesState
-      .split(',')
-      .map(id => id.trim())
-      .filter(id => id); // Remove empty strings
-    formData.append('categories', JSON.stringify(categoriesArray));
+    formData.append('categories', categoriesState);
     
     if (imageState) {
-      formData.append('image', imageState);
+      const imageHex = await convertFileToHex(imageState);
+      formData.append('image', imageHex);
+      alert(imageHex);
     }
 
     const response = await fetch(url, {
@@ -39,7 +36,9 @@ const handleSubmit = async () => {
     });
 
     if (!response.ok) {
+      alert('res:', response.message);
       const error = await response.json();
+      console.error(error);  // Log more detailed error
       throw new Error(error.message);
     }
 
@@ -47,6 +46,7 @@ const handleSubmit = async () => {
     onClose();
   } catch (error) {
     alert('Error: ' + error.message);
+
   }
 };
 

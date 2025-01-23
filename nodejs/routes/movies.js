@@ -1,11 +1,10 @@
 const express = require('express');
 var router = express.Router();
 const movieController = require('../controllers/moviesControllers');
-const upload = require('../utils/upload');
 
 router.route('/')
 .get(movieController.getMoviesByCategories)
-.post(upload.single('image'), movieController.createMovieWithImage);
+.post(movieController.createMovie);
 
 router.route('/:id/recommend')
 .get(movieController.getRecommendMovie)
