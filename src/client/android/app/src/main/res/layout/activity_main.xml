@@ -5,9 +5,10 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
     <TextView
+        android:id="@+id/hash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
@@ -21,8 +22,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="94dp"
-        android:text="Button"
+        android:text="signup"
         app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="155dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:text="login"
+        app:layout_constraintTop_toBottomOf="@+id/button"
         tools:layout_editor_absoluteX="155dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

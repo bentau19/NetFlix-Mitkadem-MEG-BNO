@@ -1,5 +1,6 @@
 package com.example.myapplication.data.Rooms.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -14,6 +15,6 @@ public interface TokenDao {
     void insertToken(UserToken token);
 
     // Queries the token from the database with id = 1
-    @Query("SELECT token FROM UserToken WHERE id = 1")
-    String getToken();
+    @Query("SELECT * FROM UserToken LIMIT 1")
+    LiveData<UserToken> getToken();
 }

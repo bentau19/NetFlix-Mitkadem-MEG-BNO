@@ -41,7 +41,7 @@
             android:text="Password" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/Password"
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="hint" />
@@ -50,7 +50,7 @@
             android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="email" />
+            android:text="repeat password" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
@@ -62,14 +62,14 @@
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="email" />
+            android:text="username" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/email"
+                android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="hint" />
