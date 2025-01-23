@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string-array name="movie_category_options">
+        <item>Movie</item>
+        <item>Category</item>
+    </string-array>
 </resources>

@@ -1,0 +1,94 @@
+package com.example.myapplication.data.repository;
+
+import com.example.myapplication.server.api.APIRequest;
+import com.example.myapplication.server.api.ApiResponseCallback;
+
+import org.json.JSONArray;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class CategoryRe {
+
+    private final ApiResponseCallback callback;
+
+    public MovieRepository(ApiResponseCallback callback) {
+        this.callback = callback;
+    }
+
+    // Signup User
+    public void createMovie(String title, String logline, String image,String categories) {
+        String endpoint = "movies/";
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+
+        Map<String, String> jsonBody = new HashMap<>();
+        jsonBody.put("title", title);
+        jsonBody.put("logline", logline);
+        jsonBody.put("image", image);
+        JSONArray categoriesArray = new JSONArray();
+        if (categories != null && !categories.isEmpty()) {
+            String[] categoryIds = categories.split(",");
+            for (String id : categoryIds) {
+                id = id.trim(); // Remove whitespace
+                if (!id.isEmpty()) {
+                    categoriesArray.put(id);
+                }
+            }
+        }
+        jsonBody.put("categories", categoriesArray.toString()); // Include the categories array
+
+        APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
+        apiRequest.post(callback);
+    }
+
+
+    public void fetchMovieData(String movieId) {
+        String endpoint = "movies/" + movieId;  // Example endpoint for fetching user data
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer your_token_here");
+
+        // Create APIRequest for GET method
+        APIRequest apiRequest = new APIRequest(endpoint, headers, null);
+        apiRequest.get(callback);
+    }
+
+    // Update User Data
+    public void updateMovie(String movieId, String newTitle, String newLogline, String newImage , String newCategories) {
+        String endpoint = "movies/" + movieId;  // Example endpoint for updating user data
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer your_token_here");
+        headers.put("Content-Type", "application/json");
+
+        Map<String, String> jsonBody = new HashMap<>();
+        jsonBody.put("title", newTitle);
+        jsonBody.put("logline", newLogline);
+        jsonBody.put("image", newImage);
+        JSONArray categoriesArray = new JSONArray();
+        if (newCategories != null && !newCategories.isEmpty()) {
+            String[] categoryIds = newCategories.split(",");
+            for (String id : categoryIds) {
+                id = id.trim(); // Remove whitespace
+                if (!id.isEmpty()) {
+                    categoriesArray.put(id);
+                }
+            }
+        }
+        jsonBody.put("categories", categoriesArray.toString()); // Include the categories array
+
+        APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
+        apiRequest.put(callback);
+    }
+
+    // Delete User
+    public void deleteMovie(String movieId) {
+        String endpoint = "movies/" + movieId;  // Example endpoint for deleting user
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer your_token_here");
+
+        // Create APIRequest for DELETE method
+        APIRequest apiRequest = new APIRequest(endpoint, headers, null);
+        apiRequest.delete(callback);
+    }
+
+}

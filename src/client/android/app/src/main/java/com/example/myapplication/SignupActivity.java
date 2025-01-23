@@ -31,7 +31,7 @@ public class SignupActivity extends AppCompatActivity {
             Toast.makeText(SignupActivity.this, status, Toast.LENGTH_SHORT).show();
         });
 
-        // Handle the signup button click
+        // Hand le the signup button click
         signupButton.setOnClickListener(v -> {
             String username = usernameEditText.getText().toString();
             String password = passwordEditText.getText().toString();

@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 
 const CategoryForm = ({ onClose ,  initialValues = {} }) => {
-  const [name, setName] = useState('' || initialValues.name );
-  const [promoted, setPromoted] = useState(false || initialValues.promoted);
-  const isEditing = Boolean(initialValues._id);
+  const { name, promoted } = initialValues || {};
+
+  const [nameState, setName] = useState(name || '' );
+  const [promotedState, setPromoted] = useState(promoted || false);
+  const isEditing = Boolean(initialValues);
 
   const handleSubmit = async () => {
     try {
       const url = isEditing
       ? `http://localhost:5000/api/categories/${initialValues._id}`
-      : 'http://localhost:5000/api/cetagories';
+      : 'http://localhost:5000/api/categories';
     const method = isEditing ? 'PATCH' : 'POST';
       const response = await fetch(url , {
         method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, promoted }), // Send the data as JSON
+        body: JSON.stringify({ name: nameState, promoted:promotedState }), // Send the data as JSON
       });
       
       if (response.ok) {
@@ -30,6 +32,7 @@ const CategoryForm = ({ onClose ,  initialValues = {} }) => {
       alert('Failed to create category: ' + error.message);
     }
   };
+  
 
   return (
     <div>

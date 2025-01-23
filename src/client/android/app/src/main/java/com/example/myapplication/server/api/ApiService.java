@@ -14,7 +14,8 @@ public interface ApiService {
 
     @PUT
     Call<Object> put(@Url String url, @HeaderMap Map<String, String> headers, @Body Object body);
-
+    @PATCH
+    Call<Object> patch(@Url String url, @HeaderMap Map<String, String> headers, @Body Object body);
     @DELETE
     Call<Object> delete(@Url String url, @HeaderMap Map<String, String> headers);
 }

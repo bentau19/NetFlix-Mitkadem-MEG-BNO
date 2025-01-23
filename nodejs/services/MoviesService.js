@@ -5,6 +5,9 @@ const Users = require('../models/user');
 const movies = require('../models/movies');
 const serverData = require('./SendData');
 const ERROR_MESSAGES = require('../validation/errorMessages');
+const { convertToHex } = require('../utils/imageConverter');
+const fs = require('fs');
+
 const getMoviesByCategory = async (userId) => {
     try {
       if (!userId) {
@@ -64,6 +67,7 @@ const getMovieById = async (id) => {
             const movie = await Movies.findById(id);
             return movie; 
 };
+
 const createMovie = async (title,logline,image,categories) => {
   if(!title)throw ERROR_MESSAGES.BAD_REQUEST;
   const test = await Movies.findOne({ title:title });
@@ -90,6 +94,27 @@ const createMovie = async (title,logline,image,categories) => {
       }}
 
   return await res.save();
+};
+const createMovieWithImage = async (title, logline, imageFile, categories) => {
+  try {
+    if (!title || !imageFile) {
+      throw ERROR_MESSAGES.BAD_REQUEST;
+    }
+
+    const hexImage = await convertToHex(imageFile.path);
+    const movie = new Movie({
+      title,
+      logline,
+      image: hexImage,
+      categories
+    });
+
+    const savedMovie = await movie.save();
+    fs.unlinkSync(imageFile.path);
+    return savedMovie;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const updateMovie = async (movieId, updateData) => {
@@ -220,6 +245,6 @@ const getQueryMovie = async (query) => {
 
 
  
-module.exports = {getMoviesByCategory,getMovieById,createMovie,updateMovie
+module.exports = {createMovieWithImage, getMoviesByCategory,getMovieById,createMovie,updateMovie
   ,getRecommendMovie,deleteMovie,addMovieToUser,getQueryMovie
 }

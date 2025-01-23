@@ -33,7 +33,7 @@ const Admin = () => {
 
   return (
     <div>
-      <div className="content-wrapper">
+      <div className="top-container">
         <div className="search-section">
           <SearchBar onSearch={handleSearch} query={searchQuery} />
           <div className="search-controls">
@@ -44,14 +44,8 @@ const Admin = () => {
             <button onClick={() => openPopup(viewType)}>Add</button>
           </div>
         </div>
-        <div className="item-list-container">
-        <ItemList
-            type={viewType}
-            query={searchQuery}
-            onEdit={(item) => openPopup(viewType, item)}
-          />
         </div>
-      </div>
+    
       <Popup isOpen={isPopupOpen} onClose={closePopup}>
         {formType === 'movie' ? (
           <MovieForm onClose={closePopup} initialValues={editingItem} />
@@ -59,7 +53,16 @@ const Admin = () => {
           <CategoryForm onClose={closePopup} initialValues={editingItem} />
         )}
       </Popup>
+
+      <div className="item-list-container">
+        <ItemList
+            type={viewType}
+            query={searchQuery}
+            onEdit={(item) => openPopup(viewType, item)}
+          />
+        </div>
     </div>
+    
   );
 };
 

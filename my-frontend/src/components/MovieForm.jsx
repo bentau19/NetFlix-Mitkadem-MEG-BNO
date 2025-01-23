@@ -1,68 +1,81 @@
-import React, { useState } from 'react'; // Ensure useState is imported
+import React, { useState } from 'react';
 
 const MovieForm = ({ onClose, initialValues = {} }) => {
-  const [title, setTitle] = useState(initialValues.title || '');
-  const [logline, setLogline] = useState(initialValues.logline || '');
-  const [image, setImage] = useState(initialValues.image || '');
-  const [categories, setCategories] = useState(initialValues.categories?.join(', ') || '');
-  const isEditing = Boolean(initialValues._id);
+  const { title, logline, image, categories } = initialValues || {};
+  
+  const [titleState, setTitle] = useState(title || '');
+  const [loglineState, setLogline] = useState(logline || '');
+  const [imageState, setImage] = useState(image || null);
+  const [categoriesState, setCategories] = useState(categories ? categories.join(', ') : '');
+  
+  const isEditing = Boolean(initialValues);
+  
+const handleSubmit = async () => {
+  try {
 
-  const handleSubmit = async () => {
-    try {
-      const url = isEditing
-        ? `http://localhost:5000/api/movies/${initialValues._id}`
-        : 'http://localhost:5000/api/movies';
-      const method = isEditing ? 'PUT' : 'POST';
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title,
-          logline,
-          image,
-          categories: categories.split(',').map((id) => id.trim()),
-        }),
-      });
-
-      if (response.ok) {
-        alert(`Movie ${isEditing ? 'updated' : 'created'} successfully!`);
-        onClose();
-      } else {
-        const data = await response.json();
-        alert(`Error: ${data.message}`);
-      }
-    } catch (error) {
-      alert('Failed to submit the form: ' + error.message);
+    const url = isEditing
+      ? `http://localhost:5000/api/movies/${initialValues._id}`
+      : 'http://localhost:5000/api/movies';
+    const method = isEditing ? 'PUT' : 'POST';
+    
+    const formData = new FormData();
+    formData.append('title', titleState);
+    formData.append('logline', loglineState);
+    
+    // Parse categories into array
+    const categoriesArray = categoriesState
+      .split(',')
+      .map(id => id.trim())
+      .filter(id => id); // Remove empty strings
+    formData.append('categories', JSON.stringify(categoriesArray));
+    
+    if (imageState) {
+      formData.append('image', imageState);
     }
-  };
+
+    const response = await fetch(url, {
+      method,
+      body: formData
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+
+    alert(`Movie ${isEditing ? 'updated' : 'created'} successfully!`);
+    onClose();
+  } catch (error) {
+    alert('Error: ' + error.message);
+  }
+};
 
   return (
     <div>
       <h2>{isEditing ? 'Edit Movie' : 'Create Movie'}</h2>
       <input
-        value={title}
+        value={titleState}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Movie Title"
+        required
       />
       <input
-        value={logline}
+        value={loglineState}
         onChange={(e) => setLogline(e.target.value)}
         placeholder="Movie Logline"
       />
       <input
-        value={image}
-        onChange={(e) => setImage(e.target.value)}
-        placeholder="Image URL"
+        type="file"
+        accept="image/*"
+        onChange={(e) => setImage(e.target.files[0])}
+        required={!isEditing}
       />
       <input
-        value={categories}
+        value={categoriesState}
         onChange={(e) => setCategories(e.target.value)}
         placeholder="Categories (comma-separated)"
       />
-      <button onClick={handleSubmit}>
+      <button onClick={handleSubmit} >
         {isEditing ? 'Update Movie' : 'Create Movie'}
       </button>
       <button onClick={onClose}>Cancel</button>

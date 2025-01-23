@@ -13,9 +13,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button btnGoToSignup = findViewById(R.id.button);
+        Button btnGoToAdmin = findViewById(R.id.adminButton);
 
         btnGoToSignup.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, SignupActivity.class);
+            startActivity(intent);
+        });
+        btnGoToAdmin.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, AdminActivity.class);
             startActivity(intent);
         });
 

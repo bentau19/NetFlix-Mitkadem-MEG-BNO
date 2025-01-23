@@ -45,7 +45,10 @@ public class APIRequest {
         Call<Object> call = apiService.put(endpoint, headers, jsonBody);
         executeRequest(call, callback);
     }
-
+    public void patch(ApiResponseCallback callback) {
+        Call<Object> call = apiService.patch(endpoint, headers, jsonBody);
+        executeRequest(call, callback);
+    }
     public void delete(ApiResponseCallback callback) {
         Call<Object> call = apiService.delete(endpoint, headers);
         executeRequest(call, callback);
