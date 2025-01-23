@@ -1,23 +1,27 @@
 
 const MovieService = require('../services/MoviesService');
+const UserService = require('../services/UsersService');
 const ERROR_MESSAGES = require('../validation/errorMessages');
 
 const getMoviesByCategories = async (req, res) => {
     try {
+        const id =UserService.isUser(req.headers['token']);
         const result = await MovieService.getMoviesByCategory(
-            req.headers['userid']
+            id
         );
-
         res.status(200).json(result);
-        
     } catch (error) {
         if(error==ERROR_MESSAGES.SERVER_ERROR)
         res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR });
         else res.status(400).json({ message: error });
     }
 };
+
 const createMovie = async (req, res) => {
     try {
+        if(!UserService.isManager(req.headers['token'])){
+            throw ERROR_MESSAGES.BAD_REQUEST;
+        }
         const result = await MovieService.createMovie(
             req.body.title,
             req.body.logline,
@@ -52,8 +56,13 @@ const getMovieById = async (req, res) => {
             res.status(500).json({ message: 'An internal server error occurred', error: error.message });
         }
     };
+
+    
 const switchMovie = async (req, res) => {
     try {
+        if(!UserService.isManager(req.headers['token'])){
+            throw ERROR_MESSAGES.BAD_REQUEST;
+        }
         const result = await MovieService.updateMovie(
             req.params.id,req.body
         );
@@ -70,6 +79,9 @@ const switchMovie = async (req, res) => {
 };
 const deleteMovie = async (req, res) => {
        try {
+        if(!UserService.isManager(req.headers['token'])){
+            throw ERROR_MESSAGES.BAD_REQUEST;
+        }
             const result = await MovieService.deleteMovie(
                 req.params.id
             );
@@ -84,8 +96,9 @@ const deleteMovie = async (req, res) => {
 };
 const getRecommendMovie = async (req, res) => {
     try {
+        const id =UserService.isUser(req.headers['token']);
         const result = await MovieService.getRecommendMovie(
-            req.headers['userid'],
+            id,
             req.params.id
         );
         if (result) {
@@ -101,8 +114,9 @@ const getRecommendMovie = async (req, res) => {
 };
 const addMovieToUser = async (req, res) => {
     try {
+        const id =UserService.isUser(req.headers['token']);
         const result = await MovieService.addMovieToUser(
-            req.headers['userid'],
+            id,
             req.params.id
         );
         if (result) {

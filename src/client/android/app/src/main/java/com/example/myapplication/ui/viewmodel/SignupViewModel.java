@@ -1,5 +1,8 @@
 package com.example.myapplication.ui.viewmodel;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -13,7 +16,6 @@ public class SignupViewModel extends ViewModel {
 
     public SignupViewModel() {
 
-        // Initialize the UserRepository and Signup status LiveData
         signupStatus = new MutableLiveData<>();
         userRepository = new UserRepository(new ApiResponseCallback() {
             @Override
