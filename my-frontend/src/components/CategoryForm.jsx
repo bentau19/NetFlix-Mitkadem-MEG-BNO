@@ -17,6 +17,7 @@ const CategoryForm = ({ onClose ,  initialValues = {} }) => {
         method,
         headers: {
           'Content-Type': 'application/json',
+          'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk', // Assuming token stored in localStorage
         },
         body: JSON.stringify({ name: nameState, promoted:promotedState }), // Send the data as JSON
       });
@@ -37,11 +38,13 @@ const CategoryForm = ({ onClose ,  initialValues = {} }) => {
   return (
     <div>
       <h2>{isEditing ? 'Edit Category' : 'Create Category'}</h2>
+      
       <input value={name} onChange={e => setName(e.target.value)} placeholder="Category Name" />
-      <label>
+          <label>
         <input type="checkbox" checked={promoted} onChange={e => setPromoted(e.target.checked)} />
         Promoted
       </label>
+      <div class="form-group"></div>
       <button onClick={handleSubmit}>
         {isEditing ? 'Update Category' : 'Create Category'}
       </button>      <button onClick={onClose}>Cancel</button>

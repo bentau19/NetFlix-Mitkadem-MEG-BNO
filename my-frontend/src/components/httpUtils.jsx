@@ -15,6 +15,8 @@ const fetchRequest = async (endpoint, method, body = null, headers = {}) => {
     method,
     headers: {
       'Content-Type': 'application/json',
+      'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk',
+
       ...headers,
     },
   };

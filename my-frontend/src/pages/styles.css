@@ -77,6 +77,8 @@ button:hover {
     align-items: center;
     z-index: 9999;
     display: flex; /* Set the default to display flex */
+    flex-direction: column;
+
     opacity: 0; /* Initially hidden */
     transition: opacity 0.3s ease;
 }
@@ -88,12 +90,25 @@ button:hover {
 
 .popup-content {
     background-color: #fff;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
     padding: 20px;
     border-radius: 5px;
-    width: 400px;
-    text-align: center;
+    width: 600px;
+    text-align: center; /* Center text inside inputs/buttons */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    gap: 15px; /* Add consistent spacing between elements */
 }
+/* Form group styling inside popup */
+.popup-content .form-group {
+    display: flex;
+    flex-direction: column; /* Stack label and input vertically */
+    align-items: center; /* Align elements to the left */
+    width: 100%;
+    text-align: center; /* Center text inside inputs/buttons */
+
+}
+
 
 .close {
     position: absolute;
@@ -104,6 +119,7 @@ button:hover {
 }
 
 .form {
+    flex-direction: column;
     margin: 20px 0;
 }
 
