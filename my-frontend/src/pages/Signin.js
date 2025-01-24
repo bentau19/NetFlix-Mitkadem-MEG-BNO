@@ -28,9 +28,9 @@ const Signin = () => {
       const result = await post('/tokens', formData);
       setMessage('Signin successful!');
       console.log(result);
-      // Redirect to dashboard or home page after successful signin
+      sessionStorage.setItem('token', result);
     } catch (error) {
-      setMessage('An error occurred. Please try again later.');
+      setMessage('' + error);
       console.error(error);
     }
   };

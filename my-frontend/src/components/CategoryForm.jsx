@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 const CategoryForm = ({ onClose ,  initialValues = {} }) => {
   const { name, promoted } = initialValues || {};
 
@@ -9,6 +8,10 @@ const CategoryForm = ({ onClose ,  initialValues = {} }) => {
 
   const handleSubmit = async () => {
     try {
+      const token = sessionStorage.getItem('token'); // Use 'token' as a string
+      if (!token) {
+        throw new Error('No token found. Please sign in.');
+      }
       const url = isEditing
       ? `http://localhost:5000/api/categories/${initialValues._id}`
       : 'http://localhost:5000/api/categories';
@@ -17,7 +20,7 @@ const CategoryForm = ({ onClose ,  initialValues = {} }) => {
         method,
         headers: {
           'Content-Type': 'application/json',
-          'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk', // Assuming token stored in localStorage
+          'token': token,
         },
         body: JSON.stringify({ name: nameState, promoted:promotedState }), // Send the data as JSON
       });

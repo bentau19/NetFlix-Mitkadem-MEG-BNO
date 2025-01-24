@@ -37,8 +37,8 @@ const Signup = () => {
       navigate('/signin');
     } catch (error) {
       // Handle network or other errors
-      setMessage('An error occurred. Please try again later.');
-      console.error(error);
+      setMessage(''+error);
+
     }
   };
 
