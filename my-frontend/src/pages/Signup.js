@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
-import './styles.css';
 
+import React, { useState } from 'react';
+import SignupForm from '../components/Signup';
+import { post } from '../components/httpUtils';
+import { useNavigate } from 'react-router-dom';
+import './styles.css';
 const Signup = () => {
-  // Define state for form fields
   const [formData, setFormData] = useState({
-    name: '',
+    DisplayName: '',
     password: '',
-    email: '',
-    image: '1'
+    userName: '',
+    image: ''
   });
-  
-  // Define state for handling errors or success messages
+
   const [message, setMessage] = useState('');
 
-  // Handle form input changes
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -21,31 +22,19 @@ const Signup = () => {
       [name]: value,
     });
   };
-
+  const navigate = useNavigate();
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();  // Prevent default form submission behavior
 
     try {
-      // Send POST request using fetch
-      const response = await fetch('http://localhost:5000/api/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),  // Convert form data to JSON
-      });
+      // Send POST request using the post utility function
+      const result = await post('/users', formData);
 
-      const result = await response.json();  // Parse the JSON response
-
-      if (response.ok) {
-        // Handle successful response
-        setMessage('Signup successful!');
-        console.log(result); // Log the response from the server
-      } else {
-        // Handle failed response
-        setMessage('Signup failed. Please try again.');
-      }
+      // Handle successful response
+      setMessage('Signup successful!');
+      console.log(result); // Log the response from the server
+      navigate('/signin');
     } catch (error) {
       // Handle network or other errors
       setMessage('An error occurred. Please try again later.');
@@ -54,47 +43,13 @@ const Signup = () => {
   };
 
   return (
-    <div className="signup-container">
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
-
-      {message && <p>{message}</p>}  {/* Display success or error message */}
-    </div>
+    <SignupForm
+      formData={formData}
+      handleChange={handleChange}
+      handleSubmit={handleSubmit}
+      message={message}
+      updateFormData={(key, value) => setFormData({ ...formData, [key]: value })}
+    />
   );
 };
 
