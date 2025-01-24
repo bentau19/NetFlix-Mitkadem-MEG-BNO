@@ -1,6 +1,6 @@
 
 const userService = require('../services/UsersService');
-
+const VALIDITY_FUNC = require('../validation/validityFunc');
 const ERROR_MESSAGES = require('../validation/errorMessages');
 const createUser = async (req, res) => {
     try {
@@ -12,12 +12,10 @@ const createUser = async (req, res) => {
         );
         res.status(201).json({ message: 'User created successfully',_id:result._id });
     } catch (error) {
-
-        if (error === ERROR_MESSAGES.VALIDATION_FAILED||ERROR_MESSAGES.Existing("user")==error) {
+        if (ERROR_MESSAGES.Existing("user")==error) {
             res.status(400).json({ message: error });
         } else {
-            res.status(500).json({ message: error });
-
+            VALIDITY_FUNC.catchAction(error,res);
         }
     }
 }
@@ -35,8 +33,7 @@ const getUser = async (req, res) => {
             res.status(400).json({ message: 'User doesnt exist' });
         }
     } catch (error) {
-        if(error==ERROR_MESSAGES.BAD_REQUEST) res.status(400).json({ message: error});
-        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR });
+        VALIDITY_FUNC.catchAction(error,res);
     }
 };
 const getUserByToken = async (req, res) => {
@@ -54,8 +51,7 @@ const getUserByToken = async (req, res) => {
             res.status(400).json({ message: 'User doesnt exist' });
         }
     } catch (error) {
-        if(error==ERROR_MESSAGES.BAD_REQUEST) res.status(400).json({ message: error});
-        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR });
+        VALIDITY_FUNC.catchAction(error,res);
     }
 };
 
@@ -74,8 +70,7 @@ const signIn = async (req, res) => {
             res.status(400).json({ message: 'wrong Username or password' });
         }
     } catch (error) {
-        if(error==ERROR_MESSAGES.BAD_REQUEST) res.status(400).json({ message: error});
-        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR });
+        VALIDITY_FUNC.catchAction(error,res);
     }
 };
 
