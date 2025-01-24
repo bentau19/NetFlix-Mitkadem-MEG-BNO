@@ -69,9 +69,7 @@ const getMovieById = async (id) => {
 };
 
 const createMovie = async (title,logline,image,categories) => {
-  alert('in');
   if(!title){
-    alert('no title');
     throw ERROR_MESSAGES.BAD_REQUEST;
 
   }
@@ -83,7 +81,6 @@ const createMovie = async (title,logline,image,categories) => {
     for (const id of categories) {
       const category = await Categories.findOne({ _id: id });
       if(!category){
-        alert('no cat');
         throw ERROR_MESSAGES.BAD_REQUEST;
       }
     }}
