@@ -20,10 +20,9 @@ const getMoviesByCategories = async (req, res) => {
 const createMovie = async (req, res) => {
     try {
         if(!UserService.isManager(req.headers['token'])){
-            alert('bipbop');
             throw ERROR_MESSAGES.BAD_REQUEST;
         }
-        const result = await MovieService.createMovie(
+        const result = await MovieService.createMovieWithImage(
             req.body.title,
             req.body.logline,
             req.body.image,

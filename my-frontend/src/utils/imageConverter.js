@@ -1,15 +1,10 @@
 
 const hexToBase64 = (hex) => {
-  // Convert hex string to a byte array
-  const bytes = [];
-  for (let i = 0; i < hex.length; i += 2) {
-    bytes.push(parseInt(hex.substr(i, 2), 16));
-  }
-  
-  // Convert byte array to Base64
-  const binary = String.fromCharCode(...bytes);
+  const binary = hex.match(/.{1,2}/g).map(byte => String.fromCharCode(parseInt(byte, 16))).join('');
   return `data:image/png;base64,${btoa(binary)}`;
+
 };
+
 // Function to convert the image buffer to a hex string
 const convertFileToHex = (file) => {
   return new Promise((resolve, reject) => {
@@ -34,7 +29,22 @@ const convertFileToHex = (file) => {
     reader.readAsArrayBuffer(file); // Read the file as ArrayBuffer
   });
 };
+function hexToDataUrl(hexString) {
+  // Convert the hexadecimal string to a byte array
+  const bytes = [];
+  for (let i = 0; i < hexString.length; i += 2) {
+    bytes.push(parseInt(hexString.substr(i, 2), 16));
+  }
 
+  // Convert the byte array to a binary string
+  const binary = String.fromCharCode(...bytes);
+
+  // Convert the binary string to a base64 string
+  const base64 = btoa(binary);
+
+  // Create a data URL
+  return `data:image/png;base64,${base64}`;
+}
   
-  module.exports = { hexToBase64, convertFileToHex };
+  module.exports = { hexToBase64, convertFileToHex,hexToDataUrl };
   

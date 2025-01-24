@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { del } from './httpUtils.jsx'; // Assuming you have this function for DELETE requests
 import Popup from './Popup'; // Assuming you have the Popup component
-
+import { hexToBase64 } from '../utils/imageConverter.js';
 const ItemList = ({ type, query, onEdit }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -73,9 +73,10 @@ const ItemList = ({ type, query, onEdit }) => {
   const renderHexSnippet = (hexString, maxLength = 20) => {
     if (!hexString) return "No Image Data";
     // Truncate the hex string to a maximum length and add ellipsis
-    return hexString.length > maxLength
+  /*  return hexString.length > maxLength
       ? `${hexString.substring(0, maxLength)}...`
-      : hexString;
+      : hexString;*/
+      return hexToBase64(hexString)
   };
   
 
@@ -88,8 +89,16 @@ const ItemList = ({ type, query, onEdit }) => {
             <p><strong>ID:</strong> {item._id}</p>
             {type === 'movie' && (
               <>
-      <strong>Image:</strong> {renderHexSnippet(item.image)}
-      <p><strong>Logline:</strong> {item.logline}</p>
+      { item.image ? (
+        <img
+        src={hexToBase64(item.image)}
+          alt="Uploaded Movie"
+          style={{ maxWidth: '100px', maxHeight: '60px' }}
+        />
+      ) :  (
+        <strong>No Image Data</strong>
+      ) }     
+       <p><strong>Logline:</strong> {item.logline}</p>
                 <p><strong>Categories:</strong></p>
                 <ul>
                   {Array.isArray(item.categories) && item.categories.length > 0 ? (
