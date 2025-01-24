@@ -58,12 +58,12 @@ const Signup = () => {
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="name">name</label>
+          <label htmlFor="displayName">name</label>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={formData.name}
+            id="displayName"
+            name="displayName"
+            value={formData.displayName}
             onChange={handleChange}
             required
           />
@@ -80,12 +80,12 @@ const Signup = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="userName">Email</label>
           <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
+            type="text"
+            id="userName"
+            name="userName"
+            value={formData.userName}
             onChange={handleChange}
             required
           />
