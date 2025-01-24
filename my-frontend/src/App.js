@@ -1,15 +1,17 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Signup from "./pages/Signup";
+import Signin from './pages/Signin';
 import Admin from "./pages/Admin";
+import LoggedMain from "./pages/mainPage/LoggedMain";
 
 const App = () => {
   return (
-    <Router> {/* Wrap Routes with Router */}
+    <Router>
       <Routes>
         <Route path="/" element={<Signup />} />
-        <Route path="/admin" element={<Admin />} />
-
+        <Route path="/signin" element={<Signin />} />
+        {/* Add other routes as needed */}
       </Routes>
     </Router>
   );
