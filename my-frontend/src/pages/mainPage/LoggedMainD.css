@@ -1,11 +1,14 @@
 /* Full-screen container */
 .mainContainer {
+  
     background-color: #141414; /* Netflix-style background */
     color: white;
     min-height: 100vh;
     padding: 20px;
     box-sizing: border-box;
     overflow-x: hidden;
+    width: 100%;
+    min-width: 100vw;
   }
   
   /* Header */
@@ -17,6 +20,7 @@
   
   /* Category section */
   .categorySection {
+    
     margin-bottom: 40px;
   }
   
@@ -27,6 +31,7 @@
   
   /* Horizontal scrolling for movies */
   .movieRow {
+    justify-content: center;
     display: flex;
     overflow-x: auto;
     gap: 20px;
