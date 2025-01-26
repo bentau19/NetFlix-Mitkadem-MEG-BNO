@@ -10,7 +10,7 @@ const Signin = () => {
     userName: '',
     password: '',
   });
-
+  const navigate = useNavigate();
   const [message, setMessage] = useState('');
 
   const handleChange = (e) => {
@@ -27,7 +27,7 @@ const Signin = () => {
     try {
       const result = await post('/tokens', formData);
       setMessage('Signin successful!');
-      console.log(result);
+      navigate('/');
       sessionStorage.setItem('token', result);
     } catch (error) {
       setMessage('' + error);
