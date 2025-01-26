@@ -69,7 +69,7 @@ const signIn = async (req, res) => {
         if (result) {
             // Assuming createUser returns a truthy value on success
             res.cookie('token', result, {
-                httpOnly: true, // Helps prevent XSS attacks
+                secure: false,
                 secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
                 sameSite: 'strict', // Helps prevent CSRF
                 maxAge: 7 * 24 * 60 * 60 * 1000 // 1 week in milliseconds

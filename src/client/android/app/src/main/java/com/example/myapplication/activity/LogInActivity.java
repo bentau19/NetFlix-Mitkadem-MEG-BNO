@@ -2,17 +2,13 @@ package com.example.myapplication.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.room.Room;
 
 import com.example.myapplication.R;
-import com.example.myapplication.data.Rooms.DB.AppDatabase;
-import com.example.myapplication.server.api.ApiResponseCallback;
 import com.example.myapplication.ui.viewmodel.LogInViewModel;
 
 public class LogInActivity extends AppCompatActivity {

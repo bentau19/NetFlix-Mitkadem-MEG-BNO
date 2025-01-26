@@ -2,6 +2,7 @@ const counter = require('../utils/idManager');
 const Categories = require('../models/categories');
 const Movie = require('../models/movies');
 const ERROR_MESSAGES = require('../validation/errorMessages');
+
 const createCategories = async (name, promoted) => {
 if(!name)throw ERROR_MESSAGES.BAD_REQUEST;
 const test = await Categories.findOne({ name:name });
@@ -10,6 +11,7 @@ const categories = new Categories({ name : name});
 if (promoted) categories.promoted = promoted;
 return await categories.save();
 };
+
 const getCategoriesById = async (id) => {
     if(!id)throw ERROR_MESSAGES.BAD_REQUEST;
     return await Categories.findById(id); };

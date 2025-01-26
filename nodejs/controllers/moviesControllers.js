@@ -22,7 +22,7 @@ const createMovie = async (req, res) => {
         if(!UserService.isManager(req.headers['token'])){
             throw ERROR_MESSAGES.BAD_REQUEST;
         }
-        const result = await MovieService.createMovie(
+        const result = await MovieService.createMovieWithImage(
             req.body.title,
             req.body.logline,
             req.body.image,

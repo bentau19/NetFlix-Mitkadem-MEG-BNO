@@ -16,7 +16,7 @@ const User = new Schema({
         required: true
     },
     image: {
-        type: Buffer, // Store binary data
+        type: String, // Store binary data
         default: null
     },
     password: {

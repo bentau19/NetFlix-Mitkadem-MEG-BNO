@@ -1,5 +1,5 @@
-const API_BASE_URL = 'http://localhost:5000/api'; // Change this to your API's base URL
 
+const API_BASE_URL = 'http://localhost:5000/api'; // Change this to your API's base URL
 /**
  * Handles fetch requests with shared logic.
  * @param {string} endpoint - The API endpoint (e.g., '/movies').
@@ -11,10 +11,13 @@ const API_BASE_URL = 'http://localhost:5000/api'; // Change this to your API's b
 const fetchRequest = async (endpoint, method, body = null, headers = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;
   console.log(url); // Log the URL to ensure it's correct
+  const token = sessionStorage.getItem('token');
   const options = {
     method,
     headers: {
       'Content-Type': 'application/json',
+      'token': token,
+
       ...headers,
     },
   };
@@ -28,16 +31,15 @@ const fetchRequest = async (endpoint, method, body = null, headers = {}) => {
     const response = await fetch(url, options);
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => null); // Prevent JSON parsing error
+      const errorData = await response.json().catch(() => null);
       throw new Error(errorData?.message || `HTTP error! Status: ${response.status}`);
     }
 
-    // Check if response has content before parsing JSON
     const contentType = response.headers.get("content-type");
     if (contentType && contentType.includes("application/json")) {
-      return response.json(); // Parse JSON to return proper data
+      return response.json();
     } else {
-      return { ok: response.ok, status: response.status }; // Return status for non-JSON responses
+      return { ok: response.ok, status: response.status };
     }
     
   } catch (error) {
