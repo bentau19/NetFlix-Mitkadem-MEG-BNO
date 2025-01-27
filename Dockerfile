@@ -1,3 +1,4 @@
+# Build Stage
 FROM gcc:10.2.0 AS builder
 
 # Install dependencies for building
@@ -21,8 +22,8 @@ WORKDIR /app
 # Copy the project files
 COPY . .
 
-# Build the project
-RUN mkdir -p build && cd build && cmake .. && make
+# Ensure a clean build
+RUN rm -rf build && mkdir -p build && cd build && cmake .. && make
 
 # Runtime Stage
 FROM python:3.7-slim
@@ -36,19 +37,17 @@ RUN apt-get update && apt-get install -y \
 
 # Set working directory
 WORKDIR /app
-
 # Create the data directory in the /app folder
 RUN mkdir -p /app/data
-
 # Copy build artifacts from the builder stage
 COPY --from=builder /app/build /app/build
 COPY --from=builder /app/src /app/src
-
 # Install Python dependencies
 RUN pip3 install requests
 
 # Expose the server port
 EXPOSE 8080
 
+# Run server and client in tmux
 # Run server and client in tmux, while opening the data directory as well
 CMD ["bash", "-c", "cd build && mkdir -p /app/data && exec bash"]
