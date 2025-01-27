@@ -41,14 +41,14 @@ public class UserRepository {
     }
 
     public void login(String password, String userName) {
-        String endpoint = "tokens";
+        String endpoint = "categories";
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         Map<String, String> jsonBody = new HashMap<>();
         jsonBody.put("userName", userName);
         jsonBody.put("password", password);
         APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
-        apiRequest.post(new ApiResponseCallback() {
+        apiRequest.get(new ApiResponseCallback() {
             @Override
             public void onSuccess(Object response) {
                 // Assuming the response contains a token as a string

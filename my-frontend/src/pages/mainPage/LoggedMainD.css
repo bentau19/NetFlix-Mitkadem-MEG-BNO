@@ -1,0 +1,95 @@
+/* Full-screen container */
+.mainContainer {
+  
+    background-color: #141414; /* Netflix-style background */
+    color: white;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    width: 100%;
+    min-width: 100vw;
+  }
+  
+  /* Header */
+  h1 {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  /* Category section */
+  .categorySection {
+    
+    margin-bottom: 40px;
+  }
+  
+  .categoryName {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+  
+  /* Horizontal scrolling for movies */
+  .movieRow {
+    justify-content: center;
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding-bottom: 10px;
+  }
+  
+  .movieRow::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .movieRow::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+  }
+  
+  .movieRow::-webkit-scrollbar-track {
+    background: #333;
+  }
+  
+  /* Movie card styling */
+  .movieCard {
+    flex: 0 0 auto;
+    width: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #222;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+  }
+  
+  .movieCard:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Movie image */
+  .movieImage {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+  }
+  
+  /* Movie info */
+  .movieInfo {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .movieInfo h3 {
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+  /* No movies message */
+  .noMovies {
+    color: #bbb;
+    font-size: 1rem;
+    text-align: center;
+    margin: 20px 0;
+  }
+  

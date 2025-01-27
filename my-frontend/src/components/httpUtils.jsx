@@ -11,11 +11,12 @@ const API_BASE_URL = 'http://localhost:5000/api'; // Change this to your API's b
 const fetchRequest = async (endpoint, method, body = null, headers = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;
   console.log(url); // Log the URL to ensure it's correct
+  const token = sessionStorage.getItem('token');
   const options = {
     method,
     headers: {
       'Content-Type': 'application/json',
-      'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk',
+      'token': token,
 
       ...headers,
     },

@@ -9,56 +9,70 @@ const { convertToHex } = require('../utils/imageConverter');
 const fs = require('fs');
 
 const getMoviesByCategory = async (userId) => {
-    try {
-      if (!userId) {
-        throw ERROR_MESSAGES.BAD_REQUEST;
-      }
-      // Step 1: Get the user's watched movies
-      const user = await Users.findById(userId);
-      if (!user) {
-        throw 'User not found';
-      }
-      const watchedMovies = user.movies.map((movie) => movie.movie); // Extract movie IDs
-      const lastWatchedMovies = user.movies
-        .sort((a, b) => b.whenWatched - a.whenWatched) // Sort by most recent
-        .slice(0, 20)
-        .map((movie) => movie.movie); // Extract the last 20 watched movies
-  
-      // Step 2: Find all promoted categories
-      const categories = await Categories.find({ promoted: true });
-  
-      // Step 3: Loop through categories and fetch movies
-      const unwatchedCategories = await Promise.all(categories.map(async (category) => {
+  try {
+    if (!userId) {
+      throw ERROR_MESSAGES.BAD_REQUEST;
+    }
+
+    // Step 1: Get the user's watched movies
+    const user = await Users.findById(userId);
+    if (!user) {
+      throw 'User not found';
+    }
+
+    const watchedMovies = user.movies.map((movie) => movie.movie); // Extract movie IDs
+    const lastWatchedMovies = user.movies
+      .sort((a, b) => b.whenWatched - a.whenWatched) // Sort by most recent
+      .slice(0, 20)
+      .map((movie) => movie.movie); // Extract the last 20 watched movie IDs
+
+    // Step 2: Find all promoted categories
+    const categories = await Categories.find({ promoted: true });
+
+    // Step 3: Loop through categories and fetch movies
+    const unwatchedCategories = await Promise.all(
+      categories.map(async (category) => {
         // Filter movies to exclude those the user has watched
-        const unwatchedMovies = category.movies.filter(
+        const unwatchedMovieIds = category.movies.filter(
           (movieId) => !watchedMovies.includes(movieId)
         );
-  
-        // Limit to 20 unwatched movies
-        const topUnwatchedMovies = unwatchedMovies.slice(0, 20);
-  
+
+        // Limit to 20 unwatched movie IDs
+        const topUnwatchedMovieIds = unwatchedMovieIds.slice(0, 20);
+
+        // Fetch movie details from the Movies collection
+        const topUnwatchedMovies = await Movies.find({
+          _id: { $in: topUnwatchedMovieIds },
+        });
+
         return {
           categoryName: category.name, // Include category name
-          movies: topUnwatchedMovies, // Top 20 unwatched movies
+          movies: topUnwatchedMovies, // Actual movie objects
         };
-      }));
-  
-      // Step 4: Add the "watched" category
-      const watchedCategory = {
-        categoryName: 'Watched',
-        movies: lastWatchedMovies,
-      };
-  
-      // Step 5: Combine results
-      const result = [...unwatchedCategories, watchedCategory];
-  
-      return result;
-  
-    } catch (error) {
-      throw ERROR_MESSAGES.SERVER_ERROR;
-    }
-  };
-  
+      })
+    );
+
+    // Step 4: Add the "watched" category
+    const watchedMoviesDetails = await Movies.find({
+      _id: { $in: lastWatchedMovies },
+    });
+
+    const watchedCategory = {
+      categoryName: 'Watched',
+      movies: watchedMoviesDetails, // Actual movie objects
+    };
+
+    // Step 5: Combine results
+    const result = [...unwatchedCategories, watchedCategory];
+
+    return result;
+
+  } catch (error) {
+    console.error(error); // Log the actual error for debugging
+    throw ERROR_MESSAGES.SERVER_ERROR;
+  }
+};
+
 
 const getMovieById = async (id) => {
   if (!id) {
