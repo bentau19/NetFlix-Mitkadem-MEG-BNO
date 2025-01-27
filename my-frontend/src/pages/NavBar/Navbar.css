@@ -1,0 +1,12 @@
+
+
+.special-input {
+    display: flex;
+    align-items: center;    /* Centers vertically */
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    outline: none;
+    width: 250px; /* Control the width */
+}
