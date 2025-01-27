@@ -30,7 +30,7 @@
 
   "scripts": {
 
-    "start": "SET NODE_ENV=windows && node ./nodejs/app.js"
+    "start": "NODE_ENV=docker && node ./nodejs/app.js"
 
   }
 
