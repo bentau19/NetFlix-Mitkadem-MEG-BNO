@@ -7,6 +7,7 @@ import Guest from "./pages/mainPage/GuestMain";
 import Logged from "./pages/mainPage/LoggedMain"
 import AuthCheck from "./utils/AuthCheck"
 import VideoPlayer from "./pages/videoPlayer"; 
+import { ThemeProvider } from "./context/ThemeContext";
 const App = () => {
   return (
     <ThemeProvider>
