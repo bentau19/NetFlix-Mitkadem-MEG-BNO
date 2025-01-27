@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useContext } from 'react';
+import { ThemeContext } from "../context/ThemeContext";
+
 import Popup from '../components/Popup';
 import MovieForm from '../components/MovieForm';
 import CategoryForm from '../components/CategoryForm';
@@ -11,6 +13,8 @@ const Admin = () => {
   const [viewType, setViewType] = useState('movie');
   const [searchQuery, setSearchQuery] = useState('');
   const [editingItem, setEditingItem] = useState(null); // Holds the item to edit
+  const {theme, toggleTheme } = useContext(ThemeContext);
+
 
   useEffect(() => {
     setSearchQuery('');
@@ -44,6 +48,9 @@ const Admin = () => {
             <button onClick={() => openPopup(viewType)}>Add</button>
           </div>
         </div>
+        <button onClick={toggleTheme}>
+            Switch to {theme === "light" ? "Dark" : "Light"} Mode
+        </button>
         </div>
     
       <Popup isOpen={isPopupOpen} onClose={closePopup}>

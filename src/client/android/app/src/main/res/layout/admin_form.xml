@@ -6,7 +6,8 @@
     android:padding="16dp"
     android:background="#f4f4f9">
 
-<LinearLayout
+    <!-- Category Form -->
+    <LinearLayout
         android:id="@+id/categoryForm"
         android:orientation="vertical"
         android:visibility="gone"
@@ -18,14 +19,15 @@
             android:textSize="20sp"
             android:textColor="#000"
             android:layout_marginBottom="10dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <EditText
             android:id="@+id/categoryName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Category Name"
+            android:autofillHints="name"
             android:padding="10dp" />
 
         <CheckBox
@@ -53,7 +55,7 @@
             android:padding="12dp" />
     </LinearLayout>
 
-    <!-- Movie Form (Initially Hidden) -->
+    <!-- Movie Form -->
     <LinearLayout
         android:id="@+id/movieForm"
         android:orientation="vertical"
@@ -74,6 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Movie Title"
+            android:autofillHints="personName"
             android:padding="10dp" />
 
         <EditText
@@ -81,20 +84,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Movie Logline"
+            android:autofillHints="text"
             android:padding="10dp" />
 
-        <EditText
-            android:id="@+id/movieImage"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/selectImageButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Image URL"
-            android:padding="10dp" />
+            android:text="Select Image" />
+        <ImageView
+            android:id="@+id/movieImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:text="Select Image" />
 
         <EditText
             android:id="@+id/movieCategories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Categories (comma-separated)"
+            android:autofillHints="postalAddress"
             android:padding="10dp" />
 
         <Button

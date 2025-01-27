@@ -19,9 +19,9 @@ const getMoviesByCategories = async (req, res) => {
 
 const createMovie = async (req, res) => {
     try {
-        if(!UserService.isManager(req.headers['token'])){
-            throw ERROR_MESSAGES.BAD_REQUEST;
-        }
+       // if(!UserService.isManager(req.headers['token'])){
+       //     throw 'only admin can acsees this';
+     //   }
         const result = await MovieService.createMovieWithImage(
             req.body.title,
             req.body.logline,
