@@ -6,19 +6,23 @@ import Admin from "./pages/Admin";
 import Guest from "./pages/mainPage/GuestMain";
 import Logged from "./pages/mainPage/LoggedMain"
 import AuthCheck from "./utils/AuthCheck"
-
-
+import VideoPlayer from "./pages/videoPlayer"; 
+import { ThemeProvider } from "./context/ThemeContext";
 const App = () => {
   return (
+    <ThemeProvider>
     <Router>
+
       <Routes>
         <Route path="/" element={<AuthCheck />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/movie" element={<VideoPlayer />} />
         {/* Add other routes as needed */}
       </Routes>
     </Router>
+    </ThemeProvider>
   );
 };
 

@@ -5,7 +5,8 @@ const movieController = require('../controllers/moviesControllers');
 router.route('/')
 .get(movieController.getMoviesByCategories)
 .post(movieController.createMovie);
-
+router.route('/:id/play')
+.get(movieController.play);
 router.route('/:id/recommend')
 .get(movieController.getRecommendMovie)
 .post(movieController.addMovieToUser);

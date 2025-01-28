@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { hexToBase64} from '../utils/imageConverter';
+import { hexToBase64, convertFileToHex} from '../utils/imageConverter';
 const MovieForm = ({ onClose, initialValues = {} }) => {
   const { title, logline, image, categories } = initialValues || {};
   
@@ -12,49 +12,51 @@ const MovieForm = ({ onClose, initialValues = {} }) => {
   
   const handleSubmit = async () => {
     try {
-      const token = sessionStorage.getItem('token'); // Use 'token' as a string
-      if (!token) {
-        throw new Error('No token found. Please sign in.');
-      }
       const url = isEditing
-      ? `http://localhost:5000/api/movies/${initialValues._id}`
-      : 'http://localhost:5000/api/movies';
-    const method = isEditing ? 'PUT' : 'POST';
-       const response = await fetch(url, {
-         method,
-         headers: {
-           'Content-Type': 'application/json',
-           'token': token,
-         },
-         body: JSON.stringify({
-           title: titleState,
-           logline: loglineState,
-         //  image: imageState ? await convertFileToHex(optimizeImage(imageState)) : null,
-         image:image,
-           categories: categoriesState
-             .split(',')
-             .map(id => id.trim())
-             .filter(id => id)
-         })
-       });
- 
-       // Log raw response
-       const responseText = await response.text();
-       console.log('Full Response:', responseText);
- 
-       // More detailed error handling
-       if (!response.ok) {
-         throw new Error(`HTTP error! status: ${response.status}, response: ${responseText}`);
-       }
-       else{
+        ? `http://localhost:5000/api/movies/${initialValues._id}`
+        : 'http://localhost:5000/api/movies';
+      const method = isEditing ? 'PUT' : 'POST';
+      
+      let imageBase64 = null;
+      if (imageState) {
+        // Convert the image to Base64 before sending (Ensure convertFileToHex or similar function works)
+        imageBase64 = await convertFileToHex(imageState);
+      }
+  
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjUsInVzZXJOYW1lIjoiZGl2YSIsImFkbWluIjp0cnVlLCJpYXQiOjE3MzgwMDg0NDgsImV4cCI6MTczODYxMzI0OH0.XItd2S3Ot0ET9uD_pureCQO8b3LIkT6yq7HR9q8mDJw', // Replace with your actual token
+        },
+        body: JSON.stringify({
+          title: titleState,
+          logline: loglineState,
+          image: imageBase64, // Use Base64 encoded image here
+          categories: categoriesState
+            .split(',')
+            .map(id => id.trim())
+            .filter(id => id),
+        }),
+      });
+  
+      // Log raw response
+      const responseText = await response.text();
+      console.log('Full Response:', responseText);
+  
+      // Detailed error handling
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}, response: ${responseText}`);
+      } else {
         alert(`movie ${isEditing ? 'updated' : 'created'} successfully!`);
         onClose();
-       }
+      }
     } catch (error) {
       console.error('Submission Error:', error);
       alert('Error: ' + error.message);
     }
- };
+  };
+  
 
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './LoggedMainD.css';
-import Navbar from "../NavBar/Navbar";
+//import Navbar from "../NavBar/Navbar";
 
 const LoggedMain = () => {
   const [token, setToken] = useState('');
@@ -67,7 +67,6 @@ const LoggedMain = () => {
 
   return (
     <div className="mainContainer">
-      <Navbar onSearchChange={handleSearchChange} />
       <h1>Movies for You</h1>
 
       {/* Display loading state */}
