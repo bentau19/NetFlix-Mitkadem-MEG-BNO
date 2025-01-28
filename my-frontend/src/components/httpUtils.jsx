@@ -54,6 +54,29 @@ export const patch = async (url, body) => await fetchRequest(url, 'PATCH', body)
 export const put = async (url, body) => await fetchRequest(url, 'PUT', body);
 export const del = async (url) => await fetchRequest(url, 'DELETE');
 
+
+export const isManager = async () => {
+  const result = await get('/tokens');
+  if(!result||result.admin===null||!result.admin) return false;
+  return true;
+}
+
+
+export const searchMovie = async (searchQuery) => {
+  const result =await get(`/movies/search/${searchQuery}`);
+  return result;
+}
+
+export const getUserMovies = async () => {
+  const result = await get('/movies');
+  return result;
+}
+
+export const getUser = async () => {
+  const result = await get('/tokens');
+  return result;
+}
+
 export const deleteMovie = async (id) => {
   const url = `http://localhost:5000/api/movies/${id}`;
 
