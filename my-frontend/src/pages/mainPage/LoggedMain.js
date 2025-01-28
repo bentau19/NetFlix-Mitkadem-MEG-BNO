@@ -1,43 +1,40 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './LoggedMainD.css';
-//import Navbar from "../NavBar/Navbar";
+import Navbar from "../../components/NavBar/Navbar.js";
+import { searchMovie, getUserMovies,getCategory } from '../../components/httpUtils.jsx';
+import { useNavigate } from 'react-router-dom';
+import MainScreenTemp from "../../components/mainScreen/MainScreenTemp.jsx";
 
 const LoggedMain = () => {
-  const [token, setToken] = useState('');
+  const [selectedOption, setSelectedOption] = useState("");
   const [data, setData] = useState([]); // Ensure that data is an array by default
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = useCallback(async () => {
     setIsLoading(true);
     setError(null);
-
-    const url = searchQuery
-      ? `http://localhost:5000/api/movies/search/${searchQuery}`
-      : 'http://localhost:5000/api/movies/';
-
     try {
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          token: token,
-        },
-      });
-
-      const result = await response.json();
-
-      if (!result || result.length === 0) {
+      let fetchResult;
+      if (searchQuery) {
+        fetchResult = await searchMovie(searchQuery);
+      } else {
+        fetchResult = await getUserMovies();
+      }
+  
+      if (!fetchResult || fetchResult.length === 0) {
         setError('No movies found for your search.');
         setData([]); // Set data to an empty array when no results
       } else {
-        // For the search query, use the result directly
         if (searchQuery) {
-          setData(result);
+          setData(fetchResult); // Use the result directly for search
         } else {
-          // For the base case, filter out categories with no movies
-          const filteredCategories = result.filter((category) => category.movies && category.movies.length > 0);
+          // Filter out categories with no movies
+          const filteredCategories = fetchResult.filter(
+            (category) => category.movies && category.movies.length > 0
+          );
           setData(filteredCategories);
         }
       }
@@ -47,79 +44,64 @@ const LoggedMain = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [token, searchQuery]);
+  }, [searchQuery]); // Only depends on `searchQuery`
+
+  // Define setCat properly
+  const setCat = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      if (selectedOption === 'all') {
+        const allCategories = await getCategory(""); // Fetch all categories
+        setData(allCategories); // Update the state with the fetched data
+      } else if (selectedOption === "") {
+        handleSubmit(); // Call handleSubmit for an empty selection
+      } else {
+        const filteredCategories = await getCategory(selectedOption); // Fetch filtered categories
+        setData(filteredCategories); // Update the state with the fetched data
+      }
+      console.log(data);
+      // You can add additional logic here if needed
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      setError('An error occurred while fetching data.');
+      // Handle the error (e.g., show an error message)
+    }finally {
+      setIsLoading(false);
+    }
+  }, [selectedOption, getCategory]);
+  
 
   const handleSearchChange = (query) => {
     setSearchQuery(query);
   };
 
   useEffect(() => {
-    setToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjEsInVzZXJOYW1lIjoiYmVuIiwiYWRtaW4iOmZhbHNlLCJpYXQiOjE3Mzc3MTYyMzUsImV4cCI6MTczODMyMTAzNX0.qGWmV6F7TVl4ejEpIT3r-s7Apjvwro4e5M-pY6cMnWU'
-    );
-  }, []);
-
-  useEffect(() => {
-    if (token) {
-      handleSubmit(); // Make the API request when the token or searchQuery changes
+    if (sessionStorage.getItem('token') === null) {
+      navigate('/signin');
+    } else {
+      handleSubmit(); // Trigger fetch when component mounts
     }
-  }, [token, searchQuery,handleSubmit]); // Depend on both token and searchQuery to trigger the request
+  }, [navigate, handleSubmit]); // Properly include dependencies
+
+  // Trigger setCat whenever selectedOption changes
+  useEffect(() => {
+    setCat();
+  }, [setCat]);
 
   return (
-    <div className="mainContainer">
-      <h1>Movies for You</h1>
-
-      {/* Display loading state */}
-      {isLoading && <p>Loading...</p>}
-
-      {/* Display error message */}
-      {error && <p>{error}</p>}
-
-      {/* Render movie categories or list of movies based on searchQuery */}
-      {!isLoading && !error && Array.isArray(data) && data.length > 0 ? (
-        searchQuery === '' ? (
-          // Render categories when no search query
-          data.map((category) => (
-            <div key={category._id} className="categorySection">
-              <h2 className="categoryName">{category.categoryName}</h2>
-              <div className="movieRow">
-                {category.movies && category.movies.length > 0 ? (
-                  category.movies.map((movie) => (
-                    <div key={movie._id} className="movieCard">
-                      <img
-                        // src={movie.image || 'https://via.placeholder.com/300x450'}
-                        alt={movie.title}
-                        className="movieImage"
-                      />
-                      <div className="movieInfo">
-                        <h3>{movie.title}</h3>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p>No movies available in this category.</p>
-                )}
-              </div>
-            </div>
-          ))
-        ) : (
-          // Render a flat list of movies when there is a search query
-          data.map((movie) => (
-            <div key={movie._id} className="movieCard">
-              <img
-                // src={movie.image || 'https://via.placeholder.com/300x450'}
-                alt={movie.title}
-                className="movieImage"
-              />
-              <div className="movieInfo">
-                <h3>{movie.title}</h3>
-              </div>
-            </div>
-          ))
-        )
-      ) : (
-        <p>No categories or movies to display.</p> // If data is empty or not an array
-      )}
+    <div className="maindiv">
+      <Navbar
+        selectedOption={selectedOption}
+        setSelectedOption={setSelectedOption}
+        onSearchChange={handleSearchChange}
+      />
+      <MainScreenTemp
+        isLoading={isLoading}
+        error={error}
+        data={data}
+        searchQuery={searchQuery}
+      />
     </div>
   );
 };

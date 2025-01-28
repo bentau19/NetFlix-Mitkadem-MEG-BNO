@@ -39,7 +39,12 @@ public class MainActivity extends AppCompatActivity {
                 hash.setText("Log in first"); // Display fallback message
             }
         });
+        Button btnGoToMain = findViewById(R.id.mainButton);
 
+        btnGoToMain.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, loggedMain.class);
+            startActivity(intent);
+        });
         // Go to Signup Activity
         Button btnGoToSignup = findViewById(R.id.button);
         btnGoToSignup.setOnClickListener(view -> {

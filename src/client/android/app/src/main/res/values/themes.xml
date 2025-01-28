@@ -6,6 +6,7 @@
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
 
+<<<<<<< HEAD
         <!-- Surface colors -->
         <item name="colorSurface">@color/colorSurface</item>
         <item name="colorOnSurface">@color/colorOnSurface</item>
@@ -17,3 +18,16 @@
         <item name="buttonStyle">@style/MyButtonStyle</item>
     </style>
 </resources>
+=======
+    <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
+
+    <style name="Theme.MyApplication.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.MyApplication.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.MyApplication.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>
+>>>>>>> 3e8c3d093ff174e9f39f178b86c5a6cf099544ba

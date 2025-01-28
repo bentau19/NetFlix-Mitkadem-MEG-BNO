@@ -10,7 +10,6 @@ const API_BASE_URL = 'http://localhost:5000/api'; // Change this to your API's b
  */
 const fetchRequest = async (endpoint, method, body = null, headers = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;
-  console.log(url); // Log the URL to ensure it's correct
   const token = sessionStorage.getItem('token');
   const options = {
     method,
@@ -21,8 +20,6 @@ const fetchRequest = async (endpoint, method, body = null, headers = {}) => {
       ...headers,
     },
   };
-  console.log(method); // Log the method to ensure it's correct
-
   if (body) {
     options.body = JSON.stringify(body);
   }
@@ -53,6 +50,32 @@ export const post = async (url, body) => await fetchRequest(url, 'POST', body);
 export const patch = async (url, body) => await fetchRequest(url, 'PATCH', body);
 export const put = async (url, body) => await fetchRequest(url, 'PUT', body);
 export const del = async (url) => await fetchRequest(url, 'DELETE');
+
+
+export const isManager = async () => {
+  const result = await get('/tokens');
+  if(!result||result.admin===null||!result.admin) return false;
+  return true;
+}
+
+
+export const searchMovie = async (searchQuery) => {
+  const result =await get(`/movies/search/${searchQuery}`);
+  return result;
+}
+
+export const getUserMovies = async () => {
+  const result = await get('/movies');
+  return result;
+}
+export const getCategory = async (name) => {
+  const result = await get(`/categories/search/${name}`);
+  return result;
+}
+export const getUser = async () => {
+  const result = await get('/tokens');
+  return result;
+}
 
 export const deleteMovie = async (id) => {
   const url = `http://localhost:5000/api/movies/${id}`;
