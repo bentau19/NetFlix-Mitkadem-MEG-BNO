@@ -19,6 +19,38 @@ body {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     width: 350px;
 }
+.form_background {
+    
+    position: fixed; /* Ensure it covers the full viewport */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full width */
+    height: 100vh; /* Full height */
+    background-image: url("../../public/photobackgroundweb.jpeg"); /* Corrected */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.signin-container {
+    background-image: url("../../public/signincard.png"); /* Corrected */
+    background-size: cover; /* Ensures the image covers the container */
+    background-position: center; /* Centers the image */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    width: 530px; /* Adjust as needed */
+    min-height: 320px; /* Ensures some height */
+}
+.signup-container {
+    background: #c86969;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    width: 520px;
+}
 
 /* Header styling */
 h2 {

@@ -5,7 +5,8 @@ import React from 'react';
 const SigninForm = ({ formData, handleChange, handleSubmit, message }) => {
   return (
     <div className="signin-container">
-      <h2>Sign In</h2>
+      <div style={{ height: "50px" }}></div>
+
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="userName">Username</label>

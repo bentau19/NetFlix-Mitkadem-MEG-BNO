@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/theme_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Theme: "
+        android:textSize="18sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp" />
+
+    <ToggleButton
+        android:id="@+id/theme_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="Dark Theme"
+        android:textOff="Light Theme"
+        android:layout_centerInParent="true"/>
+
+
+</RelativeLayout>

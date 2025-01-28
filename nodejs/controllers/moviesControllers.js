@@ -23,7 +23,7 @@ const createMovie = async (req, res) => {
        // if(!UserService.isManager(req.headers['token'])){
        //     throw 'only admin can acsees this';
      //   }
-        const result = await MovieService.createMovieWithImage(
+        const result = await MovieService.createMovie(
             req.body.title,
             req.body.logline,
             req.body.image,

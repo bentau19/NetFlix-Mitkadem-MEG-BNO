@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#f4f4f9">
+    android:background="@color/colorBackground">
 
     <!-- Title -->
     <TextView
@@ -15,9 +15,9 @@
         android:layout_height="wrap_content"
         android:text="Movies and Categories"
         android:textSize="24sp"
-        android:textColor="#333"
-        android:layout_gravity="center"
-        android:layout_marginBottom="20dp" />
+        android:textColor="?attr/colorOnSurface"
+    android:layout_gravity="center"
+    android:layout_marginBottom="20dp" />
 
     <!-- Input Group (Spinner + Search Bar) -->
     <LinearLayout
@@ -43,7 +43,9 @@
             android:hint="Search..."
             android:padding="12dp"
             android:layout_marginLeft="10dp"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textColor="?attr/colorOnSurface"
+        android:background="?attr/colorSurface" />
 
         <Button
             android:id="@+id/searchButton"
@@ -51,9 +53,9 @@
             android:layout_height="48dp"
             android:text="Search"
             android:padding="12dp"
-            android:backgroundTint="#4CAF50"
-            android:textColor="#fff"
-            android:layout_marginLeft="10dp" />
+            android:backgroundTint="?attr/colorPrimary"
+        android:textColor="?attr/colorOnPrimary"
+        android:layout_marginLeft="10dp" />
     </LinearLayout>
 
     <!-- Add Button -->
@@ -63,11 +65,11 @@
         android:layout_height="wrap_content"
         android:text="Add"
         android:padding="12dp"
-        android:backgroundTint="#2196F3"
-        android:textColor="#fff"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp" />
+        android:backgroundTint="?attr/colorSecondary"
+    android:textColor="?attr/colorOnSecondary"
+    android:layout_gravity="center"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp" />
 
     <!-- Category and Movie Lists -->
     <androidx.recyclerview.widget.RecyclerView
@@ -76,8 +78,5 @@
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"/>
-
-    <!-- Category Form (Initially Hidden) -->
-
 
 </LinearLayout>

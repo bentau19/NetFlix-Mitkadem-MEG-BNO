@@ -81,39 +81,66 @@ const getMovieById = async (id) => {
             const movie = await Movies.findById(id);
             return movie; 
 };
-
-const createMovie = async (title,logline,image,categories) => {
-  if(!title){
+const createMovie = async (title, logline, image, categories) => {
+  if (!title) {
     throw ERROR_MESSAGES.BAD_REQUEST;
-
   }
-  const test = await Movies.findOne({ title:title });
+
+  const test = await Movies.findOne({ title: title });
   if (test) throw ERROR_MESSAGES.Existing("movie");
-  const movies = new Movies({ title : title});
-  if(categories)
-  if (categories!=[]){
-    for (const id of categories) {
-      const category = await Categories.findOne({ _id: id });
-      if(!category){
+
+  const movies = new Movies({ title: title });
+
+  let categoriesArray = [];
+  if (categories) {
+    if (typeof categories === "string") {
+      try {
+        categoriesArray = JSON.parse(categories);
+      } catch (error) {
+        console.log("Error parsing categories:", error); // Log parse errors
         throw ERROR_MESSAGES.BAD_REQUEST;
       }
-    }}
+    } else {
+      categoriesArray = categories;
+    }
 
+    // Validate categories before saving the movie
+    for (const id of categoriesArray) {
+      const category = await Categories.findOne({ _id: id });
+      if (!category) {
+        console.log("Invalid category ID:", id);
+        throw ERROR_MESSAGES.BAD_REQUEST;
+      }
+    }
+
+    movies.categories = categoriesArray;
+  }
 
   if (logline) movies.logline = logline;
   if (image) movies.image = image;
-  const res =await movies.save();
-  if(categories)
-    if (categories!=[]){
-      for (const categoryName of categories) {
-        const category = await Categories.findOne({ _id: categoryName });
-        category.movies.push(res._id);
-        res.categories.push(category._id);
-        await category.save();
-      }}
 
-  return await res.save();
+  try {
+    const res = await movies.save(); // Save the movie
+
+    // Handle category associations if categories are present
+    if (categoriesArray.length) {
+      for (const categoryId of categoriesArray) {
+        const category = await Categories.findOne({ _id: categoryId });
+        if (category) {
+          category.movies.push(res._id);
+          await category.save();
+        }
+      }
+    }
+
+    return res; // Return the saved movie
+  } catch (error) {
+    console.log("Error creating movie:", error); // Log the error details
+    throw ERROR_MESSAGES.BAD_REQUEST; // Return error message if saving fails
+  }
 };
+
+
 const createMovieWithImage = async (req, res) => {
   try {
     const { title, logline, categories } = req.body;

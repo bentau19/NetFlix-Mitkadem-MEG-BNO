@@ -1,5 +1,7 @@
 package com.example.myapplication.data.repository;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.myapplication.adapter.Category;
@@ -9,6 +11,8 @@ import com.example.myapplication.server.api.ApiResponseCallback;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,33 +24,68 @@ public class MovieRepository {
     public MovieRepository(ApiResponseCallback callback) {
         this.callback = callback;
     }
+    private List<Integer> processCategories(String categories) {
+        if (categories == null || categories.isEmpty()) {
+            return new ArrayList<>();
+        }
 
-    // Signup User
-    public void createMovie(String title, String logline, String image, String categories) {
-        String endpoint = "movies/";
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
-        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk");
+        // Split categories by commas, trim spaces, and remove empty values
+        String[] categoriesArray = categories.split(",");
+        List<Integer> processedCategories = new ArrayList<>();
 
-        Map<String, Object> jsonBody = new HashMap<>();
-        jsonBody.put("title", title);
-        jsonBody.put("logline", logline);
-        jsonBody.put("image", image);
-
-        JSONArray categoriesArray = new JSONArray();
-        if (categories != null && !categories.isEmpty()) {
-            String[] categoryIds = categories.split(",");
-            for (String id : categoryIds) {
-                id = id.trim();
-                if (!id.isEmpty()) {
-                    categoriesArray.put(id);
+        for (String category : categoriesArray) {
+            String trimmedCategory = category.trim();
+            if (!trimmedCategory.isEmpty()) {
+                try {
+                    processedCategories.add(Integer.parseInt(trimmedCategory)); // Convert to integer
+                } catch (NumberFormatException e) {
+                    // Handle invalid category ID
+                  //  showToast("Invalid category ID: " + trimmedCategory);
                 }
             }
         }
-        jsonBody.put("categories", categoriesArray);
 
+        return processedCategories;
+    }
+    // Signup User
+    public void createMovie(String title, String logline, String imageHex, String categories) {
+        String endpoint = "movies/";
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("token", "your-jwt-token-here");
+
+        // Create a FormData object with the image hex and other form fields
+        Map<String, String> jsonBody = new HashMap<>();
+        jsonBody.put("title", title);
+        jsonBody.put("logline", logline);
+        jsonBody.put("image", imageHex);
+
+        // Process categories into a List<Integer>
+        List<Integer> processedCategories = processCategories(categories);
+
+        // Convert the List<Integer> into a JSON array string
+        String categoriesJsonString = new JSONArray(processedCategories).toString();
+
+        // Put the categories as a string in the JSON body
+        jsonBody.put("categories", categoriesJsonString);
+
+        // Create and send the API request
         APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
-        apiRequest.post(callback);
+
+        // Make the POST request
+        apiRequest.post(new ApiResponseCallback() {
+            @Override
+            public void onSuccess(Object response) {
+                // Call the callback onSuccess method
+                callback.onSuccess(response);
+            }
+
+            @Override
+            public void onError(String error) {
+                // Call the callback onError method
+                callback.onError(error);
+            }
+        });
     }
 
 
