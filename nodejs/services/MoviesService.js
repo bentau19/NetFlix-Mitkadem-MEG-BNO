@@ -114,13 +114,21 @@ const createMovie = async (title,logline,image,categories) => {
 
   return await res.save();
 };
-const createMovieWithImage = async (title, logline, imageFile, categories) => {
+const createMovieWithImage = async (req, res) => {
   try {
-    if (!title || !imageFile) {
-      throw ERROR_MESSAGES.BAD_REQUEST;
+    const { title, logline, categories } = req.body;
+
+    if (!title) {
+      throw 'empty movie title';
+    }
+    
+    if (!title) {
+      throw 'empty image ';
     }
 
+    // Convert the image file to hex
     const hexImage = await convertToHex(imageFile.path);
+
     const movie = new Movie({
       title,
       logline,
@@ -129,9 +137,9 @@ const createMovieWithImage = async (title, logline, imageFile, categories) => {
     });
 
     const savedMovie = await movie.save();
-    return savedMovie;
+    res.status(201).json(savedMovie);
   } catch (error) {
-    throw error;
+    res.status(500).json({ message: 'Server Error', error });
   }
 };
 

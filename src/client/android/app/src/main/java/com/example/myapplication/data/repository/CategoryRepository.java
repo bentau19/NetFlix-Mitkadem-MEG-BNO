@@ -1,11 +1,14 @@
 package com.example.myapplication.data.repository;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.myapplication.adapter.Category;
 import com.example.myapplication.server.api.APIRequest;
 import com.example.myapplication.server.api.ApiResponseCallback;
 
-import org.json.JSONArray;
-
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CategoryRepository {
@@ -21,6 +24,7 @@ public class CategoryRepository {
         String endpoint = "categories/";
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
+        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk");
 
         Map<String, String> jsonBody = new HashMap<>();
         jsonBody.put("name", name);
@@ -30,15 +34,60 @@ public class CategoryRepository {
         apiRequest.post(callback);
     }
 
+    public MutableLiveData<List<Category>> getAllCategories() {
+        MutableLiveData<List<Category>> categoriesLiveData = new MutableLiveData<>();
 
-    public void fetchCategoryData(String categoryId) {
-        String endpoint = "categories/" + categoryId;  // Example endpoint for fetching user data
+        String endpoint = "categories/";  // Example endpoint for fetching categories
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer your_token_here");
 
+        APIRequest apiRequest = new APIRequest(endpoint, headers, null);
+        apiRequest.get(new ApiResponseCallback() {
+            @Override
+            public void onSuccess(Object response) {
+                // Assuming the response is a List<Category>
+                List<Category> categories = (List<Category>) response; // Cast based on your actual response
+                categoriesLiveData.setValue(categories);
+            }
+
+            @Override
+            public void onError(String error) {
+                categoriesLiveData.setValue(null); // You can handle the error appropriately
+            }
+        });
+
+        return categoriesLiveData;
+    }
+
+    public void fetchCategoryData(String categoryId, ApiResponseCallback callback) {
+        String endpoint = "categories/" + categoryId;  // Example endpoint
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer your_token_here");
+
+        // Create the APIRequest for the GET method
+        APIRequest apiRequest = new APIRequest(endpoint, headers, null);
+        apiRequest.get(new ApiResponseCallback() {
+            @Override
+            public void onSuccess(Object response) {
+                // Call the callback onSuccess method
+                callback.onSuccess(response);
+            }
+
+            @Override
+            public void onError(String error) {
+                // Call the callback onError method
+                callback.onError(error);
+            }
+        });
+    }
+    public ApiResponseCallback getCategories() {
+        String endpoint = "categories/";  // Example endpoint for fetching user data
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer your_token_here");
         // Create APIRequest for GET method
         APIRequest apiRequest = new APIRequest(endpoint, headers, null);
         apiRequest.get(callback);
+        return callback;
     }
 
     // Update User Data
@@ -47,6 +96,7 @@ public class CategoryRepository {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer your_token_here");
         headers.put("Content-Type", "application/json");
+        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk");
 
         Map<String, String> jsonBody = new HashMap<>();
         jsonBody.put("name", newName);
@@ -61,10 +111,27 @@ public class CategoryRepository {
         String endpoint = "categories/" + categoryId;  // Example endpoint for deleting user
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer your_token_here");
+        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk");
 
         // Create APIRequest for DELETE method
         APIRequest apiRequest = new APIRequest(endpoint, headers, null);
         apiRequest.delete(callback);
+    }
+    public void fetchCategories(String query, ApiResponseCallback callback) {
+        String endpoint = query.isEmpty() ? "categories/search" : "categories/search/" + query;
+        HashMap<String, String> headers = new HashMap<>(); // Add any required headers here
+        APIRequest request = new APIRequest(endpoint, headers, null);
+        request.get(new ApiResponseCallback() {
+            @Override
+            public void onSuccess(Object response) {
+                callback.onSuccess(response);  // Pass the response back to the caller (e.g., ViewModel)
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);  // Pass error back to the caller
+            }
+        });
     }
 
 }

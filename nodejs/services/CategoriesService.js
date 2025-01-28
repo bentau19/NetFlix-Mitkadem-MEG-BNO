@@ -15,6 +15,7 @@ return await categories.save();
 const getCategoriesById = async (id) => {
     if(!id)throw ERROR_MESSAGES.BAD_REQUEST;
     return await Categories.findById(id); };
+    
 const getCategories = async () => { return await Categories.find({}); };
 const updateCategories = async (id, name,promoted) => {
 if(!id)throw ERROR_MESSAGES.BAD_REQUEST;
@@ -39,17 +40,32 @@ return categories;
 };
 
 const getQueryCat = async (query) => {
-  if(!query)
-    return await Categories.find({}); 
+  try {
+    if (!query) {
+      // Return all categories with populated movies
+      return await Categories.find({}).populate({
+        path: 'movies', // Path to the 'movies' field
+        model: 'Movie', // Reference the 'movie' model
+      });
+    }
 
-  const conditions = {
-    $or: [
-      { name: { $regex: query, $options: 'i' } } // Case-insensitive search on logline
-    ]
-  };
-  const testQuery = await Categories.find(conditions);
+    // Search categories by name (case-insensitive) and populate the movies
+    const conditions = {
+      $or: [
+        { name: { $regex: query, $options: 'i' } }, // Case-insensitive regex search
+      ],
+    };
 
-  return testQuery;
+    const result = await Categories.find(conditions).populate({
+      path: 'movies', // Path to the 'movies' field
+      model: 'Movie', // Reference the 'movie' model
+    });
+
+    return result; // Return the categories matching the query with full movie details
+  } catch (error) {
+    console.error(error); // Log any errors for debugging
+    throw ERROR_MESSAGES.SERVER_ERROR; // Handle the error appropriately
+  }
 };
 
 module.exports = {createCategories, getCategoriesById, getCategories, updateCategories, deleteCategories,getQueryCat }
