@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { post } from '../components/httpUtils';
 import SigninForm from '../components/signin.jsx'; // Import the JSX component
+import './styles.css';
 
 
 const Signin = () => {
