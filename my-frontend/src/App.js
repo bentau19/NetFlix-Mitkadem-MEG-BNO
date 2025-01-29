@@ -6,6 +6,7 @@ import Admin from "./pages/Admin";
 import Guest from "./pages/mainPage/GuestMain";
 import Logged from "./pages/mainPage/LoggedMain"
 import AuthCheck from "./utils/AuthCheck"
+import AdminAuth from "./utils/AdminAuth"
 import VideoPlayer from "./pages/videoPlayer"; 
 import { useEffect } from "react";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -19,10 +20,10 @@ const App = () => {
     <Router>
 
       <Routes>
-        <Route path="/" element={<AuthCheck />} />
+        <Route path="/" element={<AuthCheck GuestComponent={Guest} LoggedComponent={Logged} />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin" element={<AdminAuth GuestComponent={Guest} LoggedComponent={Admin} />} />
         <Route path="/movie/:videoId" element={<VideoPlayer />} />
         {/* Add other routes as needed */}
       </Routes>

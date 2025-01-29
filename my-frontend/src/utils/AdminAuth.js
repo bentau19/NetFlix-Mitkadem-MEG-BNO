@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { get } from "../components/httpUtils"; 
 
-const AuthCheck = ({ GuestComponent, LoggedComponent }) => {
+const AdminAuth = ({ GuestComponent, LoggedComponent }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -17,7 +17,7 @@ const AuthCheck = ({ GuestComponent, LoggedComponent }) => {
 
       try {
         const result = await get('/tokens', {});
-        setIsAuthenticated(!!result._id);
+        setIsAuthenticated(result.admin);
       } catch (error) {
         console.error('Token validation failed:', error);
         setIsAuthenticated(false);
@@ -36,4 +36,4 @@ const AuthCheck = ({ GuestComponent, LoggedComponent }) => {
   return isAuthenticated ? <LoggedComponent /> : <GuestComponent />;
 };
 
-export default AuthCheck;
+export default AdminAuth;
