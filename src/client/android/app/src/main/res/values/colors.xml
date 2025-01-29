@@ -7,5 +7,7 @@
     <color name="colorOnSurface">#000000</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="movieCard">#919090</color>
+    <color name="polaroidMain">#FFFFFF</color>
+    <color name="polaroidAccent">#A9A5A5</color>
 
 </resources>

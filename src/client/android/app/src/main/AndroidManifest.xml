@@ -32,27 +32,20 @@
             </intent-filter>
         </activity>
         <activity android:name=".AdminActivity" />
-<<<<<<< HEAD
+
         <activity android:name=".AdminFormActivity" />
         <activity android:name=".AdminForm2Activity" />
 
         <!-- SignupActivity -->
-        <activity android:name=".activity.SignupActivity"
-=======
-        <activity android:name=".AdminFormActivity" /> <!-- SignupActivity -->
         <activity
             android:name=".activity.SignupActivity"
->>>>>>> 3e8c3d093ff174e9f39f178b86c5a6cf099544ba
             android:exported="false" />
         <activity
             android:name=".activity.LogInActivity"
             android:exported="false" />
-<<<<<<< HEAD
         <activity android:name=".ThemesActivity"
             android:exported="false" />
 
-=======
->>>>>>> 3e8c3d093ff174e9f39f178b86c5a6cf099544ba
     </application>
 
 </manifest>

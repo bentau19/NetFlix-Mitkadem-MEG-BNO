@@ -7,4 +7,7 @@
     <color name="colorSurface">#121212</color>
     <color name="colorOnSurface">#FFFFFF</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="polaroidMain">#343135</color>
+    <color name="polaroidAccent">#211F21</color>
+
 </resources>

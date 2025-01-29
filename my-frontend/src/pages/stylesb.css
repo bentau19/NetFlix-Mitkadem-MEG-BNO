@@ -163,6 +163,7 @@ button:hover {
 }
 
 :root {
+    --background-image: url("../../public/image/photosbackgroundlight.jpeg"); /* Corrected */
     --background-color: #ffffff;
     --button-color: #8a2c2c;
     --secondry-button-color:#9e610b;
@@ -173,6 +174,7 @@ button:hover {
   }
   
   [data-theme="dark"] {
+    --background-image: url("../../public/image/photosbackgrounddark.jpeg"); /* Corrected */
     --background-color: #121212;
     --button-color: #7f2c8a;
     --button-hover-color:#561554;
