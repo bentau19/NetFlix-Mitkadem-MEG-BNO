@@ -1,21 +1,41 @@
-import React, {useRef, useEffect} from 'react'
+import React, { useRef, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { post } from '../components/httpUtils'; 
+import { useNavigate } from 'react-router-dom';
+import MovieTemplate from '../components/MovieTemplate';
+const VideoPlayer = () => {
+  const { videoId } = useParams();
+  const videoRef = useRef(null);
+  const navigate = useNavigate(); 
+  const handleclick = () =>{
+    navigate('/');
+  }
 
-const VideoPlayer = ({videoId}) => {
-    const videoRef = useRef(null)
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.removeAttribute('src');
+      videoRef.current.load();
+    }
+  }, [videoId]);
 
-    useEffect(()=>{
-        if(videoRef.current){
-            videoRef.current.pause()
-            videoRef.current.removeAttribute('src')
-            videoRef.current.load()
-        }
-    })
+  const sendWatched = async () => {
+    try {
+      const result = await post(`/movies/${videoId}/recommend`, {});
+      console.log('Movie watched status updated');
+    } catch (error) {
+      console.error('Error marking movie as watched:', error);
+    }
+  };
+
   return (
-    <video ref={videoRef} width='320' height='240' controls autoPlay>
-        <source src={`http://localhost:5000/api/movies/1/play`} type='video/mp4'></source>
-        Your browser does not support the video tag.
-    </video>
-  )
-}
+    <div>
+      <button onClick={handleclick} className="home">
+        Back to home
+      </button>
+      <MovieTemplate movieId={videoId} />
+    </div>
+  );
+};
 
-export default VideoPlayer
+export default VideoPlayer;

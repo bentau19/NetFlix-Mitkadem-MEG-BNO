@@ -23,7 +23,7 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="/movie" element={<VideoPlayer />} />
+        <Route path="/movie/:videoId" element={<VideoPlayer />} />
         {/* Add other routes as needed */}
       </Routes>
     </Router>

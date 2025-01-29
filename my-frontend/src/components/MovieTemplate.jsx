@@ -1,16 +1,25 @@
-import React, { useEffect, useRef } from "react";
-import { setupVideoPlayer } from "../pages/videoPlayer"; // Import the video player logic
+import React, { useEffect, useRef, useState } from "react";
 
-const MovieTemplate = () => {
+const MovieTemplate = ({ movieId }) => {
   const videoRef = useRef(null);
-  const movieId = 1; // Hardcoded movieId
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
+  // Ensure the video element stays in the DOM and is initialized properly
   useEffect(() => {
     if (videoRef.current) {
-      // Initialize the video player with the hardcoded movieId
-      setupVideoPlayer(videoRef.current, movieId);
+      videoRef.current.load();
+      setIsVideoLoaded(true);
     }
-  }, [movieId]);
+  }, [movieId]); // Re-run this effect when movieId changes
+
+  const handlePlay = () => {
+    if (videoRef.current) {
+      // Ensure the video is ready and try to play
+      videoRef.current.play().catch((error) => {
+        console.error("Error trying to play the video:", error);
+      });
+    }
+  };
 
   return (
     <div
@@ -27,21 +36,27 @@ const MovieTemplate = () => {
         color: "#fff",
       }}
     >
-      {/* Movie Title */}
-      <h2 style={{ fontSize: "24px", margin: "0 0 20px 0", color: "#fff" }}>
-        Movie ID: {movieId}
-      </h2>
-
       {/* Video Player */}
       <div style={{ width: "100%", maxWidth: "600px" }}>
         <video
           ref={videoRef}
           controls
+          autoPlay={isVideoLoaded}  // Only autoplay when ready
           style={{ width: "100%", height: "auto", borderRadius: "8px" }}
         >
+          <source
+            src={`http://localhost:5000/api/movies/${movieId}/play`}
+            type="video/mp4"
+          />
           Your browser does not support the video tag.
         </video>
       </div>
+      {/* Button to manually trigger play */}
+      {!isVideoLoaded && (
+        <button onClick={handlePlay} style={{ marginTop: "10px" }}>
+          Play Video
+        </button>
+      )}
     </div>
   );
 };
