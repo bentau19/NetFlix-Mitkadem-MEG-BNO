@@ -2,7 +2,8 @@
 const MovieService = require('../services/MoviesService');
 const UserService = require('../services/UsersService');
 const ERROR_MESSAGES = require('../validation/errorMessages');
-
+const fs = require('fs');
+const path = require('path');
 const getMoviesByCategories = async (req, res) => {
     try {
         const id =UserService.isUser(req.headers['token']);
@@ -20,7 +21,7 @@ const getMoviesByCategories = async (req, res) => {
 const createMovie = async (req, res) => {
     try {
         if(!UserService.isManager(req.headers['token'])){
-            throw ERROR_MESSAGES.BAD_REQUEST;
+            throw 'only admin can acsees this';
         }
         const result = await MovieService.createMovie(
             req.body.title,
@@ -149,6 +150,47 @@ const getQueryMovie = async (req, res) => {
         else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
     }
 };
+const play = async (req, res) => {
+    try {
+        const fileName = req.params.id;
+        const movie = await MovieService.getMovieById(fileName);
+        const filePath = path.join(__dirname, "../public", movie.title + ".mp4");
+    if(!filePath){
+        return res.status(404).send('File not found')
+    }
 
+    const stat = fs.statSync(filePath);
+    const fileSize = stat.size;
+    const range = req.headers.range;
+
+    if(range){
+        const parts = range.replace(/bytes=/, '').split('-')
+        const start = parseInt(parts[0], 10);
+        const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+
+        const chunksize = end - start + 1;
+        const file = fs.createReadStream(filePath, {start, end});
+        const head = {
+            'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': chunksize,
+            'Content-Type': 'video/mp4'
+        };
+        res.writeHead(206, head);
+        file.pipe(res);
+    }
+    else{
+        const head = {
+            'Content-Length': fileSize,
+            'Content-Type': 'video/mp4'
+        };
+        res.writeHead(200, head);
+        fs.createReadStream(filePath).pipe(res)
+    }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR, error: error.message });
+    }
+};
 module.exports = {deleteMovie, switchMovie,getMovieById,createMovie,getMoviesByCategories
-    , getRecommendMovie,addMovieToUser,getQueryMovie };
+    , getRecommendMovie,addMovieToUser,getQueryMovie,play };

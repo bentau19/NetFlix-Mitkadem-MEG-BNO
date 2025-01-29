@@ -68,7 +68,14 @@ const signIn = async (req, res) => {
         );
         if (result) {
             // Assuming createUser returns a truthy value on success
+            res.cookie('token', result, {
+                secure: false,
+                secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+                sameSite: 'strict', // Helps prevent CSRF
+                maxAge: 7 * 24 * 60 * 60 * 1000 // 1 week in milliseconds
+            });
             res.status(200).json(result);
+
         } else {
             // If createUser returns a falsy value (e.g., null or undefined)
             res.status(400).json({ message: 'wrong Username or password' });

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +11,7 @@ import com.example.myapplication.AdminActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.data.Rooms.DB.AppDatabase;
 import com.example.myapplication.data.Rooms.dao.TokenDao;
-import com.example.myapplication.data.Rooms.entity.UserToken;
+import com.example.myapplication.ThemesActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +39,12 @@ public class MainActivity extends AppCompatActivity {
                 hash.setText("Log in first"); // Display fallback message
             }
         });
+        Button btnGoToMain = findViewById(R.id.mainButton);
 
+        btnGoToMain.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, loggedMain.class);
+            startActivity(intent);
+        });
         // Go to Signup Activity
         Button btnGoToSignup = findViewById(R.id.button);
         btnGoToSignup.setOnClickListener(view -> {
@@ -59,5 +63,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, LogInActivity.class);
             startActivity(intent);
         });
+
+        Button btnthemes = findViewById(R.id.buttonThemes);
+        btnthemes.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, ThemesActivity.class);
+            startActivity(intent);
+        });
+
     }
 }

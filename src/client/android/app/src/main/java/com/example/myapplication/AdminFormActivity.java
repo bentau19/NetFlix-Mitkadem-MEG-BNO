@@ -1,102 +1,243 @@
 package com.example.myapplication;
-import android.content.Intent;
-import android.os.Bundle;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.myapplication.AdminActivity;
+import com.example.myapplication.R;
 import com.example.myapplication.ui.viewmodel.AdminFormViewModel;
-import com.example.myapplication.ui.viewmodel.SignupViewModel;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class AdminFormActivity extends AppCompatActivity {
-    private LinearLayout categoryForm;
-    private LinearLayout movieForm;
-    private Button createCategoryButton;
-    private Button cancelCategoryButton;
-    private Button createMovieButton;
-    private Button cancelMovieButton;
-    private AdminFormViewModel adminFormViewModel;
+    private LinearLayout categoryForm, movieForm;
+    private Button createCategoryButton, cancelCategoryButton, createMovieButton, cancelMovieButton, selectImageButton;
+    private EditText categoryNameEditText, movieTitleEditText, movieLoglineEditText, movieCategoriesEditText;
+    private ImageView movieImageView;
+    private Bitmap selectedImageBitmap;
 
+    private CheckBox promotedCheckBox;
+    private Uri imageUri;
+    private AdminFormViewModel adminFormViewModel;
+    private static final int PICK_IMAGE_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_form);
-        adminFormViewModel = new ViewModelProvider(this).get(AdminFormViewModel.class);
 
+        // Initialize Views
         categoryForm = findViewById(R.id.categoryForm);
         movieForm = findViewById(R.id.movieForm);
         createCategoryButton = findViewById(R.id.createCategoryButton);
         cancelCategoryButton = findViewById(R.id.cancelCategoryButton);
         createMovieButton = findViewById(R.id.createMovieButton);
         cancelMovieButton = findViewById(R.id.cancelMovieButton);
+        selectImageButton = findViewById(R.id.selectImageButton);
+        movieImageView = findViewById(R.id.movieImageView);
+        categoryNameEditText = findViewById(R.id.categoryName);
+        promotedCheckBox = findViewById(R.id.promoted);
+        movieTitleEditText = findViewById(R.id.movieTitle);
+        movieLoglineEditText = findViewById(R.id.movieLogline);
+        movieCategoriesEditText = findViewById(R.id.movieCategories);
+
+        // Initialize ViewModel
+        adminFormViewModel = new ViewModelProvider(this).get(AdminFormViewModel.class);
+
+        // Get Intent Data
         Intent intent = getIntent();
-         String select = intent.getExtras().getString("select");
-         Boolean isEditing = Boolean.valueOf(intent.getExtras().getString("isEditing"));
+        String select = intent.getStringExtra("type");
+        boolean isEditing = Boolean.parseBoolean(intent.getStringExtra("isEditing"));
+        String id = intent.getStringExtra("id");
 
-        assert select != null;
-        if (select.equals("category")) {
-            categoryForm.setVisibility(View.VISIBLE);  // Show Category Form
-            movieForm.setVisibility(View.GONE);  // Hide Movie Form
+        // Show relevant form based on type (Category or Movie)
+        if ("Category".equals(select)) {
+            categoryForm.setVisibility(View.VISIBLE);
+            movieForm.setVisibility(View.GONE);
+            if (isEditing) {
+                adminFormViewModel.getCategory(id).observe(this, category -> {
+                    if (category != null) {
+                        categoryNameEditText.setText(category.getName());
+                        promotedCheckBox.setChecked(category.isPromoted());
+                    }
+                });
+            }
         } else {
-            movieForm.setVisibility(View.VISIBLE);  // Show Movie Form
-            categoryForm.setVisibility(View.GONE);  // Hide Category Form
+            movieForm.setVisibility(View.VISIBLE);
+            categoryForm.setVisibility(View.GONE);
+            if (isEditing) {
+                adminFormViewModel.getMovie(id).observe(this, movie -> {
+                    if (movie != null) {
+                        movieTitleEditText.setText(movie.getTitle());
+                        movieLoglineEditText.setText(movie.getLogline());
+                        movieCategoriesEditText.setText(TextUtils.join(", ", movie.getCategories()));
+
+                        // Display current image if available
+                        if (movie.getImage() != null && !movie.getImage().isEmpty()) {
+                            byte[] decodedString = Base64.decode(movie.getImage(), Base64.DEFAULT);
+                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                            movieImageView.setImageBitmap(decodedByte);
+                        }
+                    }
+                });
+            }
         }
-        if(isEditing){
-           // String itemId = intent.getExtras("itemId");
+
+        // Enable AutoFill for newer Android versions
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            getWindow().getDecorView().setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_YES);
         }
 
+        // Select Image Button
+        selectImageButton.setOnClickListener(v -> openImagePicker());
 
-        adminFormViewModel.getReqStatus().observe(this, status -> {
-            // Show toast message based on signup status
-            Toast.makeText(AdminFormActivity.this, status, Toast.LENGTH_SHORT).show();
-        });
-
-        EditText categoryNameEditText = findViewById(R.id.categoryName);
-        CheckBox promotedCheckBox= findViewById(R.id.promoted);
-        EditText movieTitleEditText = findViewById(R.id.movieTitle);
-        EditText movieLoglineEditText = findViewById(R.id.movieLogline);
-        EditText movieImageEditText = findViewById(R.id.movieImage);
-        EditText movieCategoriesEditText = findViewById(R.id.movieCategories);
-
+        // Create Category Button
         createCategoryButton.setOnClickListener(v -> {
-            String name = categoryNameEditText.getText().toString();
-            boolean promoted =  promotedCheckBox.isActivated();
-            adminFormViewModel.createCategory(name,promoted);
-            adminFormViewModel.createCategory(name,promoted);
-            Intent intentBack = new Intent(this, AdminActivity.class);
-            intentBack.putExtra("select", select);
-            startActivity(intentBack);
+            adminFormViewModel.createCategory(categoryNameEditText.getText().toString(), promotedCheckBox.isChecked());
+            navigateToAdmin(select);
         });
-        cancelCategoryButton.setOnClickListener(v -> {
-            Intent intentBack = new Intent(this, AdminActivity.class);
-            intentBack.putExtra("select", select);
-            startActivity(intentBack);
-        });
+
+        // Create Movie Button
+        // Inside AdminFormActivity.java
         createMovieButton.setOnClickListener(v -> {
             String title = movieTitleEditText.getText().toString();
             String logline = movieLoglineEditText.getText().toString();
-            String image = movieImageEditText.getText().toString();
-            String categories =  movieCategoriesEditText.getText().toString();
-            adminFormViewModel.createMovie(title,logline,image,categories);
-            Intent intentBack = new Intent(this, AdminActivity.class);
-            intentBack.putExtra("select", select);
-            startActivity(intentBack);
-        });
-        cancelMovieButton.setOnClickListener(v -> {
-            Intent intentBack = new Intent(this, AdminActivity.class);
-            intentBack.putExtra("select", select);
-            startActivity(intentBack);
+            String categories = movieCategoriesEditText.getText().toString();
+
+            // Disable the button to prevent multiple submissions
+            createMovieButton.setEnabled(false);
+
+            // Convert image to Base64 if available
+            String imageBase64 = null;
+            if (selectedImageBitmap != null) {
+                try {
+                    imageBase64 = convertImageToHex(selectedImageBitmap);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    showToast("Failed to encode image");
+                    createMovieButton.setEnabled(true);
+                    return;
+                }
+            }
+
+            try {
+                final String finalImageBase64 = imageBase64;
+
+                // Remove any previous observers to prevent duplicate observations
+                adminFormViewModel.getReqStatus().removeObservers(this);
+
+                // Observe the request status
+                adminFormViewModel.getReqStatus().observe(this, status -> {
+                    if (status != null) {
+                        if (status.equals("success")) {
+                            showToast("Movie saved successfully");
+                            // Wait for toast to show before navigating
+                            new Handler().postDelayed(() -> {
+                                navigateToAdmin(select);
+                            }, 1000); // 1 second delay
+                        } else {
+                            showToast("Failed to save movie: " + status);
+                            createMovieButton.setEnabled(true);
+                        }
+                    }
+                });
+
+                // Make the API call
+                if (isEditing) {
+                    adminFormViewModel.updateMovie(id, title, logline, finalImageBase64, categories);
+                } else {
+                    adminFormViewModel.createMovie(title, logline, finalImageBase64, categories);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                showToast("Failed to save movie: " + e.getMessage());
+                createMovieButton.setEnabled(true);
+            }
         });
 
+
+        // Cancel Buttons
+        cancelCategoryButton.setOnClickListener(v -> navigateToAdmin(select));
+        cancelMovieButton.setOnClickListener(v -> navigateToAdmin(select));
+    }
+
+    private void openImagePicker() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+            imageUri = data.getData();
+            // Show the selected image in the ImageView
+            try {
+                selectedImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                movieImageView.setImageBitmap(selectedImageBitmap);  // Display the selected image
+            } catch (IOException e) {
+                e.printStackTrace();
+                showToast("Failed to load image");
+            }
+        }
+    }
+
+    private String encodeImageToBase64(Uri imageUri) throws Exception {
+        InputStream inputStream = getContentResolver().openInputStream(imageUri);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] imageBytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    }
+
+    private void navigateToAdmin(String select) {
+        Intent intent = new Intent(this, AdminActivity.class);
+        intent.putExtra("select", select);
+        startActivity(intent);
+    }
+
+    // Show Toast message for error handling
+    private void showToast(String message) {
+        Toast toast = Toast.makeText(AdminFormActivity.this, message, Toast.LENGTH_LONG);
+        toast.show();
+    }
+    private String convertImageToHex(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return bytesToHex(byteArray);
+    }
+
+    // Convert bytes to hexadecimal string
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : bytes) {
+            hexString.append(String.format("%02x", b));
+        }
+        return hexString.toString();
     }
 }
