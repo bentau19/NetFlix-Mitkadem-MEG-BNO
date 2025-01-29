@@ -12,7 +12,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.adapters.movieAdapter;
+import com.example.myapplication.adapter.ParentAdapter;
+
 import com.example.myapplication.dataModel.Movie;
 import com.example.myapplication.databinding.FragmentHomeBinding;
 
@@ -32,28 +33,32 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
 
         // TextView binding example
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        final TextView textView = binding.textHome;
+//        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-        // RecyclerView setup
-        RecyclerView recyclerView = binding.recyclerView; // Ensure your XML has a RecyclerView with the ID 'recyclerView'
-        setupRecyclerView(recyclerView);
+        // Parent RecyclerView setup
+        RecyclerView parentRecyclerView = binding.parentRecyclerView; // Ensure your XML has a RecyclerView with the ID 'parentRecyclerView'
+        setupParentRecyclerView(parentRecyclerView);
 
         return root;
     }
 
-    private void setupRecyclerView(RecyclerView recyclerView) {
-        // Create a dynamic list of items
-        List<Movie> itemList = new ArrayList<>();
-        for (int i = 1; i <= 20; i++) {
-            itemList.add(new Movie("Item " + i));
+    private void setupParentRecyclerView(RecyclerView parentRecyclerView) {
+        // Create a list of lists for the parent RecyclerView
+        List<List<Movie>> parentItemList = new ArrayList<>();
+        for (int i = 0; i < 20; i++) { // 5 rows of horizontal RecyclerViews
+            List<Movie> childItemList = new ArrayList<>();
+            for (int j = 1; j <= 20; j++) { // 20 items per row
+                childItemList.add(new Movie("Item " + j));
+            }
+            parentItemList.add(childItemList);
         }
 
-        // Set up RecyclerView with horizontal LinearLayoutManager and Adapter
-        movieAdapter adapter = new movieAdapter(itemList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        // Set up Parent RecyclerView with vertical LinearLayoutManager and Adapter
+        ParentAdapter parentAdapter = new ParentAdapter(parentItemList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        parentRecyclerView.setLayoutManager(layoutManager);
+        parentRecyclerView.setAdapter(parentAdapter);
     }
 
     @Override
