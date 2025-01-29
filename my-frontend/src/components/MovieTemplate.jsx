@@ -7,7 +7,6 @@ const MovieTemplate = () => {
 
   useEffect(() => {
     if (videoRef.current) {
-      // Initialize the video player with the hardcoded movieId
       setupVideoPlayer(videoRef.current, movieId);
     }
   }, [movieId]);
@@ -33,7 +32,7 @@ const MovieTemplate = () => {
       </h2>
 
       {/* Video Player */}
-      <div style={{ width: "100%", maxWidth: "600px" }}>
+      <div style={{ width: "100%", maxWidth: "1200px" }}>
         <video
           ref={videoRef}
           controls
