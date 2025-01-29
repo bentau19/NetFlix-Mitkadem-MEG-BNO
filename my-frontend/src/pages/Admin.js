@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { ThemeContext } from "../context/ThemeContext";
 import { useNavigate } from 'react-router-dom';
+import AdminAuth from '../utils/AdminAuth'; // Import AdminAuth
 
 import Popup from '../components/Popup';
 import MovieForm from '../components/MovieForm';
@@ -9,8 +10,18 @@ import ItemList from '../components/ItemList';
 import SearchBar from '../components/SearchBar';
 import './stylesb.css';
 
+// Redirect Component for Unauthorized Users
+const RedirectToHome = () => {
+  const navigate = useNavigate();
+  
+  React.useEffect(() => {
+    navigate('/');
+  }, [navigate]);
 
-const Admin = () => {
+  return null; // Return nothing since we're just redirecting
+};
+
+const AdminPanel = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [formType, setFormType] = useState('movie');
   const [viewType, setViewType] = useState('movie');
@@ -18,15 +29,6 @@ const Admin = () => {
   const [editingItem, setEditingItem] = useState(null);
   const { theme, toggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Check if the token exists and if the user is a manager
-    const token = sessionStorage.getItem('token');
-    
-    if (!token) {
-      navigate('/');
-    }
-  }, [navigate]);  // The dependency array makes sure this check runs when the component loads.
 
   const openPopup = (type, item = null) => {
     setFormType(type);
@@ -79,6 +81,10 @@ const Admin = () => {
       </div>
     </div>
   );
+};
+
+const Admin = () => {
+  return <AdminAuth GuestComponent={RedirectToHome} LoggedComponent={AdminPanel} />;
 };
 
 export default Admin;

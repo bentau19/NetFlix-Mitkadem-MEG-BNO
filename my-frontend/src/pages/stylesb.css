@@ -50,7 +50,7 @@ body {
 h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #333;
+    color: sec;
     font-size: 1.5rem;
 }
 
@@ -62,7 +62,7 @@ h2 {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
-    color: #555;
+    color: var(--second-text-color);
 }
 
 input, select, button {
@@ -171,6 +171,8 @@ button:hover {
     --secondry-button-hover-color:#6e3d12;
     --continer-color: #f9f9f9;
     --text-color: #000000;
+    --second-text-color:#452026;
+
   }
   
   [data-theme="dark"] {
@@ -181,8 +183,32 @@ button:hover {
     --secondry-button-color:#0b0b9e;
     --secondry-button-hover-color:#0e0d4f;
     --continer-color: #312828;
+    --second-text-color:#e0abd0;
+
     --text-color: #ffffff;
   }
+  .popup-content {
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    padding: 20px; /* Adjust padding */
+    border-radius: 8px; /* Rounded corners */
+    
+    max-width: 90vw; /* Ensure it doesn't exceed viewport width */
+    max-height: 80vh; /* Ensure it doesn't exceed viewport height */
+    
+    min-width: 300px; /* Avoid it getting too small */
+    min-height: 100px; /* Avoid it getting too small */
+
+    width: auto; /* Let it expand as needed */
+    height: auto; /* Let it expand as needed */
+
+    text-align: center; /* Center text inside inputs/buttons */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* More prominent shadow */
+    gap: 20px; /* Space between elements */
+    overflow-y: auto; /* Enable scrolling if content is too large */
+}
+
   
   body {
     background-color: var(--background-color);
