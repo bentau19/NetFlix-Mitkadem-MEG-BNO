@@ -10,8 +10,6 @@ const MainScreenTemp = ({ isLoading, error, data, searchQuery }) => {
       {/* Display loading state */}
       {isLoading && <p>Loading...</p>}
 
-      {/* Display error message */}
-      {error && <p>{error}</p>}
 
       {/* Render movie categories or list of movies based on searchQuery */}
       {!isLoading && !error && Array.isArray(data) && data.length > 0 ? (
@@ -20,6 +18,7 @@ const MainScreenTemp = ({ isLoading, error, data, searchQuery }) => {
                 <div>
             <BigMovie/>
             <CategoriesAndMoviesDisplay data={data}/>
+            
           </div>
         ) : (
           <QueryCardView isLoading={isLoading} error={error} data={data} searchQuery={searchQuery} />

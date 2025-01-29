@@ -46,7 +46,7 @@ const getMoviesByCategory = async (userId) => {
         });
 
         return {
-          categoryName: category.name, // Include category name
+          name: category.name, // Include category name
           movies: topUnwatchedMovies, // Actual movie objects
         };
       })
@@ -58,7 +58,7 @@ const getMoviesByCategory = async (userId) => {
     });
 
     const watchedCategory = {
-      categoryName: 'Watched',
+      name: 'Watched',
       movies: watchedMoviesDetails, // Actual movie objects
     };
 

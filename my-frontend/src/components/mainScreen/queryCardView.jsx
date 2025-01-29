@@ -1,5 +1,5 @@
 import testImage from './test.png'; // Adjust the path if needed
-
+import { hexToBase64 } from '../../utils/imageConverter.js';
 const QueryCardView = ({ isLoading, error, data, searchQuery }) => {
   if (isLoading) {
     return <div>Loading...</div>;
@@ -18,7 +18,7 @@ const QueryCardView = ({ isLoading, error, data, searchQuery }) => {
       {data.map((movie,index) => (
         <div key={index} className="movieCard">
           <img
-            src={movie.image || testImage} // Fallback to testImage if movie.image is not available
+           src={movie.image?hexToBase64(movie.image):testImage}
             alt={movie.title || 'Movie Title'}
             className="movieImage"
           />

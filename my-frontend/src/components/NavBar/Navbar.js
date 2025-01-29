@@ -5,7 +5,7 @@ import  CategoriesDropdown  from "../CategoriesDropdown.jsx";
 import "./Navbar.css";
 import { useNavigate } from 'react-router-dom';
 const Navbar = ({ onSearchChange,selectedOption,setSelectedOption }) => {
-
+  const [theme,setTheme]=useState("dark")
 
   const [inputValue, setInputValue] = useState(""); // Local state for the input value
   const [admin, setAdmin] = useState(false); // Properly initialize admin as a boolean
@@ -35,8 +35,15 @@ const Navbar = ({ onSearchChange,selectedOption,setSelectedOption }) => {
     <div className={`wrapper`}>
       <div className="content">
         <nav id="navbar">
-
-        <div id="logo" style={{ width: "200px" }}>
+        <NavLink>
+        <button onClick={() => {
+          if (theme === "dark") setTheme("light");
+          else setTheme("dark");
+        }}>
+          {theme}
+        </button>
+            </NavLink>
+        <div id="logo" style={{marginLeft:"-60px", width: "170px" }}>
             <NavLink to="/">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
@@ -68,14 +75,17 @@ const Navbar = ({ onSearchChange,selectedOption,setSelectedOption }) => {
               onChange={handleInputChange} // Trigger the input change
             />
           </div>
+          
           <div className="pro">
-            <NavLink to="/profile">
+            <NavLink>
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
                 alt="logopro"
               />
             </NavLink>
+
           </div>
+
         </nav>
       </div>
     </div>
