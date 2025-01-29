@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.movieAdapter;
-import com.example.myapplication.dataModel.Movie;
 
 import java.util.List;
 

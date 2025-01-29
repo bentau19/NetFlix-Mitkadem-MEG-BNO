@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.dataModel.Movie;
+import com.example.myapplication.adapter.Movie;
 
 import java.util.List;
 

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -12,9 +11,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.adapter.Movie;
 import com.example.myapplication.adapter.ParentAdapter;
 
-import com.example.myapplication.dataModel.Movie;
 import com.example.myapplication.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
@@ -44,6 +43,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupParentRecyclerView(RecyclerView parentRecyclerView) {
+
         // Create a list of lists for the parent RecyclerView
         List<List<Movie>> parentItemList = new ArrayList<>();
         for (int i = 0; i < 20; i++) { // 5 rows of horizontal RecyclerViews
