@@ -6,4 +6,6 @@
     <color name="colorSurface">#FFFFFF</color>
     <color name="colorOnSurface">#000000</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="movieCard">#919090</color>
+
 </resources>

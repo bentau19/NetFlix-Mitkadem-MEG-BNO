@@ -1,6 +1,6 @@
 import React from 'react';
 import testImage from './test.png'; // Adjust the path if needed
-import '../PolaroidFrame/PolaroidFrame.css';
+import { hexToBase64 } from '../../utils/imageConverter.js';import '../PolaroidFrame/PolaroidFrame.css';
 
 const QueryCardView = ({ isLoading, error, data, searchQuery }) => {
   if (isLoading) {
@@ -22,7 +22,7 @@ const QueryCardView = ({ isLoading, error, data, searchQuery }) => {
           {/* Polaroid Frame Component */}
           <div className="polaroid-frame">
             <img
-              src={movie.image || testImage} // Fallback to testImage if movie.image is not available
+             src={movie.image?hexToBase64(movie.image):testImage}
               alt={movie.title || 'Movie Title'}
               className="movieImage"
             />

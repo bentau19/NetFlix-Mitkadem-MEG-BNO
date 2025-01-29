@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { isManager } from "../httpUtils.jsx";
 import CategoriesDropdown from "../CategoriesDropdown.jsx";
+import { ThemeContext } from "../../context/ThemeContext";
+
 import "./Navbar.css";
 import { useNavigate } from 'react-router-dom';
-
-const Navbar = ({ onSearchChange, selectedOption, setSelectedOption, theme }) => {
+const Navbar = ({ onSearchChange,selectedOption,setSelectedOption }) => {
+ // const [theme,setTheme]=useState("dark")
+    const { theme, toggleTheme } = useContext(ThemeContext);
+  
   const [inputValue, setInputValue] = useState(""); // Local state for the input value
   const [admin, setAdmin] = useState(false); // Properly initialize admin as a boolean
   const navigate = useNavigate();
@@ -34,19 +38,26 @@ const Navbar = ({ onSearchChange, selectedOption, setSelectedOption, theme }) =>
 
   // Choose the logo based on the current theme
   const logoSrc = theme === 'dark'
-    ? '/photobackgroundweb.jpeg' 
-    : 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg'; // Light logo
+    ? '/image/meg_purple.png' 
+    : '/image/meg_red.png'; // Light logo
 
   return (
     <div className={`wrapper`}>
       <div className="content">
         <nav id="navbar">
-          <div id="logo" style={{ width: "200px" }}>
+        <NavLink>
+        <button onClick={toggleTheme}>
+        Switch to {theme === "light" ? "Dark" : "Light"} Mode
+        </button>
+            </NavLink>
+        <div id="logo" style={{marginLeft:"-60px", width: "170px" }}>
             <NavLink to="/">
-              <img
-                src={logoSrc} // Use the theme-based logo source
-                alt="logo"
+            <img 
+                src={logoSrc} 
+                alt="logo" 
+                style={{ width: "120px", height: "60px" }} 
               />
+
             </NavLink>
           </div>
 
@@ -75,15 +86,17 @@ const Navbar = ({ onSearchChange, selectedOption, setSelectedOption, theme }) =>
               onChange={handleInputChange} // Trigger the input change
             />
           </div>
-
+          
           <div className="pro">
-            <NavLink to="/profile">
+            <NavLink>
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
                 alt="logopro"
               />
             </NavLink>
+
           </div>
+
         </nav>
       </div>
     </div>

@@ -7,8 +7,13 @@ import Guest from "./pages/mainPage/GuestMain";
 import Logged from "./pages/mainPage/LoggedMain"
 import AuthCheck from "./utils/AuthCheck"
 import VideoPlayer from "./pages/videoPlayer"; 
+import { useEffect } from "react";
 import { ThemeProvider } from "./context/ThemeContext";
 const App = () => {
+  useEffect(() => {
+    document.title = "MEG";
+  }, []); // Runs once when the component mounts
+
   return (
     <ThemeProvider>
     <Router>
