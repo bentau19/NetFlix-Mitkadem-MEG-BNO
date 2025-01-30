@@ -8,6 +8,7 @@ const VideoPlayer = () => {
   const videoRef = useRef(null);
   const navigate = useNavigate(); 
   const handleclick = () =>{
+    sendWatched();
     navigate('/');
   }
 
