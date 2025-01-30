@@ -10,6 +10,7 @@ import com.example.myapplication.data.repository.MovieRepository;
 import com.example.myapplication.server.api.ApiResponseCallback;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
@@ -95,15 +96,29 @@ public class AdminViewModel extends ViewModel {
             @Override
             public void onSuccess(Object response) {
                 Gson gson = new Gson();
-                // Assuming the response contains a "movies" field
-                JsonObject jsonResponse = gson.toJsonTree(response).getAsJsonObject();
-                JsonArray moviesArray = jsonResponse.getAsJsonArray("movies");
+                JsonElement jsonResponse = gson.toJsonTree(response);
 
-                // Now deserialize the movies array
-                List<Movie> movies = gson.fromJson(moviesArray, new TypeToken<List<Movie>>() {}.getType());
-                movieListLiveData.setValue(movies);  // Update the LiveData with the parsed movies
-                reqStatus.setValue("fetch successful!");
+                // Check if the response is a JsonObject or JsonArray
+                if (jsonResponse.isJsonObject()) {
+                    JsonObject responseObject = jsonResponse.getAsJsonObject();
+                    JsonArray moviesArray = responseObject.getAsJsonArray("movies");
+
+                    // Deserialize the movies array
+                    List<Movie> movies = gson.fromJson(moviesArray, new TypeToken<List<Movie>>() {}.getType());
+                    movieListLiveData.setValue(movies);  // Update the LiveData with the parsed movies
+                    reqStatus.setValue("fetch successful!");
+                } else if (jsonResponse.isJsonArray()) {
+                    // If it's a JsonArray, handle it accordingly
+                    JsonArray moviesArray = jsonResponse.getAsJsonArray();
+                    List<Movie> movies = gson.fromJson(moviesArray, new TypeToken<List<Movie>>() {}.getType());
+                    movieListLiveData.setValue(movies);
+                    reqStatus.setValue("fetch successful!");
+                } else {
+                    // Handle unexpected formats (e.g., plain string, number, etc.)
+                    reqStatus.setValue("Unexpected response format");
+                }
             }
+
 
             @Override
             public void onError(String error) {
