@@ -17,4 +17,6 @@ public interface TokenDao {
     // Queries the token from the database with id = 1
     @Query("SELECT * FROM UserToken LIMIT 1")
     LiveData<UserToken> getToken();
+    @Query("SELECT token FROM UserToken LIMIT 1")
+    String getTokenString();
 }

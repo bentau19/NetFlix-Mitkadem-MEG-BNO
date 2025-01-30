@@ -37,5 +37,7 @@ public class LogInViewModel extends ViewModel {
         // Call the UserRepository to handle the LogIn operation
         userRepository.login(username, password);
     }
-
+    public void islogged(){
+        userRepository.isLogged();
+    }
 }
