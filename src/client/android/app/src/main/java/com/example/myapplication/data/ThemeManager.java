@@ -2,6 +2,10 @@ package com.example.myapplication.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
+
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class ThemeManager {
 
@@ -21,4 +25,13 @@ public class ThemeManager {
         editor.putString(KEY_THEME, theme);
         editor.apply();
     }
+
+
+    private void applyTheme(String theme) {
+        int nightMode = theme.equals("dark") ?
+                AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
+        AppCompatDelegate.setDefaultNightMode(nightMode);
+    }
+
+
 }

@@ -1,32 +1,26 @@
 package com.example.myapplication.adapter;
+
+import com.google.gson.annotations.SerializedName;
+
 public class Category {
-    private int _id;
+    @SerializedName("_id")  // Ensure it maps correctly
+    private String _id;
+
+    @SerializedName("name")  // Ensures Gson maps "name" correctly
     private String name;
+
+    @SerializedName("promoted")
     private boolean promoted;
 
-    // Getters and Setters
-    public int getId() {
+    public String getId() {
         return _id;
-    }
-
-    public void setId(int id) {
-        this._id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public boolean isPromoted() {
         return promoted;
     }
-
-    public void setPromoted(boolean promoted) {
-        this.promoted = promoted;
-    }
 }
-

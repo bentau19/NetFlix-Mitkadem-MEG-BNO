@@ -8,6 +8,8 @@ import com.example.myapplication.adapter.Category;
 import com.example.myapplication.adapter.Movie;
 import com.example.myapplication.server.api.APIRequest;
 import com.example.myapplication.server.api.ApiResponseCallback;
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 
 import org.json.JSONArray;
 
@@ -99,9 +101,25 @@ public class MovieRepository {
         apiRequest.get(new ApiResponseCallback() {
             @Override
             public void onSuccess(Object response) {
-                // Call the callback onSuccess method
-                callback.onSuccess(response);
+                if (response instanceof LinkedTreeMap) {
+                    // Convert LinkedTreeMap to JSON string
+                    Gson gson = new Gson();
+                    String json = gson.toJson(response);
+
+                    // Deserialize JSON into Movie object
+                    Movie movie = gson.fromJson(json, Movie.class);
+
+                    // Pass the Movie object to the callback
+                    callback.onSuccess(movie);
+                } else if (response instanceof Movie) {
+                    // Already a Movie object, just return it
+                    callback.onSuccess(response);
+                } else {
+                    Log.e("MovieRepository", "Unexpected response type: " + response.getClass().getName());
+                    callback.onError("Unexpected response format");
+                }
             }
+
 
             @Override
             public void onError(String error) {

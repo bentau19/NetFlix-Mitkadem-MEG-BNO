@@ -1,11 +1,17 @@
 package com.example.myapplication.data.repository;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.myapplication.adapter.Category;
+import com.example.myapplication.adapter.Movie;
 import com.example.myapplication.server.api.APIRequest;
 import com.example.myapplication.server.api.ApiResponseCallback;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.HashMap;
 import java.util.List;
@@ -66,12 +72,43 @@ public class CategoryRepository {
 
         // Create the APIRequest for the GET method
         APIRequest apiRequest = new APIRequest(endpoint, headers, null);
-        apiRequest.get(new ApiResponseCallback() {
+        apiRequest.get(new ApiResponseCallback() {  // Accept Object here to handle LinkedTreeMap
             @Override
             public void onSuccess(Object response) {
-                // Call the callback onSuccess method
-                callback.onSuccess(response);
+                Log.d("CategoryRepository", "Full category response: " + response);  // Log the full response
+                if (response instanceof LinkedTreeMap) {
+                    Gson gson = new Gson();
+
+                    // Convert response to JSON string
+                    String json = gson.toJson(response);
+
+                    // Convert JSON string to JsonObject
+                    JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+
+                    // Extract "message" object
+                    JsonObject messageObject = jsonObject.getAsJsonObject("message");
+
+                    if (messageObject != null) {
+                        // Deserialize "message" into Category
+                        Category category = gson.fromJson(messageObject, Category.class);
+
+                        Log.d("CategoryRepository", "Extracted Category - ID: " + category.getId() +
+                                ", Name: " + category.getName() + ", Promoted: " + category.isPromoted());
+
+                        callback.onSuccess(category);
+                    } else {
+                        Log.e("CategoryRepository", "Missing 'message' field in JSON response.");
+                        callback.onError("Invalid response format");
+                    }
+                }
+                 else if (response instanceof Category) {
+                    callback.onSuccess((Category) response);
+                } else {
+                    Log.e("CategoryRepository", "Unexpected response type: " + response.getClass().getName());
+                    callback.onError("Unexpected response format");
+                }
             }
+
 
             @Override
             public void onError(String error) {
@@ -80,6 +117,7 @@ public class CategoryRepository {
             }
         });
     }
+
     public ApiResponseCallback getCategories() {
         String endpoint = "categories/";  // Example endpoint for fetching user data
         Map<String, String> headers = new HashMap<>();

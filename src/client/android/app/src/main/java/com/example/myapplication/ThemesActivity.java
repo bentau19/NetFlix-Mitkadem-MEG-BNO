@@ -50,19 +50,16 @@ public class ThemesActivity extends AppCompatActivity {
     private void loadTheme() {
         // Get saved theme from SharedPreferences
         String savedTheme = ThemeManager.getTheme(this);
-        Log.d("ThemesActivity", "Saved Theme: " + savedTheme);  // Log the saved theme
         if (savedTheme != null) {
             applyTheme(savedTheme);
         }
     }
 
     private void saveThemeToPreferences(String theme) {
-        Log.d("ThemesActivity", "Saving Theme: " + theme);  // Log the new theme being saved
         ThemeManager.saveTheme(this, theme);
     }
 
     private void applyTheme(String theme) {
-        Log.d("ThemesActivity", "Applying Theme: " + theme);  // Log the theme being applied
         int nightMode = theme.equals("dark") ?
                 AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
         AppCompatDelegate.setDefaultNightMode(nightMode);

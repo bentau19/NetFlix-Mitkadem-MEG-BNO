@@ -28,6 +28,8 @@ import com.example.myapplication.ui.viewmodel.AdminFormViewModel;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AdminFormActivity extends AppCompatActivity {
     private LinearLayout categoryForm, movieForm;
@@ -67,8 +69,10 @@ public class AdminFormActivity extends AppCompatActivity {
         // Get Intent Data
         Intent intent = getIntent();
         String select = intent.getStringExtra("type");
-        boolean isEditing = Boolean.parseBoolean(intent.getStringExtra("isEditing"));
+        boolean isEditing = intent.getBooleanExtra("isEditing", false);
         String id = intent.getStringExtra("id");
+        assert select != null;
+        Log.d("AdminFormActivity",  select);  // Verify the category name
 
         // Show relevant form based on type (Category or Movie)
         if ("Category".equals(select)) {
@@ -77,10 +81,12 @@ public class AdminFormActivity extends AppCompatActivity {
             if (isEditing) {
                 adminFormViewModel.getCategory(id).observe(this, category -> {
                     if (category != null) {
-                        categoryNameEditText.setText(category.getName());
+                        Log.d("AdminFormActivity", "Category name: " + category.getName());  // Verify the category name
+                        categoryNameEditText.setText(category.getName());  // Ensure this is being set
                         promotedCheckBox.setChecked(category.isPromoted());
                     }
                 });
+
             }
         } else {
             movieForm.setVisibility(View.VISIBLE);
@@ -90,9 +96,14 @@ public class AdminFormActivity extends AppCompatActivity {
                     if (movie != null) {
                         movieTitleEditText.setText(movie.getTitle());
                         movieLoglineEditText.setText(movie.getLogline());
-                        movieCategoriesEditText.setText(TextUtils.join(", ", movie.getCategories()));
 
-                        // Display current image if available
+                        // Convert the array of category IDs to comma-separated string
+                        List<Integer> categories = movie.getCategories();
+                        String categoryString = categories.stream()
+                                .map(String::valueOf)
+                                .collect(Collectors.joining(", "));
+                        movieCategoriesEditText.setText(categoryString);
+
                         if (movie.getImage() != null && !movie.getImage().isEmpty()) {
                             byte[] decodedString = Base64.decode(movie.getImage(), Base64.DEFAULT);
                             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);

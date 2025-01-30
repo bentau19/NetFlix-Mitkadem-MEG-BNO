@@ -1,4 +1,6 @@
 package com.example.myapplication.ui.viewmodel;
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,16 +14,15 @@ import com.example.myapplication.server.api.ApiResponseCallback;
 public class AdminFormViewModel extends ViewModel {
     private final MovieRepository movieRep;
     private final CategoryRepository categoryRep;
-    private final MutableLiveData<Category> categoryLiveData;
-    private final MutableLiveData<Movie> movieLiveData;
+    private final MutableLiveData<Movie> movieLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Category> categoryLiveData = new MutableLiveData<>();
 
     private final MutableLiveData<String> reqStatus;
     public AdminFormViewModel() {
 
         // Initialize the UserRepository and Signup status LiveData
         reqStatus = new MutableLiveData<>();
-        categoryLiveData = new MutableLiveData<>();  // Add this
-        movieLiveData = new MutableLiveData<>();     // Add this
+    // Add this
 
         movieRep = new MovieRepository(new ApiResponseCallback() {
             @Override
@@ -98,37 +99,50 @@ public class AdminFormViewModel extends ViewModel {
     // Method to fetch category by id and return LiveData
     // Method to fetch Category data
     public LiveData<Category> getCategory(String categoryId) {
+        Log.d("AdminFormViewModel", "Fetching category with ID: " + categoryId);
+
         categoryRep.fetchCategoryData(categoryId, new ApiResponseCallback() {
             @Override
             public void onSuccess(Object response) {
+                Log.d("AdminFormViewModel", "Category fetch success: " + response);
+
                 // Assuming response is Category
                 categoryLiveData.setValue((Category) response); // Update LiveData
             }
 
             @Override
             public void onError(String error) {
+                Log.e("AdminFormViewModel", "Category fetch error: " + error);
+
                 // Handle error by posting an empty value or error state
                 categoryLiveData.setValue(null); // You can update with an error state if needed
             }
+
         });
+        Log.d("AdminFormViewModel", "getCategory() called with ID: " + categoryId);
+
         return categoryLiveData;
     }
 
     // Method to fetch movie by id and return LiveData
+// In AdminFormViewModel
     public LiveData<Movie> getMovie(String movieId) {
+        Log.d("AdminFormViewModel", "Fetching movie with ID: " + movieId);
         movieRep.fetchMovieData(movieId, new ApiResponseCallback() {
             @Override
             public void onSuccess(Object response) {
-                // Assuming response is Category
-                movieLiveData.setValue((Movie) response); // Update LiveData
+                Log.d("AdminFormViewModel", "Movie fetch success: " + response);
+                movieLiveData.setValue((Movie) response);
             }
 
             @Override
             public void onError(String error) {
-                // Handle error by posting an empty value or error state
-                movieLiveData.setValue(null); // You can update with an error state if needed
+                Log.e("AdminFormViewModel", "Movie fetch error: " + error);
+                movieLiveData.setValue(null);
             }
         });
+        Log.d("AdminFormViewModel", "getMovie() called with ID: " + movieId);
+
         return movieLiveData;
     }
 
