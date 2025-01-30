@@ -1,13 +1,10 @@
-package com.example.myapplication.activity.ui.home;
-
-import android.util.Log;
+package com.example.myapplication.ui.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.myapplication.adapter.Category;
-import com.example.myapplication.adapter.Movie;
 import com.example.myapplication.data.repository.MovieRepository;
 import com.example.myapplication.server.api.ApiResponseCallback;
 import com.google.gson.Gson;

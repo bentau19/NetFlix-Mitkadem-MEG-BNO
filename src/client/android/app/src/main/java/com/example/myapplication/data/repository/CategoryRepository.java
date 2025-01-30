@@ -1,12 +1,21 @@
 package com.example.myapplication.data.repository;
 
+import static android.content.ContentValues.TAG;
+
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.myapplication.adapter.Category;
 import com.example.myapplication.server.api.APIRequest;
 import com.example.myapplication.server.api.ApiResponseCallback;
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,11 +53,32 @@ public class CategoryRepository {
         APIRequest apiRequest = new APIRequest(endpoint, headers, null);
         apiRequest.get(new ApiResponseCallback() {
             @Override
+
             public void onSuccess(Object response) {
-                // Assuming the response is a List<Category>
-                List<Category> categories = (List<Category>) response; // Cast based on your actual response
-                categoriesLiveData.setValue(categories);
+                Log.d(TAG, "onSuccess: " + response);
+
+                if (response instanceof List<?>) {
+                    List<Category> categories = new ArrayList<>();
+
+                    Gson gson = new Gson();
+                    for (Object obj : (List<?>) response) {
+                        if (obj instanceof LinkedTreeMap) {
+                            // Convert LinkedTreeMap to JSON and then to Category
+                            String json = gson.toJson(obj);
+                            Category category = gson.fromJson(json, Category.class);
+                            categories.add(category);
+                        }
+                    }
+
+                    Log.d(TAG, "Parsed categories count: " + categories.size());
+                    categoriesLiveData.setValue(categories);
+                } else {
+                    Log.e("API_ERROR", "Unexpected response type: " + response.getClass().getName());
+                    categoriesLiveData.setValue(null);
+                }
             }
+
+
 
             @Override
             public void onError(String error) {
