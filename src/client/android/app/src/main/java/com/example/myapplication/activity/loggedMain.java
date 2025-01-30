@@ -10,6 +10,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.adapter.Category;
 import com.example.myapplication.data.repository.CategoryRepository;
 import com.example.myapplication.data.repository.MovieRepository;
+import com.example.myapplication.dataModel.SharedViewModel;
 import com.example.myapplication.server.api.ApiResponseCallback;
 import com.example.myapplication.ui.viewmodel.AdminViewModel;
 import com.example.myapplication.ui.viewmodel.HomeViewModel;
@@ -69,7 +70,7 @@ public class loggedMain extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_home, R.id.SignOut, R.id.Admin)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_logged_main);
@@ -81,47 +82,95 @@ public class loggedMain extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.logged_main, menu);
+        SharedViewModel sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+        // Fetch categories
         fetchCategories("");
+// Set up the "Main" menu item
+        MenuItem mainItem = menu.findItem(R.id.main);
+        mainItem.setOnMenuItemClickListener(item -> {
+            // Update the catId in SharedViewModel to indicate "Main"
+            sharedViewModel.setCatId("main");
+            return true;
+        });
+        // Observe the request status
         reqStatus.observe(this, status -> {
-            if (status != null) {
-                // Compare the actual value of status (which is a String) here
-                if (status.equals("fetch successful!")) {
-                    categoryListLiveData.observe(this, categories -> {
-                        if (categories != null) {
-                            for (Category category : categories) {
-                                menu.add(Menu.NONE, Menu.FIRST + categories.indexOf(category), Menu.NONE, category.getName())
-                                        .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-                            }
-                            menu.add(Menu.NONE, Menu.FIRST +  categories.size(), Menu.NONE, "All")
-                        .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-                        }else{
-                            menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "All")
-                                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+            if (status != null && status.equals("fetch successful!")) {
+                // Observe the category list
+                categoryListLiveData.observe(this, categories -> {
+                    if (categories != null) {
+                        // Add each category as a menu item
+                        for (Category category : categories) {
+                            MenuItem menuItem = menu.add(Menu.NONE, Menu.FIRST + category.getId(), Menu.NONE, category.getName());
+
+                            // Set a click listener for the menu item
+                            menuItem.setOnMenuItemClickListener(item -> {
+                                // Update the catId in SharedViewModel
+                                sharedViewModel.setCatId(category.getName());
+                                return true;
+                            });
                         }
-                    });
-                    // Handle success case
-                }
+
+                        // Add the "All" option
+                        MenuItem allItem = menu.add(Menu.NONE, Menu.FIRST + categories.size(), Menu.NONE, "All");
+
+                        // Set a click listener for the "All" option
+                        allItem.setOnMenuItemClickListener(item -> {
+                            // Update the catId in SharedViewModel to indicate "All"
+                            sharedViewModel.setCatId("all");
+                            return true;
+                        });
+                    } else {
+                        // If no categories are available, add the "All" option
+                        MenuItem allItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "All");
+
+                        // Set a click listener for the "All" option
+                        allItem.setOnMenuItemClickListener(item -> {
+                            // Update the catId in SharedViewModel to indicate "All"
+                            sharedViewModel.setCatId("all");
+                            return true;
+                        });
+                    }
+                });
             }
         });
 
-
-
-
-
-        MenuItem.OnActionExpandListener onActionExpandListener= new MenuItem.OnActionExpandListener() {
+        // Set up the SearchView
+        MenuItem.OnActionExpandListener onActionExpandListener = new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(@NonNull MenuItem item) {
-                return true;
+                return true; // Allow the action to expand
             }
 
             @Override
             public boolean onMenuItemActionCollapse(@NonNull MenuItem item) {
-                return true;
+                return true; // Allow the action to collapse
             }
         };
-        menu.findItem(R.id.search).setOnActionExpandListener(onActionExpandListener);
-        SearchView searchView=(SearchView)menu.findItem(R.id.search).getActionView();
-        searchView.setQueryHint("search movie here...");
+
+        MenuItem searchItem = menu.findItem(R.id.search);
+        searchItem.setOnActionExpandListener(onActionExpandListener);
+
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Search movie here...");
+
+        // Get the SharedViewModel
+
+
+        // Set up the SearchView query listener
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                sharedViewModel.setSearchQuery(query);
+                return false; // Let the SearchView handle the submission
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                sharedViewModel.setSearchQuery(newText);
+                return false; // Let the SearchView handle the text change
+            }
+        });
+
         return true;
     }
 

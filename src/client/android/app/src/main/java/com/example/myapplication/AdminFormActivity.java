@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -84,6 +85,7 @@ public class AdminFormActivity extends AppCompatActivity {
 
                         // Display current image if available
                         if (movie.getImage() != null && !movie.getImage().isEmpty()) {
+                            Log.d("Image","hey there!!!"+ movie.getImage());
                             byte[] decodedString = Base64.decode(movie.getImage(), Base64.DEFAULT);
                             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                             movieImageView.setImageBitmap(decodedByte);

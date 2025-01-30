@@ -1,5 +1,6 @@
 package com.example.myapplication.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,11 @@ public class ParentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_parent_recyclerview, parent, false);
             return new ParentViewHolder(view);
         }
+    }
+    public void setData(List<Category> newList) {
+        Log.d("ParentAdapter", "Setting data with size: " + newList.size());
+        this.parentItemList.clear();
+        this.parentItemList.addAll(newList);
     }
 
     @Override
