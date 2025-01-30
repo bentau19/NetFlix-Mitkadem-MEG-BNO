@@ -5,7 +5,7 @@ import MovieInfoPage from '../MovieInfo.jsx';
 import Popup from '../Popup.jsx';
 import { get } from '../httpUtils.jsx';
 
-const GuestMovies = ({ movies = [] }) => {
+const MoviesList = ({ movies = [] }) => {
   const rowRef = useRef(null);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -33,7 +33,7 @@ const GuestMovies = ({ movies = [] }) => {
 
   return (
     <div className="movieRowContainer">
-      <h2 className="categoryName">Movies</h2>
+
       <div ref={rowRef} className="movieRow">
         {Array.isArray(movies) && movies.length > 0 ? (
           movies.map((movie) => (
@@ -71,4 +71,4 @@ const GuestMovies = ({ movies = [] }) => {
   );
 };
 
-export default GuestMovies;
+export default MoviesList;

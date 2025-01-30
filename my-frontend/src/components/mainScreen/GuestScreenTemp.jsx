@@ -1,5 +1,5 @@
 import React from 'react';
-import GuestMovies from './GuestMovies';
+import MoviesList from './MoviesList';
 
 const GuestScreenTemp = ({ isLoading, error, data }) => {
   return (
@@ -12,7 +12,7 @@ const GuestScreenTemp = ({ isLoading, error, data }) => {
 
       {/* Render movies if data is available */}
       {!isLoading && !error && Array.isArray(data) && data.length > 0 ? (
-        <GuestMovies movies={data} />
+        <MoviesList movies={data} />
       ) : (
         <p>No movies available.</p>
       )}

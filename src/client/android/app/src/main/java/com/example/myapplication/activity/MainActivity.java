@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
         LogInViewModel.islogged();
+
         Button btnGoToMain = findViewById(R.id.mainButton);
 
         btnGoToMain.setOnClickListener(view -> {
@@ -66,13 +67,15 @@ public class MainActivity extends AppCompatActivity {
         // Go to Signup Activity
         Button btnGoToSignup = findViewById(R.id.button);
         btnGoToSignup.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, SignupActivity.class);
+            Intent intent = new Intent(MainActivity.this, FullscreenActivity.class);
             startActivity(intent);
+            finish();
         });
         Button btnGoToAdmin = findViewById(R.id.adminButton);
         btnGoToAdmin.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, AdminActivity.class);
             startActivity(intent);
+            finish();
         });
 
         // Go to Login Activity
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         btnGoTologin.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, LogInActivity.class);
             startActivity(intent);
+            finish();
         });
     }
 }
