@@ -58,7 +58,10 @@ public class ParentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ((ParentViewHolder) holder).setChildRecyclerView(childItemList);
         }
     }
-
+    public void updateData(List<List<Movie>> newParentItemList) {
+        this.parentItemList = newParentItemList;
+        notifyDataSetChanged(); // Notify the adapter that the data has changed
+    }
     @Override
     public int getItemCount() {
         return parentItemList.size() + 1; // +1 for the header
