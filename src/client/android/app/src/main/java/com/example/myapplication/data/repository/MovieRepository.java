@@ -42,7 +42,7 @@ public class MovieRepository {
                     processedCategories.add(Integer.parseInt(trimmedCategory)); // Convert to integer
                 } catch (NumberFormatException e) {
                     // Handle invalid category ID
-                  //  showToast("Invalid category ID: " + trimmedCategory);
+                    //  showToast("Invalid category ID: " + trimmedCategory);
                 }
             }
         }
@@ -169,23 +169,24 @@ public class MovieRepository {
         headers.put("Content-Type", "application/json");
         headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk");
 
+        // Create a FormData object with the image hex and other form fields
         Map<String, String> jsonBody = new HashMap<>();
         jsonBody.put("title", newTitle);
         jsonBody.put("logline", newLogline);
         jsonBody.put("image", newImage);
-        JSONArray categoriesArray = new JSONArray();
-        if (newCategories != null && !newCategories.isEmpty()) {
-            String[] categoryIds = newCategories.split(",");
-            for (String id : categoryIds) {
-                id = id.trim(); // Remove whitespace
-                if (!id.isEmpty()) {
-                    categoriesArray.put(id);
-                }
-            }
-        }
-        jsonBody.put("categories", categoriesArray.toString()); // Include the categories array
 
+        // Process categories into a List<Integer>
+        List<Integer> processedCategories = processCategories(newCategories);
+
+        // Convert the List<Integer> into a JSON array string
+        String categoriesJsonString = new JSONArray(processedCategories).toString();
+
+        // Put the categories as a string in the JSON body
+        jsonBody.put("categories", categoriesJsonString);
+
+        // Create and send the API request
         APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
+
         apiRequest.put(callback);
     }
 

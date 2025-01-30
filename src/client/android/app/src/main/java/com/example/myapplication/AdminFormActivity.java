@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.myapplication.AdminActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.adapter.ImageUtils;
 import com.example.myapplication.ui.viewmodel.AdminFormViewModel;
 
 import java.io.ByteArrayOutputStream;
@@ -107,11 +108,15 @@ public class AdminFormActivity extends AppCompatActivity {
                                 .collect(Collectors.joining(", "));
                         movieCategoriesEditText.setText(categoryString);
 
-                        if (movie.getImage() != null && !movie.getImage().isEmpty()) {
-                            byte[] decodedString = Base64.decode(movie.getImage(), Base64.DEFAULT);
-                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                            movieImageView.setImageBitmap(decodedByte);
+                        selectedImageBitmap = ImageUtils.hexToImage(movie.getImage());
+                        if (selectedImageBitmap != null) {
+                            // Use the bitmap (e.g., set it to an ImageView)
+                            movieImageView.setImageBitmap(selectedImageBitmap);
+                        } else {
+                            // Handle the case where image decoding failed
+                            showToast("Failed to decode image");
                         }
+
                     }
                 });
             }
@@ -129,9 +134,10 @@ public class AdminFormActivity extends AppCompatActivity {
         createCategoryButton.setOnClickListener(v -> {
             if(isEditing){
                 adminFormViewModel.updateCategory(id,categoryNameEditText.getText().toString(), promotedCheckBox.isChecked());
-
-            } else {
+            }
+            else{
                 adminFormViewModel.createCategory(categoryNameEditText.getText().toString(), promotedCheckBox.isChecked());
+
             }
             navigateToAdmin(select);
         });
