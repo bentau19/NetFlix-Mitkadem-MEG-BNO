@@ -54,7 +54,7 @@ public class MovieRepository {
         String endpoint = "movies/";
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("token", "your-jwt-token-here");
+        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk");
 
         // Create a FormData object with the image hex and other form fields
         Map<String, String> jsonBody = new HashMap<>();
@@ -166,8 +166,8 @@ public class MovieRepository {
     public void updateMovie(String movieId, String newTitle, String newLogline, String newImage , String newCategories) {
         String endpoint = "movies/" + movieId;  // Example endpoint for updating user data
         Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer your_token_here");
         headers.put("Content-Type", "application/json");
+        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk");
 
         Map<String, String> jsonBody = new HashMap<>();
         jsonBody.put("title", newTitle);

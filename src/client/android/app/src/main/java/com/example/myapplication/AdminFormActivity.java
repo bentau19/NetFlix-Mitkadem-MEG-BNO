@@ -62,7 +62,6 @@ public class AdminFormActivity extends AppCompatActivity {
         movieTitleEditText = findViewById(R.id.movieTitle);
         movieLoglineEditText = findViewById(R.id.movieLogline);
         movieCategoriesEditText = findViewById(R.id.movieCategories);
-
         // Initialize ViewModel
         adminFormViewModel = new ViewModelProvider(this).get(AdminFormViewModel.class);
 
@@ -74,11 +73,13 @@ public class AdminFormActivity extends AppCompatActivity {
         assert select != null;
         Log.d("AdminFormActivity",  select);  // Verify the category name
 
+
         // Show relevant form based on type (Category or Movie)
         if ("Category".equals(select)) {
             categoryForm.setVisibility(View.VISIBLE);
             movieForm.setVisibility(View.GONE);
             if (isEditing) {
+                createCategoryButton.setText("Edit Category");
                 adminFormViewModel.getCategory(id).observe(this, category -> {
                     if (category != null) {
                         Log.d("AdminFormActivity", "Category name: " + category.getName());  // Verify the category name
@@ -92,6 +93,8 @@ public class AdminFormActivity extends AppCompatActivity {
             movieForm.setVisibility(View.VISIBLE);
             categoryForm.setVisibility(View.GONE);
             if (isEditing) {
+                createCategoryButton.setText("Edit Movie");
+
                 adminFormViewModel.getMovie(id).observe(this, movie -> {
                     if (movie != null) {
                         movieTitleEditText.setText(movie.getTitle());
@@ -124,7 +127,12 @@ public class AdminFormActivity extends AppCompatActivity {
 
         // Create Category Button
         createCategoryButton.setOnClickListener(v -> {
-            adminFormViewModel.createCategory(categoryNameEditText.getText().toString(), promotedCheckBox.isChecked());
+            if(isEditing){
+                adminFormViewModel.updateCategory(id,categoryNameEditText.getText().toString(), promotedCheckBox.isChecked());
+
+            } else {
+                adminFormViewModel.createCategory(categoryNameEditText.getText().toString(), promotedCheckBox.isChecked());
+            }
             navigateToAdmin(select);
         });
 

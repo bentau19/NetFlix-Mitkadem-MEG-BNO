@@ -14,14 +14,16 @@ import com.example.myapplication.server.api.ApiResponseCallback;
 public class AdminFormViewModel extends ViewModel {
     private final MovieRepository movieRep;
     private final CategoryRepository categoryRep;
-    private final MutableLiveData<Movie> movieLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Category> categoryLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Movie> movieLiveData;
+    private final MutableLiveData<Category> categoryLiveData;
 
     private final MutableLiveData<String> reqStatus;
     public AdminFormViewModel() {
 
         // Initialize the UserRepository and Signup status LiveData
         reqStatus = new MutableLiveData<>();
+         movieLiveData = new MutableLiveData<>();
+        categoryLiveData = new MutableLiveData<>();
     // Add this
 
         movieRep = new MovieRepository(new ApiResponseCallback() {
