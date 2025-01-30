@@ -9,6 +9,8 @@ import com.example.myapplication.data.repository.CategoryRepository;
 import com.example.myapplication.data.repository.MovieRepository;
 import com.example.myapplication.server.api.ApiResponseCallback;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.HashMap;
@@ -93,18 +95,23 @@ public class AdminViewModel extends ViewModel {
             @Override
             public void onSuccess(Object response) {
                 Gson gson = new Gson();
-                String json = gson.toJson(response);
-                List<Movie> movies = gson.fromJson(json, new TypeToken<List<Movie>>() {}.getType());
-                movieListLiveData.setValue(movies);
+                // Assuming the response contains a "movies" field
+                JsonObject jsonResponse = gson.toJsonTree(response).getAsJsonObject();
+                JsonArray moviesArray = jsonResponse.getAsJsonArray("movies");
+
+                // Now deserialize the movies array
+                List<Movie> movies = gson.fromJson(moviesArray, new TypeToken<List<Movie>>() {}.getType());
+                movieListLiveData.setValue(movies);  // Update the LiveData with the parsed movies
                 reqStatus.setValue("fetch successful!");
             }
 
             @Override
             public void onError(String error) {
-                reqStatus.setValue(error);
+                reqStatus.setValue(error);  // Handle the error and set the status
             }
         });
     }
+
 
     public void fetchCategories(String query) {
         categoryRep.fetchCategories(query, new ApiResponseCallback() {
