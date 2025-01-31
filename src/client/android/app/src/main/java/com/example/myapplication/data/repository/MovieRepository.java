@@ -202,6 +202,27 @@ public class MovieRepository {
         apiRequest.delete(callback);
     }
 
+    public void userRecommends(ApiResponseCallback callback) {
+        String endpoint = "movies/";  // Example endpoint for deleting user
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer your_token_here");
+        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjMsInVzZXJOYW1lIjoiYiIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzM4MTc5NDk5LCJleHAiOjE3Mzg3ODQyOTl9.zk363hoPQTc4wrGmuRtSUtKCaLiK4aLIL9Rgd1qykr4");
+
+        // Create APIRequest for DELETE method
+        APIRequest apiRequest = new APIRequest(endpoint, headers, null);
+        apiRequest.get(new ApiResponseCallback() {
+            @Override
+            public void onSuccess(Object response) {
+                callback.onSuccess(response);  // Pass the response back to the caller (e.g., ViewModel)
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);  // Pass error back to the caller
+            }
+        });
+    }
+
     public void fetchMovies(String query, ApiResponseCallback callback) {
         String endpoint = query.isEmpty() ? "movies/search" : "movies/search/" + query;
         HashMap<String, String> headers = new HashMap<>(); // Add any required headers here

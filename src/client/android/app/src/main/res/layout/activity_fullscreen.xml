@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- ExoPlayer Video View -->
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/videoPlayerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true"
+        app:use_controller="true"
+        app:resize_mode="fit">
+
+        <Button
+            android:id="@+id/dummyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="back" />
+    </com.google.android.exoplayer2.ui.PlayerView>
+
+    <!-- Fullscreen UI Controls (Keep Your Existing UI) -->
+    <LinearLayout
+        android:id="@+id/fullscreenContentControls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible">
+
+        <!-- Dummy Button for Testing -->
+    </LinearLayout>
+
+</RelativeLayout>

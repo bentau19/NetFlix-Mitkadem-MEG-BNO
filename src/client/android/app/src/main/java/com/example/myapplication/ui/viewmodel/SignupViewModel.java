@@ -35,8 +35,8 @@ public class SignupViewModel extends ViewModel {
     }
 
     // Method to initiate the signup process
-    public void signup(String username, String password, String email) {
+    public void signup(String username, String password, String email, String imageBase64) {
         // Call the UserRepository to handle the signup operation
-        userRepository.signup(username, password, email);
+        userRepository.signup(username, password, email, imageBase64);
     }
 }
