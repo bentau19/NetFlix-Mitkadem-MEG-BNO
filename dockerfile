@@ -24,7 +24,6 @@ COPY . .
 # Build the project
 RUN rm -rf build && mkdir -p build && cd build && cmake .. && make
 
-
 # Runtime Stage
 FROM python:3.7-slim
 
@@ -49,7 +48,7 @@ COPY --from=builder /app/src /app/src
 RUN pip3 install requests
 
 # Expose the server port
-EXPOSE 12345
+EXPOSE 8080
 
 # Run server and client in tmux, while opening the data directory as well
 CMD ["bash", "-c", "cd build && mkdir -p /app/data && exec bash"]
