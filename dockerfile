@@ -22,7 +22,8 @@ WORKDIR /app
 COPY . .
 
 # Build the project
-RUN mkdir -p build && cd build && cmake .. && make
+RUN rm -rf build && mkdir -p build && cd build && cmake .. && make
+
 
 # Runtime Stage
 FROM python:3.7-slim

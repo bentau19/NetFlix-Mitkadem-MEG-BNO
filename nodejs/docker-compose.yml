@@ -6,7 +6,7 @@ services:
       - "5000:5000"
     environment:
       - CONNECTION_STRING="mongodb://mongo:27017/"
-      - PORT=3000
+      - PORT=5000
       - CUSTOM_DOMAIN=foo.com
   mongo:
     image: mongo:latest  # Use the official MongoDB image
