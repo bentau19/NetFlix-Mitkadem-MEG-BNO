@@ -15,7 +15,7 @@ const MainScreenTemp = ({ isLoading, error, data, searchQuery }) => {
       {!isLoading && !error && Array.isArray(data) && data.length > 0 ? (
         searchQuery === '' ? (
           // Render categories when no search query
-                <div>
+            <div>
             <BigMovie/>
             <CategoriesAndMoviesDisplay data={data}/>
             
