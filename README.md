@@ -51,8 +51,10 @@ Alow the flowing roots:
 ### program testing and running instractions:
 
     to build the project :
+        create folder in c:/shlomyNoNerves
         docker-compose build
         docker-compose up -d
+
     to run cpp tests:
         docker exec -it netflix-mitkadem-meg-bno-cpp-1 /bin/bash
         cd build
@@ -60,13 +62,21 @@ Alow the flowing roots:
 
     to run the cpp server:
         docker exec -it netflix-mitkadem-meg-bno-cpp-1 /bin/bash
-       cd build
-       ./server 12345 
+        cd build
+        ./server 12345 
 
     to run the nodejs:
         docker exec -it netflix-mitkadem-meg-bno-nodejs-1 /bin/bash
         cd nodejs
         npm start
+
+    react will be started auto and the android apk will be in the shlomyNoNerves folder (the apk time can take some time...)
+    to run the react:
+        automaticly running
+
+    to run the nodejs:
+        take the apk from shlomyNoNerves folder and install it in your android emulator
+            
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

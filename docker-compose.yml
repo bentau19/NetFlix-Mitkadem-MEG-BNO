@@ -12,10 +12,10 @@ services:
     stdin_open: true
     tty: true
     environment:
-      - NODE_ENV=docker
-      - hostClient=host.docker.internal
+      - NODE_ENV=docker  # Indicate this is the Docker environment
+      - hostClient=host.docker.internal  # Set the Docker-specific host
       - portClient=12345
-      - CONNECTION_STRING=mongodb://host.docker.internal:27017/
+      - CONNECTION_STRING=mongodb://host.docker.internal:27017/  # MongoDB connection for Docker
       - PORT=5000
 
   cpp:
@@ -31,6 +31,11 @@ services:
     extends:
       file: ./my-frontend/docker-compose.yml
       service: react-app  # Make sure this matches the service name in the frontend compose file
+  android-builder:
+    extends:
+      file: ./src/client/android/docker-compose.yml
+      service: android-builder  # Make sure the service name matches the one in the Android compose file
+
 
 networks:
   my_custom_network:
