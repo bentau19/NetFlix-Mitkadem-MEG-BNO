@@ -37,12 +37,14 @@ const Signin = () => {
   };
 
   return (
+    <div className='form_background'>
     <SigninForm
       formData={formData}
       handleChange={handleChange}
       handleSubmit={handleSubmit}
       message={message}
     />
+    </div>
   );
 };
 

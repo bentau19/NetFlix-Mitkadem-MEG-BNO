@@ -1,5 +1,7 @@
+import React from 'react';
 import testImage from './test.png'; // Adjust the path if needed
 import { hexToBase64 } from '../../utils/imageConverter.js';
+
 const QueryCardView = ({ isLoading, error, data, searchQuery }) => {
   if (isLoading) {
     return <div>Loading...</div>;
@@ -15,16 +17,17 @@ const QueryCardView = ({ isLoading, error, data, searchQuery }) => {
 
   return (
     <div className="moviesGrid">
-      {data.map((movie,index) => (
+      {data.map((movie, index) => (
         <div key={index} className="movieCard">
-          <img
-           src={movie.image?hexToBase64(movie.image):testImage}
-            alt={movie.title || 'Movie Title'}
-            className="movieImage"
-          />
-          <div className="movieInfo">
-            <h3>{movie.title || 'Untitled Movie'}</h3>
-          </div>
+          {/* Polaroid Frame Component */}
+            <img
+             src={movie.image?hexToBase64(movie.image):testImage}
+              alt={movie.title || 'Movie Title'}
+              className="movieImage"
+            />
+            <div className="caption">
+              {movie.title || 'Untitled Movie'}
+            </div>
         </div>
       ))}
     </div>

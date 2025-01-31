@@ -70,7 +70,10 @@ const SignupForm = ({ formData, handleChange, handleSubmit, message, updateFormD
   };
 
   return (
+    <div className="form_background">
+
     <div className="signup-container">
+      
       <h2>Sign Up</h2>
       <form onSubmit={handleFormSubmit}>
         <div className="form-group">
@@ -133,6 +136,7 @@ const SignupForm = ({ formData, handleChange, handleSubmit, message, updateFormD
       </form>
 
       {message && <p>{message}</p>} {/* Display success or error message */}
+    </div>
     </div>
   );
 };

@@ -3,48 +3,65 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/photoscardsandroidbackground"
+    >
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="169dp"
-        tools:layout_editor_absoluteY="146dp" />
+
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="384dp"
-        android:layout_height="322dp"
+        android:layout_width="match_parent"
+        android:layout_height="708dp"
+        android:layout_gravity="center"
+        android:background="@drawable/signinnotebook"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="16dp">
 
+        tools:ignore="MissingConstraints">
+        <ImageView
+            android:id="@+id/meg"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/meg_red" />
         <TextView
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
             android:id="@+id/textView3"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Password" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="hint" />
 
         <TextView
             android:id="@+id/UserName"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="UserName" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
+
                 android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,17 +70,20 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"/>
 
+        <Button
+            android:id="@+id/login"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="200dp"
+            android:text="Button"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
-        android:text="Button"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        tools:layout_editor_absoluteX="-16dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

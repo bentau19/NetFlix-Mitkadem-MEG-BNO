@@ -23,14 +23,15 @@
 .maindiv{
   display: flex;
   flex-direction: column;   
-  background-color: #141414;
+  background-color: var(--button-color);
+
   height: 100%;
   min-height: 100vh;
   width: 100%;
 }
 /* Full-screen container */
 .mainContainer {
-    color: white;
+    color: var(--background-color);
     min-height: 100vh;
     padding: 20px;
     padding-top: 0;
@@ -99,12 +100,18 @@
   }
   .movieCard {
     flex: 0 0 auto;
-    width: 300px;
-    border-radius: 10px;
-    overflow: hidden;
-    background-color: #222;
-    transition: transform 0.3s, box-shadow 0.3s;
+     background-color: var(--background-color);
+    border: 10px solid var(--background-color); /* Thicker white border for a Polaroid effect */
+    border-bottom: 50px solid var(--background-color); /* Thicker bottom border for Polaroid look */
+    padding: 10px;
+    border-radius: 10px; /* Slightly rounded corners for Polaroid */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Adding a stronger shadow */
+    width: 300px; /* Adjust width to create a more Polaroid-like aspect ratio */
+    text-align: center;
+    font-family: 'Patrick Hand', cursive; /* Handwritten font */
     cursor: pointer;
+    position: relative;
+    transition: transform 0.3s;
   }
   .moviesGrid {
     display: grid;
@@ -124,11 +131,14 @@
   .movieInfo {
     padding: 10px;
     text-align: center;
+    color: var(--text-color);
   }
   
   .movieInfo h3 {
     font-size: 1rem;
     margin: 0;
+    color: var(--text-color);
+
   }
   
   /* No movies message */
@@ -166,4 +176,30 @@
  
   .movieRowContainer {
     position: relative;
+  }
+
+  
+  :root {
+    --background-color: #ffffff;
+    --button-color: #8a2c2c;
+    --secondry-button-color:#9e610b;
+    --button-hover-color:#431616;
+    --secondry-button-hover-color:#6e3d12;
+    --continer-color: #f9f9f9;
+    --text-color: #000000;
+  }
+  
+  [data-theme="dark"] {
+    --background-color: #121212;
+    --button-color: #7f2c8a;
+    --button-hover-color:#561554;
+    --secondry-button-color:#0b0b9e;
+    --secondry-button-hover-color:#0e0d4f;
+    --continer-color: #312828;
+    --text-color: #ffffff;
+  }
+  
+  body {
+    background-color: var(--button-color);
+    color: var(--text-color);
   }

@@ -57,7 +57,7 @@ const getUserbyToken = async (token) => {
         const res = await User.findOne({ userName: userName});
         return res;
     }catch(err){
-        if(err==ERROR_MESSAGES.BAD_REQUEST)throw err;
+        if(err==ERROR_MESSAGES.BAD_REQUEST||err==ERROR_MESSAGES.TOKEN_ERR)throw err;
         throw ERROR_MESSAGES.VALIDATION_FAILED;
     }
 };
@@ -90,7 +90,7 @@ function verifyToken(token) {
     try {
         return jwt.verify(token, SECRET_KEY);
     } catch (error) {
-        throw new Error('Invalid or expired token');
+        throw ERROR_MESSAGES.TOKEN_ERR;
     }
 }
 
@@ -100,7 +100,7 @@ function isManager(token) {
         const decoded = verifyToken(token);
         return decoded.admin === true;
     }catch(e){
-        throw ERROR_MESSAGES.BAD_REQUEST;
+        throw ERROR_MESSAGES.TOKEN_ERR;
     }
 }
 function isUser(token) {
@@ -108,7 +108,7 @@ function isUser(token) {
         const decoded= verifyToken(token);
         return decoded._id;
     }catch(e){
-        throw ERROR_MESSAGES.BAD_REQUEST;
+        throw ERROR_MESSAGES.TOKEN_ERR;
     }
 }
 
@@ -117,7 +117,7 @@ function getUserName(token) {
         const decoded = verifyToken(token);
         return decoded.userName; 
     }catch(e){
-        throw ERROR_MESSAGES.BAD_REQUEST;
+        throw ERROR_MESSAGES.TOKEN_ERR;
     }
 }
 

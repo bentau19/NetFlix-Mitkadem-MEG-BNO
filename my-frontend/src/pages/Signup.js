@@ -44,6 +44,8 @@ const Signup = () => {
   };
 
   return (
+    <div className='form_background'>
+
     <SignupForm
       formData={formData}
       handleChange={handleChange}
@@ -51,6 +53,7 @@ const Signup = () => {
       message={message}
       updateFormData={(key, value) => setFormData({ ...formData, [key]: value })}
     />
+    </div>
   );
 };
 

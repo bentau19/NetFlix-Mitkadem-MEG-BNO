@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { isManager } from "../httpUtils.jsx";
-import  CategoriesDropdown  from "../CategoriesDropdown.jsx";
+import CategoriesDropdown from "../CategoriesDropdown.jsx";
+import { ThemeContext } from "../../context/ThemeContext";
+
 import "./Navbar.css";
 import { useNavigate } from 'react-router-dom';
 const Navbar = ({ onSearchChange,selectedOption,setSelectedOption }) => {
-  const [theme,setTheme]=useState("dark")
-
+ // const [theme,setTheme]=useState("dark")
+    const { theme, toggleTheme } = useContext(ThemeContext);
+  
   const [inputValue, setInputValue] = useState(""); // Local state for the input value
   const [admin, setAdmin] = useState(false); // Properly initialize admin as a boolean
   const navigate = useNavigate();
+
   // Check if the user is an admin on component mount
   useEffect(() => {
     const checkAdminStatus = async () => {
@@ -24,6 +28,7 @@ const Navbar = ({ onSearchChange,selectedOption,setSelectedOption }) => {
     setInputValue(query);
     onSearchChange(query); // Pass the value to the parent component
   };
+
   const handleSignOut = () => {
     // Your sign-out logic here
     sessionStorage.removeItem("token"); // Clear user token or any session storage
@@ -31,41 +36,47 @@ const Navbar = ({ onSearchChange,selectedOption,setSelectedOption }) => {
     navigate("/signin"); // Navigate to the sign-in page after signing out
   };
 
+  // Choose the logo based on the current theme
+  const logoSrc = theme === 'dark'
+    ? '/image/meg_purple.png' 
+    : '/image/meg_red.png'; // Light logo
+
   return (
     <div className={`wrapper`}>
       <div className="content">
         <nav id="navbar">
         <NavLink>
-        <button onClick={() => {
-          if (theme === "dark") setTheme("light");
-          else setTheme("dark");
-        }}>
-          {theme}
+        <button onClick={toggleTheme}>
+        Switch to {theme === "light" ? "Dark" : "Light"} Mode
         </button>
             </NavLink>
         <div id="logo" style={{marginLeft:"-60px", width: "170px" }}>
             <NavLink to="/">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
-                alt="logo"
+            <img 
+                src={logoSrc} 
+                alt="logo" 
+                style={{ width: "120px", height: "60px" }} 
               />
+
             </NavLink>
           </div>
+
           <NavLink>
+            <div>
+              <CategoriesDropdown selectedOption={selectedOption} setSelectedOption={setSelectedOption} />
+            </div>
+          </NavLink>
+
           <div>
-          <CategoriesDropdown selectedOption={selectedOption} setSelectedOption={setSelectedOption}/>
-          </div>
-        
-      </NavLink>
-          <div>
-          <NavLink to="/signin" onClick={handleSignOut}>
-        SignOut
-      </NavLink>
+            <NavLink to="/signin" onClick={handleSignOut}>
+              SignOut
+            </NavLink>
             <NavLink to="/">Home</NavLink>
 
             {/* Conditionally render Movies link based on admin status */}
             {admin ? <NavLink to="/admin">admin</NavLink> : null}
           </div>
+
           <div className="special-input-container">
             <input
               type="text"

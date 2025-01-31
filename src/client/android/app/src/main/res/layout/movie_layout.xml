@@ -5,32 +5,47 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+
+    <!-- Polaroid-style container -->
+    <androidx.cardview.widget.CardView
         android:layout_width="189dp"
-        android:layout_height="188dp"
+        android:layout_height="225dp"
         android:layout_marginStart="16dp"
-        android:background="@color/movieCard"
-        android:orientation="vertical"
-        android:padding="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="6dp"
+        app:cardBackgroundColor="@color/colorSurface"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="0dp">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <ImageView
-            android:id="@+id/imageView4"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="131dp"
-            app:srcCompat="@drawable/ic_launcher_background"
-            />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
+            android:background="@drawable/polaroid_frame">
 
-        <TextView
-            android:id="@+id/itemTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Item"
-            android:textAlignment="center"
-            android:textSize="30dp" />
+            <!-- Movie Image -->
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:scaleType="centerCrop"
+                android:background="@android:color/black"
+                app:srcCompat="@drawable/ic_launcher_background" />
 
-    </LinearLayout>
+            <!-- Title/Text Area -->
+            <TextView
+                android:id="@+id/itemTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Movie Title"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:paddingTop="6dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
