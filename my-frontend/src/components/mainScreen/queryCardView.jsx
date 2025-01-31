@@ -1,8 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import testImage from './test.png'; // Adjust the path if needed
 import { hexToBase64 } from '../../utils/imageConverter.js';
+import Popup from '../Popup.jsx';
+import MovieInfoPage from '../MovieInfo.jsx';
+import { get } from '../httpUtils.jsx';
+import MoviesList from './MoviesList';
 
 const QueryCardView = ({ isLoading, error, data, searchQuery }) => {
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [recommendedMovies, setRecommendedMovies] = useState([]);
+
+  const handleMovieClick = async (movie) => {
+    setSelectedMovie(movie);
+    setIsPopupOpen(true);
+
+    try {
+      const recommendations = await get(`/movies/${movie._id}/recommend`);
+      setRecommendedMovies(recommendations);
+    } catch (error) {
+      console.error('Error fetching recommended movies:', error);
+    }
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -16,21 +40,34 @@ const QueryCardView = ({ isLoading, error, data, searchQuery }) => {
   }
 
   return (
-    <div className="moviesGrid">
-      {data.map((movie, index) => (
-        <div key={index} className="movieCard">
-          {/* Polaroid Frame Component */}
+    <>
+      <div className="moviesGrid">
+        {data.map((movie, index) => (
+          <div key={index} className="movieCard" onClick={() => handleMovieClick(movie)}>
+            {/* Polaroid Frame Component */}
             <img
-             src={movie.image?hexToBase64(movie.image):testImage}
+              src={movie.image ? hexToBase64(movie.image) : testImage}
               alt={movie.title || 'Movie Title'}
               className="movieImage"
             />
-            <div className="caption">
-              {movie.title || 'Untitled Movie'}
+            <div className="caption">{movie.title || 'Untitled Movie'}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Popup for Movie Info */}
+      <Popup isOpen={isPopupOpen} onClose={closePopup}>
+        {selectedMovie && (
+          <>
+            <MovieInfoPage movie={selectedMovie} />
+            <h3>Recommended Movies:</h3>
+            <div className="recommendedMovies">
+              <MoviesList movies={recommendedMovies} />
             </div>
-        </div>
-      ))}
-    </div>
+          </>
+        )}
+      </Popup>
+    </>
   );
 };
 

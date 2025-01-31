@@ -11,8 +11,8 @@ const BigMovie = () => {
       const response = await fetch('http://localhost:5000/api/movies/search/');
       const movies = await response.json();
 
-      if (movies.result.length > 0) {
-        const randomMovie = movies.result[Math.floor(Math.random() * movies.result.length)];
+      if (movies.length > 0) {
+        const randomMovie = movies[Math.floor(Math.random() * movies.length)];
         setMovieId(randomMovie._id); // Assuming the movie object has an 'id' field
       }
     } catch (error) {
