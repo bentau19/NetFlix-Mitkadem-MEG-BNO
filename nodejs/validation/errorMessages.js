@@ -5,7 +5,6 @@ const ERROR_MESSAGES = {
     SERVER_ERROR: "Error 500: Internal server error.",
     BAD_REQUEST: "Error 400: Bad request.",
     VALIDATION_FAILED: "Validation failed: Please check your input.",
-    TOKEN_ERR:"Error 400: Token Error."
 };
 
 
