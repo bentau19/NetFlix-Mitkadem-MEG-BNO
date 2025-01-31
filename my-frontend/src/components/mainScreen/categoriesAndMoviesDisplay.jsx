@@ -1,8 +1,30 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import testImage from './test.png'; // Adjust path as needed
 import { hexToBase64 } from '../../utils/imageConverter.js';
-const CategoriesAndMoviesDisplay = ({ data }) => {
+import MovieInfoPage from '../MovieInfo.jsx';
+import Popup from '../Popup.jsx';
+import { get } from '../httpUtils.jsx'
+import MoviesList from './MoviesList';
+const CategoriesAndMoviesDisplay = ({ data = [] }) => {
   const categoryRefs = useRef([]);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [recommendedMovies, setRecommendedMovies] = useState([]);
+  const handleMovieClick = async (movie) => {
+    setSelectedMovie(movie);
+    setIsPopupOpen(true);
+
+    try {
+      const recommendations = await get('/movies/'+ movie._id + '/recommend',);
+      setRecommendedMovies(recommendations);
+    } catch (error) {
+      console.error("Error fetching recommended movies:", error);
+    }
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
 
   const scrollLeft = (index) => {
     if (categoryRefs.current[index]) {
@@ -16,46 +38,63 @@ const CategoriesAndMoviesDisplay = ({ data }) => {
     }
   };
 
-  return data.map((category, index) => (
-    <div key={index} className="categorySection">
-      <h2 className="categoryName">{category.name}</h2>
-      <div className="movieRowContainer">
-        <div
-          ref={(el) => (categoryRefs.current[index] = el)}
-          className="movieRow"
-        >
-          {category.movies && category.movies.length > 0 ? (
-            category.movies.map((movie) => (
-              <div key={`${category._id}-${movie._id}`} className="movieCard">
-                <img
-                  src={movie.image?hexToBase64(movie.image):testImage} // Replace with movie image when available
-                  alt={movie.title}
-                  className="movieImage"
-                />
-                <div className="movieInfo">
-                  <h3>{movie.title}</h3>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p>No movies available in this category.</p>
-          )}
+  return (
+    <>
+      {data?.map((category, index) => (
+        <div key={index} className="categorySection">
+          <h2 className="categoryName">{category.name}</h2>
+          <div className="movieRowContainer">
+            <div
+              ref={(el) => (categoryRefs.current[index] = el)}
+              className="movieRow"
+            >
+              {Array.isArray(category.movies) && category.movies.length > 0 ? (
+                category.movies.map((movie) => (
+                  <div
+                    key={`${category._id}-${movie._id}`}
+                    className="movieCard"
+                    onClick={() => handleMovieClick(movie)}
+                  >
+                    <img
+                      src={movie.image ? hexToBase64(movie.image) : testImage}
+                      alt={movie.title}
+                      className="movieImage"
+                    />
+                    <div className="movieInfo">
+                      <h3>{movie.title}</h3>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No movies available in this category.</p>
+              )}
+            </div>
+            <button onClick={() => scrollLeft(index)} className="scrollButton left">
+              &lt;
+            </button>
+            <button onClick={() => scrollRight(index)} className="scrollButton right">
+              &gt;
+            </button>
+          </div>
         </div>
-        <button
-          onClick={() => scrollLeft(index)}
-          className="scrollButton left"
-        >
-          &lt;
-        </button>
-        <button
-          onClick={() => scrollRight(index)}
-          className="scrollButton right"
-        >
-          &gt;
-        </button>
-      </div>
-    </div>
-  ));
+      ))}
+
+      {/* Popup for Movie Info */}
+      <Popup isOpen={isPopupOpen} onClose={closePopup}>
+        {(
+          <>
+            <MovieInfoPage movie={selectedMovie} />
+            <h3>Recommended Movies:</h3>
+            <div className="recommendedMovies">
+            <MoviesList movies={recommendedMovies} /> : (
+                <p>No recommendations available.</p>
+              )
+            </div>
+          </>
+        )}
+      </Popup>
+    </>
+  );
 };
 
 export default CategoriesAndMoviesDisplay;

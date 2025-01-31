@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark theme -->
+
+        <style name="MyButtonStyle">
+            <item name="android:background">?attr/colorPrimary</item>
+            <item name="android:textColor">?attr/colorOnPrimary</item>
+        </style>
+</resources>

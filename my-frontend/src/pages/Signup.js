@@ -4,6 +4,7 @@ import SignupForm from '../components/Signup';
 import { post } from '../components/httpUtils';
 import { useNavigate } from 'react-router-dom';
 import './styles.css';
+
 const Signup = () => {
   const [formData, setFormData] = useState({
     DisplayName: '',
@@ -43,6 +44,8 @@ const Signup = () => {
   };
 
   return (
+    <div className='form_background'>
+
     <SignupForm
       formData={formData}
       handleChange={handleChange}
@@ -50,6 +53,7 @@ const Signup = () => {
       message={message}
       updateFormData={(key, value) => setFormData({ ...formData, [key]: value })}
     />
+    </div>
   );
 };
 

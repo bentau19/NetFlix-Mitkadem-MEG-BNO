@@ -59,6 +59,11 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.8")
     // Gson Converter for parsing JSON
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.google.android.exoplayer:exoplayer:2.18.0")
+    implementation("com.google.android.exoplayer:exoplayer-hls:2.18.0")
+    implementation("com.google.android.exoplayer:exoplayer-dash:2.18.0")
+    implementation("com.google.android.exoplayer:exoplayer-smoothstreaming:2.18.0")
+    implementation("com.google.android.exoplayer:exoplayer-core:2.18.0")
 
     // OkHttp (Optional: For logging and interceptors)
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")

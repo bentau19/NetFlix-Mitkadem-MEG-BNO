@@ -2,11 +2,11 @@
 const MovieService = require('../services/MoviesService');
 const UserService = require('../services/UsersService');
 const ERROR_MESSAGES = require('../validation/errorMessages');
-const fs = require('fs');
-const path = require('path');
+
+const VALIDITY_FUNC = require('../validation/validityFunc');
 const getMoviesByCategories = async (req, res) => {
     try {
-        const id =UserService.isUser(req.headers['token']);
+        const id = UserService.isUser(req.headers['token']);
         const result = await MovieService.getMoviesByCategory(
             id
         );
@@ -20,9 +20,10 @@ const getMoviesByCategories = async (req, res) => {
 
 const createMovie = async (req, res) => {
     try {
-                if(!UserService.isManager(req.headers['token'])){
-            throw ERROR_MESSAGES.BAD_REQUEST;
+        if(!UserService.isManager(req.headers['token'])){
+            throw 'only admin can acsees this';
         }
+        VALIDITY_FUNC.adminExistingValidity(req.headers['token'])
         const result = await MovieService.createMovie(
             req.body.title,
             req.body.logline,
@@ -35,9 +36,9 @@ const createMovie = async (req, res) => {
             res.status(400).json({ message: 'Movie creation failed' });
         }
     } catch (error) {
-        if( ERROR_MESSAGES.BAD_REQUEST==error||ERROR_MESSAGES.Existing("movie")==error)
+        if( ERROR_MESSAGES.Existing("movie")==error)
             res.status(400).json({ message: error});
-        else res.status(500).json({ message: error});
+        else VALIDITY_FUNC.catchAction(error,res);
     }
 }
 
@@ -54,45 +55,32 @@ const getMovieById = async (req, res) => {
                 res.status(400).json({ message: 'no movie at this value' });
             }
         } catch (error) {
-            res.status(500).json({ message: 'An internal server error occurred', error: error.message });
+            VALIDITY_FUNC.catchAction(error,res);
         }
     };
 
     
 const switchMovie = async (req, res) => {
     try {
-        if(!UserService.isManager(req.headers['token'])){
-            throw ERROR_MESSAGES.BAD_REQUEST;
-        }
+        VALIDITY_FUNC.adminExistingValidity(req.headers['token'])
         const result = await MovieService.updateMovie(
             req.params.id,req.body
         );
-        if (result) {
-            res.status(204).json(result);
-        } else {
-            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
-        }
+        VALIDITY_FUNC.validProgram(result,204,res)
+
     } catch (error) {
-        if( ERROR_MESSAGES.BAD_REQUEST==error)
-            res.status(400).json({ message: error});
-        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
+        VALIDITY_FUNC.catchAction(error,res);
     }
 };
 const deleteMovie = async (req, res) => {
        try {
-        if(!UserService.isManager(req.headers['token'])){
-            throw ERROR_MESSAGES.BAD_REQUEST;
-        }
+        VALIDITY_FUNC.adminExistingValidity(req.headers['token'])
             const result = await MovieService.deleteMovie(
                 req.params.id
             );
-            if (result)
-            res.status(204).json({ message: 'Movie deleted successfully' });
-            else res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
+            VALIDITY_FUNC.validProgram(result,204,res)
         } catch (error) {
-            if( ERROR_MESSAGES.BAD_REQUEST==error)
-                res.status(400).json({ message: error});
-            else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
+            VALIDITY_FUNC.catchAction(error,res);
         }
 };
 const getRecommendMovie = async (req, res) => {
@@ -102,15 +90,11 @@ const getRecommendMovie = async (req, res) => {
             id,
             req.params.id
         );
-        if (result) {
-            res.status(200).json(result);
-        } else {
-            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
-        }
+        VALIDITY_FUNC.validProgram(result,200,res)
     } catch (error) {
-        if( ERROR_MESSAGES.BAD_REQUEST==error||ERROR_MESSAGES.Existing("user")==error)
+        if( ERROR_MESSAGES.Existing("user")==error)
             res.status(400).json({ message: error});
-        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
+        else VALIDITY_FUNC.catchAction(error,res);
     }
 };
 const addMovieToUser = async (req, res) => {
@@ -120,15 +104,11 @@ const addMovieToUser = async (req, res) => {
             id,
             req.params.id
         );
-        if (result) {
-            res.status(204).json(result);
-        } else {
-            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
-        }
+        VALIDITY_FUNC.validProgram(result,204,res)
     } catch (error) {
-        if( ERROR_MESSAGES.BAD_REQUEST==error||ERROR_MESSAGES.Existing("movie")==error)
+        if( ERROR_MESSAGES.Existing("movie")==error)
             res.status(400).json({ message: error});
-        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
+        else VALIDITY_FUNC.catchAction(error,res);
     }
 };
 const getQueryMovie = async (req, res) => {
@@ -138,16 +118,9 @@ const getQueryMovie = async (req, res) => {
         const result = await MovieService.getQueryMovie(
             query
         );
-        if (result) {
-            // Assuming createUser returns a truthy value on success
-            res.status(200).json(result);
-        } else {
-            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
-        }
+        VALIDITY_FUNC.validProgram(result,200,res)
     } catch (error) {
-        if( ERROR_MESSAGES.BAD_REQUEST==error)
-            res.status(400).json({ message: error});
-        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
+        VALIDITY_FUNC.catchAction(error,res);
     }
 };
 const play = async (req, res) => {

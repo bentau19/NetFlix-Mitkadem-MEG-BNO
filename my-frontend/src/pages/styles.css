@@ -3,7 +3,8 @@
 /* General body styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    background-color: var(--background-color);
+    
     /* display: flex;
     justify-content: center;
     align-items: center; */
@@ -19,36 +20,81 @@ body {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     width: 350px;
 }
+.form_background {
+    color: var(--text-color); /* Ensure text color follows theme */
+ 
+    position: fixed; /* Ensure it covers the full viewport */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full width */
+    height: 100vh; /* Full height */
+    background-image: var(--background-image); /* Corrected */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.signin-container {
+    text-decoration-color: var(--second-text-color);
+    background-image: var(--sigin-image); /* Corrected */
+    background-size: cover; /* Ensures the image covers the container */
+    background-position: center; /* Centers the image */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    width: 530px; /* Adjust as needed */
+    min-height: 320px; /* Ensures some height */
+    color: var(--text-color); /* Ensure text color follows theme */
+
+}
+.signup-container {
+    background: var(--the-color);
+    color: var(--text-color); /* Ensure text color follows theme */
+
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    width: 520px;
+
+}
 
 /* Header styling */
 h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #333;
+    color: var(--second-text-color);
     font-size: 1.5rem;
 }
 
 /* Form group styling */
 .form-group {
     margin-bottom: 20px;
+    color: var(--second-text-color);
+
 }
 
 .form-group label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
-    color: #555;
+    color: var(--second-text-color);
 }
 
 /* Input Group */
 .input-group {
     margin: 20px 0;
+    color: var(--text-color); /* Ensure text color follows theme */
+
 }
 
 input, select, button {
     padding: 10px;
     margin: 5px;
     font-size: 16px;
+   /* color: var(--text-color); /* Ensure text color follows theme */
+
 }
 
 input[type="text"], select {
@@ -121,6 +167,7 @@ button:hover {
 .form {
     flex-direction: column;
     margin: 20px 0;
+    
 }
 
 input[type="text"] {
@@ -144,3 +191,33 @@ input[type="checkbox"] {
     background-color: #0b7dda;
 }
 
+:root {
+    --background-image: url("../../public/image/photosbackgroundlight.jpeg"); /* Corrected */
+    --sigin-image:url("../../public/image/signincard.png");
+    --background-color: #ffffff;
+    --button-color: #8a2c2c;
+    --the-color:#d75d3bee;
+    --secondry-button-color:#9e610b;
+    --button-hover-color:#431616;
+    --secondry-button-hover-color:#6e3d12;
+    --continer-color: #f9f9f9;
+    --text-color: #000000;
+    --second-text-color:#452026;
+
+  }
+  
+  [data-theme="dark"] {
+    --sigin-image:url("../../public/image/signinpurple.png");
+    --background-image: url("../../public/image/photosbackgrounddark.jpeg"); /* Corrected */
+    --background-color: #121212;
+    --the-color:#891181ee;
+
+    --button-color: #7f2c8a;
+    --button-hover-color:#561554;
+    --secondry-button-color:#0b0b9e;
+    --secondry-button-hover-color:#0e0d4f;
+    --continer-color: #312828;
+    --text-color: #ffffff;
+    --second-text-color:#e0abd0;
+  }
+  

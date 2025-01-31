@@ -5,6 +5,7 @@ import { post } from '../components/httpUtils';
 import SigninForm from '../components/signin.jsx'; // Import the JSX component
 import './styles.css';
 
+
 const Signin = () => {
   const [formData, setFormData] = useState({
     userName: '',
@@ -36,12 +37,14 @@ const Signin = () => {
   };
 
   return (
+    <div className='form_background'>
     <SigninForm
       formData={formData}
       handleChange={handleChange}
       handleSubmit={handleSubmit}
       message={message}
     />
+    </div>
   );
 };
 

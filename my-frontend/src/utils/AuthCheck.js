@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Logged from "../pages/mainPage/LoggedMain";
-import Guest from "../pages/mainPage/GuestMain";
 import { get } from "../components/httpUtils"; 
 
-const AuthCheck = () => {
+const AuthCheck = ({ GuestComponent, LoggedComponent }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -18,12 +16,8 @@ const AuthCheck = () => {
       }
 
       try {
-        const result = await get('/tokens', { });
-        if (result._id) {
-          setIsAuthenticated(true);
-        } else {
-          setIsAuthenticated(false);
-        }
+        const result = await get('/tokens', {});
+        setIsAuthenticated(!!result._id);
       } catch (error) {
         console.error('Token validation failed:', error);
         setIsAuthenticated(false);
@@ -35,13 +29,11 @@ const AuthCheck = () => {
     validateToken();
   }, []);
 
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-
-  return isAuthenticated ? <Logged /> : <Guest />;
+  return isAuthenticated ? <LoggedComponent /> : <GuestComponent />;
 };
 
 export default AuthCheck;
