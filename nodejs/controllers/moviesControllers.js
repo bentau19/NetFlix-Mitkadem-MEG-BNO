@@ -2,6 +2,8 @@
 const MovieService = require('../services/MoviesService');
 const UserService = require('../services/UsersService');
 const ERROR_MESSAGES = require('../validation/errorMessages');
+const path = require('path');
+const fs = require('fs');
 
 const VALIDITY_FUNC = require('../validation/validityFunc');
 const getMoviesByCategories = async (req, res) => {

@@ -1,52 +1,85 @@
 
 const CategoriesService = require('../services/CategoriesService');
 const ERROR_MESSAGES = require('../validation/errorMessages');
-const VALIDITY_FUNC = require('../validation/validityFunc');
-
+const UserService = require('../services/UsersService');
 const getCategories = async (req, res) => {
     try {
         const result = await CategoriesService.getCategories()
-        VALIDITY_FUNC.validProgram(result,200,res)
+        if (result) {
+            res.status(200).json({ message: result});
+        } else {
+            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST });
+        }
     } catch (error) {
-        VALIDITY_FUNC.catchAction(error,res);
+        if( ERROR_MESSAGES.BAD_REQUEST==error)
+            res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
     }
 };
 const createCategory = async (req, res) => {
     try {
-        VALIDITY_FUNC.adminExistingValidity(req.headers['token'])
+        if(!UserService.isManager(req.headers['token'])){
+            throw ERROR_MESSAGES.BAD_REQUEST;
+        }
         const result=await CategoriesService.createCategories(req.body.name,req.body.promoted);
-        VALIDITY_FUNC.validProgram(result,201,res)
+        if (result) {
+            res.status(201).json({ message: result});
+        } else {
+            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST });
+        }
     } catch (error) {
-        if(ERROR_MESSAGES.Existing("category")==error)
+        if( ERROR_MESSAGES.BAD_REQUEST==error||ERROR_MESSAGES.Existing("category")==error)
             res.status(400).json({ message: error});
-        else VALIDITY_FUNC.catchAction(error,res);
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
     }
     
 };
 const getCategorieById = async (req, res) => {
     try {
         const result = await CategoriesService.getCategoriesById(req.params.id);
-        VALIDITY_FUNC.validProgram(result,200,res)
+        if (result) {
+            res.status(200).json({ message: result});
+        } else {
+            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST });
+        }
     } catch (error) {
-        VALIDITY_FUNC.catchAction(error,res);
+        if( ERROR_MESSAGES.BAD_REQUEST==error)
+            res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
     }
 };
 const updateCategory = async (req, res) => {
     try {
-        VALIDITY_FUNC.adminExistingValidity(req.headers['token'])
+        if(!UserService.isManager(req.headers['token'])){
+            throw ERROR_MESSAGES.BAD_REQUEST;
+        }
         const result =await CategoriesService.updateCategories(req.params.id,req.body.name,req.body.promoted);
-        VALIDITY_FUNC.validProgram(result,204,res)
+        if (result) {
+            res.status(204).json({ message: result});
+        } else {
+            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST });
+        }
     } catch (error) {
-        VALIDITY_FUNC.catchAction(error,res);
+        if( ERROR_MESSAGES.BAD_REQUEST==error)
+            res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
     }
 };
 const deleteCategory = async (req, res) => {
     try {
-        VALIDITY_FUNC.adminExistingValidity(req.headers['token'])
+        if(!UserService.isManager(req.headers['token'])){
+            throw ERROR_MESSAGES.BAD_REQUEST;
+        }
         const result =await CategoriesService.deleteCategories(req.params.id);
-        VALIDITY_FUNC.validProgram(result,204,res)
+        if (result) {
+            res.status(204).json({ message: result});
+        } else {
+            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST });
+        }
     } catch (error) {
-        VALIDITY_FUNC.catchAction(error,res);
+        if( ERROR_MESSAGES.BAD_REQUEST==error)
+            res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
     }
 };
 
@@ -57,9 +90,16 @@ const getQueryCat = async (req, res) => {
         const result = await CategoriesService.getQueryCat(
             query
         );
-        VALIDITY_FUNC.validProgram(result,200,res)
+        if (result) {
+            // Assuming createUser returns a truthy value on success
+            res.status(200).json(result);
+        } else {
+            res.status(400).json({ message: ERROR_MESSAGES.BAD_REQUEST});
+        }
     } catch (error) {
-        VALIDITY_FUNC.catchAction(error,res);
+        if( ERROR_MESSAGES.BAD_REQUEST==error)
+            res.status(400).json({ message: error});
+        else res.status(500).json({ message: ERROR_MESSAGES.SERVER_ERROR});
     }
 };
 module.exports = {getCategories, createCategory, getCategorieById,updateCategory,deleteCategory,getQueryCat };
