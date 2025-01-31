@@ -55,14 +55,14 @@ public class ParentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof HeaderViewHolder) {
-            // Bind header data if needed
-            ((HeaderViewHolder) holder).bind();
-        } else {
-            // Adjust position for header
-            Category category = parentItemList.get(position - 1); // Get the category
-            ((ParentViewHolder) holder).bind(category); // Pass category to bind method
-        }
+//        if (holder instanceof HeaderViewHolder) {
+//            // Bind header data if needed
+//            ((HeaderViewHolder) holder).bind();
+//        } else {
+//            // Adjust position for header
+//            Category category = parentItemList.get(position - 1); // Get the category
+//            ((ParentViewHolder) holder).bind(category); // Pass category to bind method
+//        }
     }
 
     @Override
@@ -103,15 +103,15 @@ public class ParentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             categoryTitle = itemView.findViewById(R.id.categoryTitle);  // Initialize title reference
         }
 
-        public void bind(Category category) {
-            // Set category name to the title TextView
-            categoryTitle.setText(category.getName());
-
-            // Set up child RecyclerView
-            movieAdapter childAdapter = new movieAdapter(category.getMovies());
-            LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
-            childRecyclerView.setLayoutManager(layoutManager);
-            childRecyclerView.setAdapter(childAdapter);
-        }
+//        public void bind(Category category) {
+//            // Set category name to the title TextView
+//            categoryTitle.setText(category.getName());
+//
+//            // Set up child RecyclerView
+//            movieAdapter childAdapter = new movieAdapter(category.getMovies());
+//            LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+//            childRecyclerView.setLayoutManager(layoutManager);
+//            childRecyclerView.setAdapter(childAdapter);
+//        }
     }
 }

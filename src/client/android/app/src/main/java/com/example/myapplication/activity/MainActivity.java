@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -42,19 +43,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         LogInViewModel = new ViewModelProvider(this).get(LogInViewModel.class);
-//        LogInViewModel.getLogInStatus().observe(this, status -> {
-//            Toast.makeText(this, status, Toast.LENGTH_SHORT).show();
-//            if (status.equals("LogIn successful!")) {
-//                Intent intent = new Intent(this, loggedMain.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//            else{
-//                Intent intent = new Intent(this, GuestMain.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
+        LogInViewModel.getLogInStatus().observe(this, status -> {
+            Toast.makeText(this, status, Toast.LENGTH_SHORT).show();
+            if (status.equals("LogIn successful!")) {
+                Intent intent = new Intent(this, loggedMain.class);
+                startActivity(intent);
+                finish();
+            }
+            else{
+                Intent intent = new Intent(this, GuestMain.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         LogInViewModel.islogged();
 
         Button btnGoToMain = findViewById(R.id.mainButton);
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         // Go to Signup Activity
         Button btnGoToSignup = findViewById(R.id.button);
         btnGoToSignup.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, FullscreenActivity.class);
+            Intent intent = new Intent(MainActivity.this, LogInActivity.class);
             startActivity(intent);
             finish();
         });

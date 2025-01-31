@@ -93,46 +93,46 @@ public class loggedMain extends AppCompatActivity {
             return true;
         });
         // Observe the request status
-        reqStatus.observe(this, status -> {
-            if (status != null && status.equals("fetch successful!")) {
-                // Observe the category list
-                categoryListLiveData.observe(this, categories -> {
-                    if (categories != null) {
-                        // Add each category as a menu item
-                        for (Category category : categories) {
-                            MenuItem menuItem = menu.add(Menu.NONE, Menu.FIRST + category.getId(), Menu.NONE, category.getName());
-
-                            // Set a click listener for the menu item
-                            menuItem.setOnMenuItemClickListener(item -> {
-                                // Update the catId in SharedViewModel
-                                sharedViewModel.setCatId(category.getName());
-                                return true;
-                            });
-                        }
-
-                        // Add the "All" option
-                        MenuItem allItem = menu.add(Menu.NONE, Menu.FIRST + categories.size(), Menu.NONE, "All");
-
-                        // Set a click listener for the "All" option
-                        allItem.setOnMenuItemClickListener(item -> {
-                            // Update the catId in SharedViewModel to indicate "All"
-                            sharedViewModel.setCatId("all");
-                            return true;
-                        });
-                    } else {
-                        // If no categories are available, add the "All" option
-                        MenuItem allItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "All");
-
-                        // Set a click listener for the "All" option
-                        allItem.setOnMenuItemClickListener(item -> {
-                            // Update the catId in SharedViewModel to indicate "All"
-                            sharedViewModel.setCatId("all");
-                            return true;
-                        });
-                    }
-                });
-            }
-        });
+//        reqStatus.observe(this, status -> {
+//            if (status != null && status.equals("fetch successful!")) {
+//                // Observe the category list
+//                categoryListLiveData.observe(this, categories -> {
+//                    if (categories != null) {
+//                        // Add each category as a menu item
+//                        for (Category category : categories) {
+//                            MenuItem menuItem = menu.add(Menu.NONE, Menu.FIRST + category.getId(), Menu.NONE, category.getName());
+//
+//                            // Set a click listener for the menu item
+//                            menuItem.setOnMenuItemClickListener(item -> {
+//                                // Update the catId in SharedViewModel
+//                                sharedViewModel.setCatId(category.getName());
+//                                return true;
+//                            });
+//                        }
+//
+//                        // Add the "All" option
+//                        MenuItem allItem = menu.add(Menu.NONE, Menu.FIRST + categories.size(), Menu.NONE, "All");
+//
+//                        // Set a click listener for the "All" option
+//                        allItem.setOnMenuItemClickListener(item -> {
+//                            // Update the catId in SharedViewModel to indicate "All"
+//                            sharedViewModel.setCatId("all");
+//                            return true;
+//                        });
+//                    } else {
+//                        // If no categories are available, add the "All" option
+//                        MenuItem allItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "All");
+//
+//                        // Set a click listener for the "All" option
+//                        allItem.setOnMenuItemClickListener(item -> {
+//                            // Update the catId in SharedViewModel to indicate "All"
+//                            sharedViewModel.setCatId("all");
+//                            return true;
+//                        });
+//                    }
+//                });
+//            }
+//        });
 
         // Set up the SearchView
         MenuItem.OnActionExpandListener onActionExpandListener = new MenuItem.OnActionExpandListener() {

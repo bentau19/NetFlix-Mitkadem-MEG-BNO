@@ -54,7 +54,6 @@ public class CategoryRepository {
             @Override
 
             public void onSuccess(Object response) {
-                Log.d(TAG, "onSuccess: " + response);
 
                 if (response instanceof List<?>) {
                     List<Category> categories = new ArrayList<>();
@@ -69,7 +68,6 @@ public class CategoryRepository {
                         }
                     }
 
-                    Log.d(TAG, "Parsed categories count: " + categories.size());
                     categoriesLiveData.setValue(categories);
                 } else {
                     Log.e("API_ERROR", "Unexpected response type: " + response.getClass().getName());
