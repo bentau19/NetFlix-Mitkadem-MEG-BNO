@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="/style.css"  rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies and Categories</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Movies and Categories</h1>
+
+        <!-- Select dropdown and Search Bar -->
+        <div class="input-group">
+            <select onchange="listShow()" id="movieCategorySelect">
+                <option value="movie">Movie</option>
+                <option value="category">Category</option>
+                
+            </select>
+            <input type="text" id="searchInput" placeholder="Search..." />
+            <button onclick="searchItems()">Search</button>
+        </div>
+
+        <!-- Button to trigger the Add Popup -->
+        <button id="addButton" onclick="openPopup()">Add</button>
+        <ul id="categoryList" style="display:none;">
+            <!-- Categories will be dynamically inserted here -->
+        </ul>
+        
+        <ul id="movieList" style="display:none;">
+            <!-- Movies will be displayed here -->
+        </ul>
+        
+        
+        <!-- Popup for Creating a New Item -->
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close" onclick="closePopup()">&times;</span>
+                <div id="categoryForm" class="form">
+                    <h2>Create Category</h2>
+                    <input type="text" id="categoryName" placeholder="Category Name" required>
+                    <label for="promoted">Promoted:</label>
+                    <input type="checkbox" id="promoted">
+                    <button onclick="createCategory()">Create Category</button>
+                    <button onclick="closePopup()">Cancel</button>
+
+                </div>
+                <div id="movieForm" class="form" style="display:none;">
+                    <h2>Create Movie</h2>
+                    <input type="text" id="movieTitle" placeholder="Movie Title" required>
+                    <input type="text" id="movieLogline" placeholder="Movie Logline">
+                    <input type="text" id="movieImage" placeholder="Image URL">
+                    <input type="text" id="movieCategories" placeholder="Categories (comma-separated)">
+                    <button onclick="createMovie()">Create Movie</button>
+                    <button onclick="closePopup()">Cancel</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/script.js"></script>
+</body>
+</html>

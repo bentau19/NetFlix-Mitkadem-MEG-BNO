@@ -3,10 +3,11 @@
 /* General body styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    display: flex;
+    background-color: var(--background-color);
+    
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
     height: 100vh;
     margin: 0;
 }
@@ -19,25 +20,204 @@ body {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     width: 350px;
 }
+.form_background {
+    color: var(--text-color); /* Ensure text color follows theme */
+ 
+    position: fixed; /* Ensure it covers the full viewport */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full width */
+    height: 100vh; /* Full height */
+    background-image: var(--background-image); /* Corrected */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.signin-container {
+    text-decoration-color: var(--second-text-color);
+    background-image: var(--sigin-image); /* Corrected */
+    background-size: cover; /* Ensures the image covers the container */
+    background-position: center; /* Centers the image */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    width: 530px; /* Adjust as needed */
+    min-height: 320px; /* Ensures some height */
+    color: var(--text-color); /* Ensure text color follows theme */
+
+}
+.signup-container {
+    background: var(--the-color);
+    color: var(--text-color); /* Ensure text color follows theme */
+
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    width: 520px;
+
+}
 
 /* Header styling */
 h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #333;
+    color: var(--second-text-color);
     font-size: 1.5rem;
 }
 
 /* Form group styling */
 .form-group {
     margin-bottom: 20px;
+    color: var(--second-text-color);
+
 }
 
 .form-group label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
-    color: #555;
+    color: var(--second-text-color);
+}
+
+/* Input Group */
+.input-group {
+    margin: 20px 0;
+    color: var(--text-color); /* Ensure text color follows theme */
+
+}
+
+input, select, button {
+    padding: 10px;
+    margin: 5px;
+    font-size: 16px;
+   /* color: var(--text-color); /* Ensure text color follows theme */
+
+}
+
+input[type="text"], select {
+    width: 250px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    display: flex; /* Set the default to display flex */
+    flex-direction: column;
+
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease;
+}
+
+.popup.open {
+    opacity: 1; /* Show the popup */
 }
 
 
+.popup-content {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    padding: 20px;
+    border-radius: 5px;
+    width: 600px;
+    text-align: center; /* Center text inside inputs/buttons */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    gap: 15px; /* Add consistent spacing between elements */
+}
+/* Form group styling inside popup */
+.popup-content .form-group {
+    display: flex;
+    flex-direction: column; /* Stack label and input vertically */
+    align-items: center; /* Align elements to the left */
+    width: 100%;
+    text-align: center; /* Center text inside inputs/buttons */
+
+}
+
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.form {
+    flex-direction: column;
+    margin: 20px 0;
+    
+}
+
+input[type="text"] {
+    width: 100%;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+#addButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#addButton:hover {
+    background-color: #0b7dda;
+}
+
+:root {
+    --background-image: url("../../public/image/photosbackgroundlight.jpeg"); /* Corrected */
+    --sigin-image:url("../../public/image/signincard.png");
+    --background-color: #ffffff;
+    --button-color: #8a2c2c;
+    --the-color:#d75d3bee;
+    --secondry-button-color:#9e610b;
+    --button-hover-color:#431616;
+    --secondry-button-hover-color:#6e3d12;
+    --continer-color: #f9f9f9;
+    --text-color: #000000;
+    --second-text-color:#452026;
+
+  }
+  
+  [data-theme="dark"] {
+    --sigin-image:url("../../public/image/signinpurple.png");
+    --background-image: url("../../public/image/photosbackgrounddark.jpeg"); /* Corrected */
+    --background-color: #121212;
+    --the-color:#891181ee;
+
+    --button-color: #7f2c8a;
+    --button-hover-color:#561554;
+    --secondry-button-color:#0b0b9e;
+    --secondry-button-hover-color:#0e0d4f;
+    --continer-color: #312828;
+    --text-color: #ffffff;
+    --second-text-color:#e0abd0;
+  }
+  

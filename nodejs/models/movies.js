@@ -13,7 +13,7 @@ const Movie = new Schema({
         type: String,
     },
     image: {
-        type: Buffer, // Store binary data
+        type: String, // Store binary data
         default: null
     },
     categories: [
