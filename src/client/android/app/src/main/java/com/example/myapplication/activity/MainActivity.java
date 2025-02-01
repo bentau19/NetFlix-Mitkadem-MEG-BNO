@@ -43,19 +43,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         LogInViewModel = new ViewModelProvider(this).get(LogInViewModel.class);
-        LogInViewModel.getLogInStatus().observe(this, status -> {
-            Toast.makeText(this, status, Toast.LENGTH_SHORT).show();
-            if (status.equals("LogIn successful!")) {
-                Intent intent = new Intent(this, loggedMain.class);
-                startActivity(intent);
-                finish();
-            }
-            else{
-                Intent intent = new Intent(this, GuestMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        LogInViewModel.getLogInStatus().observe(this, status -> {
+//            Toast.makeText(this, status, Toast.LENGTH_SHORT).show();
+//            if (status.equals("LogIn successful!")) {
+//                Intent intent = new Intent(this, loggedMain.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//            else{
+//                Intent intent = new Intent(this, GuestMain.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
         LogInViewModel.islogged();
 
         Button btnGoToMain = findViewById(R.id.mainButton);

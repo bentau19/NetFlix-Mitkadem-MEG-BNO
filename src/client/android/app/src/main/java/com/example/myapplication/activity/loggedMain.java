@@ -92,9 +92,9 @@ public class loggedMain extends AppCompatActivity {
             sharedViewModel.setCatId("main");
             return true;
         });
-        // Observe the request status
-//        reqStatus.observe(this, status -> {
-//            if (status != null && status.equals("fetch successful!")) {
+         //Observe the request status
+        reqStatus.observe(this, status -> {
+            if (status != null && status.equals("fetch successful!")) {
 //                // Observe the category list
 //                categoryListLiveData.observe(this, categories -> {
 //                    if (categories != null) {
@@ -131,8 +131,8 @@ public class loggedMain extends AppCompatActivity {
 //                        });
 //                    }
 //                });
-//            }
-//        });
+            }
+        });
 
         // Set up the SearchView
         MenuItem.OnActionExpandListener onActionExpandListener = new MenuItem.OnActionExpandListener() {
