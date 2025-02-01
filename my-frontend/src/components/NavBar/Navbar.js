@@ -11,7 +11,7 @@ import { hexToBase64 } from '../../utils/imageConverter.js';
 const Navbar = ({ onSearchChange,selectedOption,setSelectedOption }) => {
 
 
-  const [userPhoto,setUserPhoto]=useState("https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg")
+  const [userPhoto,setUserPhoto]=useState("https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png")
 
  // const [theme,setTheme]=useState("dark")
    const { theme, toggleTheme } = useContext(ThemeContext);
@@ -103,9 +103,10 @@ const Navbar = ({ onSearchChange,selectedOption,setSelectedOption }) => {
           
           <div className="pro">
             <NavLink>
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
-                alt="logopro"
+           <img
+                src= {userPhoto}
+                alt="logo"
+
               />
             </NavLink>
 

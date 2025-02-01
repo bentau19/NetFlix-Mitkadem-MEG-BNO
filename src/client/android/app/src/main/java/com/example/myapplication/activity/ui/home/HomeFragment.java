@@ -68,9 +68,9 @@ public class HomeFragment extends Fragment {
                         });
                     } else {
                         homeViewModel.findCategoryByName(catId);
-                    // Handle specific category selection
-                    Log.d("CatId", "Selected category ID: " + catId);
-                }}
+                        // Handle specific category selection
+                        Log.d("CatId", "Selected category ID: " + catId);
+                    }}
             }
         });
 

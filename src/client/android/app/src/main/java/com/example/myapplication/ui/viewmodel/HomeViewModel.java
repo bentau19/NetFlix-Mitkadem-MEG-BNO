@@ -92,23 +92,23 @@ public class HomeViewModel extends ViewModel {
 
 
     public void fetchMovies(String query) {
-//        movieRep.fetchMovies(query, new ApiResponseCallback() {
-//            @Override
-//            public void onSuccess(Object response) {
-//                Gson gson = new Gson();
-//                String json = gson.toJson(response);
-//                List<Movie> movies = gson.fromJson(json, new TypeToken<List<Movie>>() {}.getType());
-//                List<Category> categories = new ArrayList<>(List.of(new Category(query, movies)));
-//
-//                movieListLiveData.setValue(categories);
-//                reqStatus.setValue("fetch successful!");
-//            }
-//
-//            @Override
-//            public void onError(String error) {
-//                reqStatus.setValue(error);
-//            }
-//        });
+        movieRep.fetchMovies(query, new ApiResponseCallback() {
+            @Override
+            public void onSuccess(Object response) {
+                Gson gson = new Gson();
+                String json = gson.toJson(response);
+                List<Movie> movies = gson.fromJson(json, new TypeToken<List<Movie>>() {}.getType());
+                List<Category> categories = new ArrayList<>(List.of(new Category(query, movies)));
+
+                movieListLiveData.setValue(categories);
+                reqStatus.setValue("fetch successful!");
+            }
+
+            @Override
+            public void onError(String error) {
+                reqStatus.setValue(error);
+            }
+        });
     }
 
     public void userRecommends() {
