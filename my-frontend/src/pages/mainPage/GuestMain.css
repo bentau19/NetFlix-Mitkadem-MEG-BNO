@@ -16,15 +16,31 @@
 }
 
 .hero-title {
-  font-size: 3.5rem;
-  font-weight: bold;
-  color: var(--second-text-color);
+  display: inline-flex;
+  align-items: center;
+  
+  margin-top: -40px; /* Reduce space below the title */
+
+  margin-bottom: -60px; /* Reduce space below the title */
 }
+
+#logo {
+  margin-left: -60px;
+  width: 170px;
+}
+
+#logo img {
+  width: 100%;
+  height: auto;
+}
+
 
 .hero-subtitle {
   font-size: 1.4rem;
-  margin-top: 10px;
   color: var(--text-color);
+  margin-top: 0; /* Remove margin-top */
+  margin-bottom: 20px; /* Reduce space below the title */
+
 }
 
 .hero-buttons {

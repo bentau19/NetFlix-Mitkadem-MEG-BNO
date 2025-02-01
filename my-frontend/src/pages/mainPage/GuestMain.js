@@ -1,12 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext  } from 'react';
 import { useNavigate } from "react-router-dom";
 import "./GuestMain.css"
+import { ThemeContext } from "../../context/ThemeContext";
+
 import { get } from '../../components/httpUtils';
 import GuestScreenTemp from '../../components/mainScreen/GuestScreenTemp';
 const GuestMain = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+     const { theme, toggleTheme } = useContext(ThemeContext);
+  
   const [data, setData] = useState([]);
   const handleSubmit = useCallback(async () => {
     setIsLoading(true);
@@ -31,6 +35,10 @@ const GuestMain = () => {
     handleSubmit();
   }, [handleSubmit]);
 
+ // Choose the logo based on the current theme
+ const logoSrc = theme === 'dark'
+ ? '/image/meg_purple.png' 
+ : '/image/meg_red.png'; // Light logo
 
   return (
 
@@ -38,7 +46,19 @@ const GuestMain = () => {
         <div >
            <div class="hero-container">
   <div class="hero-content">
-    <h1 class="hero-title">Welcome to Meg</h1>
+  <h1 className="hero-title">
+            Welcome to 
+            <div 
+              id="logo" 
+              style={{ marginLeft: "-30px", width: "170px" }}
+            >
+              <img 
+                src={logoSrc} 
+                alt="Meg Logo" 
+                style={{ width: "70%", height: "auto" }}
+              />
+            </div>
+          </h1>
     <p class="hero-subtitle">
       Explore our platform and discover amazing features. Join us today to get started!
     </p>
