@@ -81,7 +81,7 @@ public class ParentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         HeaderViewHolder(@NonNull View itemView) {
             super(itemView);
-            videoView = itemView.findViewById(R.id.videoView);
+//            videoView = itemView.findViewById(R.id.videoView);
         }
 
         void bind() {
