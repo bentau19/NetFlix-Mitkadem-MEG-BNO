@@ -31,10 +31,10 @@ services:
     extends:
       file: ./my-frontend/docker-compose.yml
       service: react-app  # Make sure this matches the service name in the frontend compose file
-  android-builder:
-    extends:
-      file: ./src/client/android/docker-compose.yml
-      service: android-builder  # Make sure the service name matches the one in the Android compose file
+  # android-builder:
+  #   extends:
+  #     file: ./src/client/android/docker-compose.yml
+  #     service: android-builder  # Make sure the service name matches the one in the Android compose file
 
 
 networks:
