@@ -11,11 +11,15 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.adapter.Movie;
+import com.example.myapplication.adapter.User;
 import com.example.myapplication.data.Rooms.DB.AppDatabase;
 import com.example.myapplication.data.Rooms.dao.TokenDao;
 import com.example.myapplication.data.Rooms.entity.UserToken;
 import com.example.myapplication.server.api.APIRequest;
 import com.example.myapplication.server.api.ApiResponseCallback;
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +36,8 @@ public class UserRepository {
 
     }
 
+
+
     // Signup User
     public void signup(String username, String password, String userName,String imageBase64) {
         String endpoint = "users/";
@@ -47,6 +53,66 @@ public class UserRepository {
         apiRequest.post(callback);
 
     }
+
+
+    public void getUser() {
+        AppDatabase db = AppDatabase.getInstance();
+        TokenDao tokenDao = db.tokenDao();
+
+        // Use ExecutorService to run the database operation on a background thread
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            String userToken = tokenDao.getTokenString(); // Run in background thread
+
+            // Now we can check if the token is null or empty
+            if (userToken == null || userToken.isEmpty()) {
+                // Make sure to call callback.onError() on the main thread
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    callback.onError("No token found. User not logged in.");
+                });
+                return;
+            }
+
+            // Prepare API request on background thread
+            String endpoint = "tokens";
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Content-Type", "application/json");
+            headers.put("token", userToken);
+
+            APIRequest apiRequest = new APIRequest(endpoint, headers, null);
+            apiRequest.get(new ApiResponseCallback() {
+                @Override
+                public void onSuccess(Object response) {
+                    if (response instanceof LinkedTreeMap) {
+                        // Convert LinkedTreeMap to JSON string
+                        Gson gson = new Gson();
+                        String json = gson.toJson(response);
+
+                        // Deserialize JSON into Movie object
+                        User user = gson.fromJson(json, User.class);
+
+                        // Pass the Movie object to the callback
+                        callback.onSuccess(user);
+                    } else if (response instanceof User) {
+                        // Already a Movie object, just return it
+                        callback.onSuccess(response);
+                    } else {
+                        Log.e("MovieRepository", "Unexpected response type: " + response.getClass().getName());
+                        callback.onError("Unexpected response format");
+                    }
+                }
+
+                @Override
+                public void onError(String error) {
+                    // Handle error on the main thread
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        callback.onError("Invalid or expired token.");
+                    });
+                }
+            });
+        });
+    }
+
     public void isLogged() {
         AppDatabase db = AppDatabase.getInstance();
         TokenDao tokenDao = db.tokenDao();

@@ -4,7 +4,7 @@ import { hexToBase64 } from '../../utils/imageConverter.js';
 import MovieInfoPage from '../MovieInfo.jsx';
 import Popup from '../Popup.jsx';
 import { get } from '../httpUtils.jsx'
-
+import MoviesList from './MoviesList';
 const CategoriesAndMoviesDisplay = ({ data = [] }) => {
   const categoryRefs = useRef([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -14,7 +14,6 @@ const CategoriesAndMoviesDisplay = ({ data = [] }) => {
     setSelectedMovie(movie);
     setIsPopupOpen(true);
 
-    // Fetch recommended movies based on the selected movie
     try {
       const recommendations = await get('/movies/'+ movie._id + '/recommend',);
       setRecommendedMovies(recommendations);
@@ -86,24 +85,11 @@ const CategoriesAndMoviesDisplay = ({ data = [] }) => {
           <>
             <MovieInfoPage movie={selectedMovie} />
             <h3>Recommended Movies:</h3>
-            {/* <div className="recommendedMovies">
-              {recommendedMovies.length > 0 ? (
-                recommendedMovies.map((movie) => (
-                  <div key={movie._id} className="movieCard">
-                    <img
-                      src={movie.image ? hexToBase64(movie.image) : testImage}
-                      alt={movie.title}
-                      className="movieImage"
-                    />
-                    <div className="movieInfo">
-                      <h3>{movie.title}</h3>
-                    </div>
-                  </div>
-                ))
-              ) : (
+            <div className="recommendedMovies">
+            <MoviesList movies={recommendedMovies} /> : (
                 <p>No recommendations available.</p>
-              )}
-            </div> */}
+              )
+            </div>
           </>
         )}
       </Popup>

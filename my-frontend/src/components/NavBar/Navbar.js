@@ -1,26 +1,40 @@
 import React, { useState, useEffect, useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { isManager } from "../httpUtils.jsx";
-import CategoriesDropdown from "../CategoriesDropdown.jsx";
+import { isManager,getUser } from "../httpUtils.jsx";
+import  CategoriesDropdown  from "../CategoriesDropdown.jsx";
 import { ThemeContext } from "../../context/ThemeContext";
+
 
 import "./Navbar.css";
 import { useNavigate } from 'react-router-dom';
+import { hexToBase64 } from '../../utils/imageConverter.js';
 const Navbar = ({ onSearchChange,selectedOption,setSelectedOption }) => {
+
+
+  const [userPhoto,setUserPhoto]=useState("https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png")
+
  // const [theme,setTheme]=useState("dark")
-    const { theme, toggleTheme } = useContext(ThemeContext);
-  
+   const { theme, toggleTheme } = useContext(ThemeContext);
   const [inputValue, setInputValue] = useState(""); // Local state for the input value
   const [admin, setAdmin] = useState(false); // Properly initialize admin as a boolean
   const navigate = useNavigate();
 
   // Check if the user is an admin on component mount
   useEffect(() => {
+
     const checkAdminStatus = async () => {
       const isAdmin = await isManager(); // Assume isManager() returns a Promise
       setAdmin(isAdmin);
     };
+    const getUserInit = async () => {
+      const usr = await getUser(); // Assume isManager() returns a Promise
+      if(usr.image){
+        setUserPhoto(hexToBase64(usr.image));
+      }
+    };
+    getUserInit();
     checkAdminStatus();
+
   }, []); // Empty dependency array ensures this runs only once
 
   const handleInputChange = (event) => {
@@ -52,10 +66,10 @@ const Navbar = ({ onSearchChange,selectedOption,setSelectedOption }) => {
             </NavLink>
         <div id="logo" style={{marginLeft:"-60px", width: "170px" }}>
             <NavLink to="/">
-            <img 
-                src={logoSrc} 
-                alt="logo" 
-                style={{ width: "120px", height: "60px" }} 
+              <img
+                src= {userPhoto}
+                alt="logo"
+
               />
 
             </NavLink>
@@ -89,9 +103,10 @@ const Navbar = ({ onSearchChange,selectedOption,setSelectedOption }) => {
           
           <div className="pro">
             <NavLink>
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
-                alt="logopro"
+           <img
+                src= {userPhoto}
+                alt="logo"
+
               />
             </NavLink>
 

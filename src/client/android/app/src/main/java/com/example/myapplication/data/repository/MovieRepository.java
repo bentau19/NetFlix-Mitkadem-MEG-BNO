@@ -1,11 +1,15 @@
 package com.example.myapplication.data.repository;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.myapplication.adapter.Category;
 import com.example.myapplication.adapter.Movie;
+import com.example.myapplication.data.Rooms.DB.AppDatabase;
+import com.example.myapplication.data.Rooms.dao.TokenDao;
 import com.example.myapplication.server.api.APIRequest;
 import com.example.myapplication.server.api.ApiResponseCallback;
 import com.google.gson.Gson;
@@ -18,6 +22,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class MovieRepository {
 
@@ -200,6 +206,44 @@ public class MovieRepository {
         // Create APIRequest for DELETE method
         APIRequest apiRequest = new APIRequest(endpoint, headers, null);
         apiRequest.delete(callback);
+    }
+
+    public void userRecommends(ApiResponseCallback callback) {
+        AppDatabase db = AppDatabase.getInstance();
+        TokenDao tokenDao = db.tokenDao();
+
+        // Use ExecutorService to run the database operation on a background thread
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            String userToken = tokenDao.getTokenString(); // Run in background thread
+
+            // Now we can check if the token is null or empty
+            if (userToken == null || userToken.isEmpty()) {
+                // Make sure to call callback.onError() on the main thread
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    callback.onError("No token found. User not logged in.");
+                });
+                return;
+            }
+
+            String endpoint = "movies/";  // Example endpoint for deleting user
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer your_token_here");
+        headers.put("token", userToken);
+
+        // Create APIRequest for DELETE method
+        APIRequest apiRequest = new APIRequest(endpoint, headers, null);
+        apiRequest.get(new ApiResponseCallback() {
+            @Override
+            public void onSuccess(Object response) {
+                callback.onSuccess(response);  // Pass the response back to the caller (e.g., ViewModel)
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);  // Pass error back to the caller
+            }
+        });});
     }
 
     public void fetchMovies(String query, ApiResponseCallback callback) {

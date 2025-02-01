@@ -8,7 +8,13 @@ public class Movie {
     private String logline;
     private String image;
     private List<Integer> categories; // Assuming category IDs are integers
-
+    public Movie(String title) {
+        this.title = title;
+    }
+    public Movie(String title,String image) {
+        this.title = title;
+        this.image=image;
+    }
     // Getters and Setters
     public int getId() {
         return _id;

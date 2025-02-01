@@ -13,7 +13,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "SET NODE_ENV=windows && node app.js",
+    "start": "NODE_ENV=docker && node app.js",
 
     "test": "echo \"Error: no test specified\" && exit 1"
   },
