@@ -28,10 +28,27 @@ import java.util.concurrent.Executors;
 public class MovieRepository {
 
     private final ApiResponseCallback callback;
+    private final TokenDao tokenDao;
+    private final Executor executor = Executors.newSingleThreadExecutor();
 
     public MovieRepository(ApiResponseCallback callback) {
         this.callback = callback;
+        this.tokenDao = AppDatabase.getInstance().tokenDao();
     }
+
+    private void getToken(Callback<String> tokenCallback) {
+        executor.execute(() -> {
+            String token = tokenDao.getTokenString();
+            new Handler(Looper.getMainLooper()).post(() -> {
+                if (token != null && !token.isEmpty()) {
+                    tokenCallback.onSuccess(token);
+                } else {
+                    tokenCallback.onError("No token found. User not logged in.");
+                }
+            });
+        });
+    }
+
     private List<Integer> processCategories(String categories) {
         if (categories == null || categories.isEmpty()) {
             return new ArrayList<>();
@@ -60,7 +77,7 @@ public class MovieRepository {
         String endpoint = "movies/";
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk");
+        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjUsInVzZXJOYW1lIjoiZGl2YSIsImFkbWluIjp0cnVlLCJpYXQiOjE3MzgzNDMxMDQsImV4cCI6MTczODk0NzkwNH0.F7tzwszWyrdgJXbcx6Syns-WUjtKwKFjtTOV4ETQnNs");
 
         // Create a FormData object with the image hex and other form fields
         Map<String, String> jsonBody = new HashMap<>();
@@ -97,43 +114,42 @@ public class MovieRepository {
     }
 
 
-    public void fetchMovieData(String movieId, ApiResponseCallback callback) {
-        String endpoint = "movies/" + movieId;  // Example endpoint for fetching user data
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer your_token_here");
-
-        // Create the APIRequest for the GET method
-        APIRequest apiRequest = new APIRequest(endpoint, headers, null);
-        apiRequest.get(new ApiResponseCallback() {
+    public void fetchMovieData(String  movieId, ApiResponseCallback callback) {
+        getToken(new Callback<String>() {
             @Override
-            public void onSuccess(Object response) {
-                if (response instanceof LinkedTreeMap) {
-                    // Convert LinkedTreeMap to JSON string
-                    Gson gson = new Gson();
-                    String json = gson.toJson(response);
+            public void onSuccess(String token) {
+                String endpoint = "movies/" + movieId;
+                Map<String, String> headers = new HashMap<>();
+                headers.put("token", token);
 
-                    // Deserialize JSON into Movie object
-                    Movie movie = gson.fromJson(json, Movie.class);
+                APIRequest apiRequest = new APIRequest(endpoint, headers, null);
+                apiRequest.get(new ApiResponseCallback() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        if (response instanceof LinkedTreeMap) {
+                            Gson gson = new Gson();
+                            String json = gson.toJson(response);
+                            Movie movie = gson.fromJson(json, Movie.class);
+                            callback.onSuccess(movie);
+                        } else {
+                            callback.onError("Unexpected response format");
+                        }
+                    }
 
-                    // Pass the Movie object to the callback
-                    callback.onSuccess(movie);
-                } else if (response instanceof Movie) {
-                    // Already a Movie object, just return it
-                    callback.onSuccess(response);
-                } else {
-                    Log.e("MovieRepository", "Unexpected response type: " + response.getClass().getName());
-                    callback.onError("Unexpected response format");
-                }
+                    @Override
+                    public void onError(String error) {
+                        callback.onError(error);
+                    }
+                });
             }
-
 
             @Override
             public void onError(String error) {
-                // Call the callback onError method
                 callback.onError(error);
             }
         });
     }
+
     public void getMovies() {
         String endpoint = "movies/query";  // Example endpoint for fetching user data
         Map<String, String> headers = new HashMap<>();
@@ -169,67 +185,61 @@ public class MovieRepository {
     }
 
     // Update User Data
-    public void updateMovie(String movieId, String newTitle, String newLogline, String newImage , String newCategories) {
-        String endpoint = "movies/" + movieId;  // Example endpoint for updating user data
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
-        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk");
+    public void updateMovie(String movieId, String title, String logline, String imageHex , String categories) {
+        getToken(new Callback<String>() {
+            @Override
+            public void onSuccess(String token) {
+                String endpoint = "movies/"+ movieId;
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("token" , token);
 
-        // Create a FormData object with the image hex and other form fields
-        Map<String, String> jsonBody = new HashMap<>();
-        jsonBody.put("title", newTitle);
-        jsonBody.put("logline", newLogline);
-        jsonBody.put("image", newImage);
+                Map<String, String> jsonBody = new HashMap<>();
+                jsonBody.put("title", title);
+                jsonBody.put("logline", logline);
+                jsonBody.put("image", imageHex);
 
-        // Process categories into a List<Integer>
-        List<Integer> processedCategories = processCategories(newCategories);
+                String categoriesJsonString = new JSONArray(processCategories(categories)).toString();
+                jsonBody.put("categories", categoriesJsonString);
 
-        // Convert the List<Integer> into a JSON array string
-        String categoriesJsonString = new JSONArray(processedCategories).toString();
+                APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
+                apiRequest.put(callback);
+            }
 
-        // Put the categories as a string in the JSON body
-        jsonBody.put("categories", categoriesJsonString);
+            @Override
+            public void onError(String error) {
+                callback.onError(error);
+            }
+        });
 
-        // Create and send the API request
-        APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
-
-        apiRequest.put(callback);
     }
 
     // Delete User
-    public void deleteMovie(String movieId) {
-        String endpoint = "movies/" + movieId;  // Example endpoint for deleting user
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer your_token_here");
-        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk");
 
-        // Create APIRequest for DELETE method
-        APIRequest apiRequest = new APIRequest(endpoint, headers, null);
-        apiRequest.delete(callback);
+    public void deleteMovie(String movieId) {
+        getToken(new Callback<String>() {
+            @Override
+            public void onSuccess(String token) {
+                String endpoint = "movies/" + movieId;
+                Map<String, String> headers = new HashMap<>();
+                headers.put("token" , token);
+
+                APIRequest apiRequest = new APIRequest(endpoint, headers, null);
+                apiRequest.delete(callback);
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);
+            }
+        });
     }
 
     public void userRecommends(ApiResponseCallback callback) {
-        AppDatabase db = AppDatabase.getInstance();
-        TokenDao tokenDao = db.tokenDao();
-
-        // Use ExecutorService to run the database operation on a background thread
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
-            String userToken = tokenDao.getTokenString(); // Run in background thread
-
-            // Now we can check if the token is null or empty
-            if (userToken == null || userToken.isEmpty()) {
-                // Make sure to call callback.onError() on the main thread
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    callback.onError("No token found. User not logged in.");
-                });
-                return;
-            }
-
-            String endpoint = "movies/";  // Example endpoint for deleting user
+        String endpoint = "movies/";  // Example endpoint for deleting user
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer your_token_here");
-        headers.put("token", userToken);
+        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjUsInVzZXJOYW1lIjoiZGl2YSIsImFkbWluIjp0cnVlLCJpYXQiOjE3MzgzNDMxMDQsImV4cCI6MTczODk0NzkwNH0.F7tzwszWyrdgJXbcx6Syns-WUjtKwKFjtTOV4ETQnNs");
 
         // Create APIRequest for DELETE method
         APIRequest apiRequest = new APIRequest(endpoint, headers, null);
@@ -243,7 +253,7 @@ public class MovieRepository {
             public void onError(String error) {
                 callback.onError(error);  // Pass error back to the caller
             }
-        });});
+        });
     }
 
     public void fetchMovies(String query, ApiResponseCallback callback) {
@@ -262,6 +272,10 @@ public class MovieRepository {
                 callback.onError(error);  // Pass error back to the caller
             }
         });
+    }
+    public interface Callback<T> {
+        void onSuccess(T result);
+        void onError(String error);
     }
 
 }
