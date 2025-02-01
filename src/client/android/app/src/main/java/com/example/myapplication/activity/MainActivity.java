@@ -15,6 +15,7 @@ import com.example.myapplication.data.Rooms.DB.AppDatabase;
 import com.example.myapplication.data.Rooms.dao.TokenDao;
 import com.example.myapplication.ThemesActivity;
 import com.example.myapplication.data.Rooms.entity.UserToken;
+import com.example.myapplication.data.ThemeManager;
 import com.example.myapplication.ui.viewmodel.LogInViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ThemeManager.loadTheme(this);
         // Initialize the database if not already done
         try {
             AppDatabase.getInstance();

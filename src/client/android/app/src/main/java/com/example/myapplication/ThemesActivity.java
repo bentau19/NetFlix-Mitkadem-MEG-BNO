@@ -22,53 +22,22 @@ public class ThemesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Load the theme from SharedPreferences
-        loadTheme();
+        ThemeManager.loadTheme(this);
 
         setContentView(R.layout.themes);
 
         themeToggle = findViewById(R.id.theme_toggle);
         themeStatus = findViewById(R.id.theme_status);
 
-        // Set initial theme status
-        updateThemeStatusText();
 
         // Set toggle listener
         themeToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
             String newTheme = isChecked ? "dark" : "light";
+            ThemeManager.saveThemeToPreferences(this, newTheme);  // or "light" / "system"
+            recreate();  // Refresh activity to apply new theme
 
-            // Save theme in SharedPreferences
-            saveThemeToPreferences(newTheme);
-
-            // Apply the theme
-            applyTheme(newTheme);
-
-            // Update the status text
-            updateThemeStatusText();
         });
     }
 
-    private void loadTheme() {
-        // Get saved theme from SharedPreferences
-        String savedTheme = ThemeManager.getTheme(this);
-        if (savedTheme != null) {
-            applyTheme(savedTheme);
-        }
-    }
 
-    private void saveThemeToPreferences(String theme) {
-        ThemeManager.saveTheme(this, theme);
-    }
-
-    private void applyTheme(String theme) {
-        int nightMode = theme.equals("dark") ?
-                AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
-        AppCompatDelegate.setDefaultNightMode(nightMode);
-    }
-
-    private void updateThemeStatusText() {
-        new Handler(Looper.getMainLooper()).post(() -> {
-            String currentTheme = themeToggle.isChecked() ? "Dark" : "Light";
-            themeStatus.setText("Current Theme: " + currentTheme);
-        });
-    }
 }

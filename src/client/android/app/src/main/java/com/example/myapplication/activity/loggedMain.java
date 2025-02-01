@@ -16,6 +16,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.adapter.Category;
 import com.example.myapplication.adapter.ImageUtils;
 import com.example.myapplication.adapter.User;
+import com.example.myapplication.data.ThemeManager;
 import com.example.myapplication.data.repository.CategoryRepository;
 import com.example.myapplication.data.repository.MovieRepository;
 import com.example.myapplication.data.repository.UserRepository;
@@ -122,11 +123,28 @@ public class loggedMain extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
-            if (id == R.id.ThemeMode) {
+            if (item.getItemId() == R.id.ThemeMode) {
                 // Handle the ThemeMode click event
-                Toast.makeText(this, "Theme Mode Clicked", Toast.LENGTH_SHORT).show();
+
+                // Get the current theme from preferences
+                String currentTheme = ThemeManager.getTheme(this);
+
+                // Toggle between light and dark theme
+                if (currentTheme.equals("dark")) {
+                    ThemeManager.saveThemeToPreferences(this, "light"); // Change to light theme
+                } else {
+                    ThemeManager.saveThemeToPreferences(this, "dark"); // Change to dark theme
+                }
+
+                // Show a Toast to indicate the theme change
+                Toast.makeText(this, "Theme Mode Changed", Toast.LENGTH_SHORT).show();
+
+                // Recreate the activity to apply the new theme
+                recreate(); // This will recreate the activity and apply the new theme
+
                 return true;
-            } else if (id == R.id.SignOut) {
+            }
+             else if (id == R.id.SignOut) {
                 // Handle SignOut: Navigate to LoginActivity and clear back stack
                 Intent intent = new Intent(this, LogInActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

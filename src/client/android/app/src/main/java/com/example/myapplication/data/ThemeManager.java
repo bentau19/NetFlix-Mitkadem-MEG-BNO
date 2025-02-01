@@ -7,31 +7,51 @@ import android.os.Looper;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import androidx.appcompat.app.AppCompatDelegate;
+
 public class ThemeManager {
+    private static final String PREF_NAME = "theme_prefs";
+    private static final String KEY_THEME = "selected_theme";
 
-    private static final String PREFS_NAME = "theme_preferences";
-    private static final String KEY_THEME = "theme_key";
+    public static void loadTheme(Context context) {
+        // Get saved theme from SharedPreferences
+        String savedTheme = getTheme(context);
+        applyTheme(savedTheme);
+    }
 
-    // Get the saved theme
+    public static void saveThemeToPreferences(Context context, String theme) {
+        saveTheme(context, theme);
+        applyTheme(theme);
+    }
+
+    private static void saveTheme(Context context, String theme) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putString(KEY_THEME, theme).apply();
+    }
+
     public static String getTheme(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        return prefs.getString(KEY_THEME, "light");  // Default theme is light
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return prefs.getString(KEY_THEME, "default"); // Default theme if none is saved
     }
 
-    // Save the theme to SharedPreferences
-    public static void saveTheme(Context context, String theme) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(KEY_THEME, theme);
-        editor.apply();
+    private static void applyTheme(String theme) {
+        switch (theme) {
+            case "dark":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+            case "light":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            case "system":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                break;
+            default:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+        }
     }
-
-
-    private void applyTheme(String theme) {
-        int nightMode = theme.equals("dark") ?
-                AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
-        AppCompatDelegate.setDefaultNightMode(nightMode);
-    }
-
-
 }
+
