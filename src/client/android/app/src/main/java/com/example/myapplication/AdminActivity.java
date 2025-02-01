@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.activity.LogInActivity;
+import com.example.myapplication.activity.loggedMain;
 import com.example.myapplication.adapter.Category;
 import com.example.myapplication.adapter.CategoryAdapter;
 import com.example.myapplication.adapter.Movie;
@@ -34,11 +36,12 @@ public class AdminActivity extends AppCompatActivity implements MovieAdapter.OnI
     private AdminViewModel adminViewModel;
     private EditText searchInput;
     private Button btnSearch;
+    private Button btnToMain;
     private MovieAdapter movieAdapter; // Custom RecyclerView Adapter
     private CategoryAdapter categoryAdapter; // Custom RecyclerView Adapter
     private Spinner movieCategorySelect;
     private boolean isSpinnerInitialized = false; // Prevent initial trigger
-     private String type = "Movie";
+    private String type = "Movie";
     private Button btnAdd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,7 @@ public class AdminActivity extends AppCompatActivity implements MovieAdapter.OnI
         // Initialize adapters
         movieAdapter = new MovieAdapter();
         categoryAdapter = new CategoryAdapter();
-
+        btnToMain = findViewById(R.id.backToMain);
         recyclerView = findViewById(R.id.item_list_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         movieCategorySelect = findViewById(R.id.movieCategorySelect);
@@ -66,7 +69,10 @@ public class AdminActivity extends AppCompatActivity implements MovieAdapter.OnI
 
         setupSpinnerListener();
         setupSearchListener();
-
+        btnToMain.setOnClickListener(view -> {
+            Intent intent = new Intent(AdminActivity.this, loggedMain.class);
+            startActivity(intent);
+        });
         btnAdd.setOnClickListener(view -> {
             Intent intent = new Intent(AdminActivity.this, AdminFormActivity.class);
             intent.putExtra("type", type);
@@ -146,7 +152,7 @@ public class AdminActivity extends AppCompatActivity implements MovieAdapter.OnI
             if (type.equals("Category")) {
                 displayCategories(searchInput.getText().toString());
             } else {
-               displayMovies(searchInput.getText().toString());
+                displayMovies(searchInput.getText().toString());
             }
         });
     }
