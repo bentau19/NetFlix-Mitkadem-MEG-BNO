@@ -174,41 +174,67 @@ const updateMovie = async (movieId, updateData) => {
   if (!movieId) {
     throw ERROR_MESSAGES.BAD_REQUEST;
   }
-    const movie = await movies.findById(movieId);
-    if (!movie) {
-      throw ERROR_MESSAGES.BAD_REQUEST;
+
+  const movie = await Movies.findById(movieId);
+  if (!movie) {
+    throw ERROR_MESSAGES.BAD_REQUEST;
+  }
+
+  // First, remove the movie from all categories
+  await Categories.updateMany(
+    { movies: movieId },  // Find categories where the movie is listed
+    { $pull: { movies: movieId } }  // Remove the movie from the category's movies array
+  );
+
+  // Step 3: Prepare the updated movie data
+  const updatedMovie = { ...updateData };
+  updatedMovie._id = movieId;
+
+  // Handle the categories logic
+  if (updatedMovie.categories) {
+    let categoriesArray = [];
+
+    if (typeof updatedMovie.categories === "string") {
+      try {
+        categoriesArray = JSON.parse(updatedMovie.categories); // Convert string to array
+      } catch (error) {
+        console.log("Error parsing categories:", error); // Log parse errors
+        throw ERROR_MESSAGES.BAD_REQUEST;
+      }
+    } else {
+      categoriesArray = updatedMovie.categories; // If it's already an array
     }
 
-      // First, remove the movie from all categories
-      await Categories.updateMany(
-        { movies: movieId },  // Find categories where the movie is listed
-        { $pull: { movies: movieId } }  // Remove the movie from the category's `movies` array
-      );
+    // Validate categories before updating the movie
+    for (const id of categoriesArray) {
+      const category = await Categories.findOne({ _id: id });
+      if (!category) {
+        console.log("Invalid category ID:", id);
+        throw ERROR_MESSAGES.BAD_REQUEST;
+      }
+    }
 
+    updatedMovie.categories = categoriesArray;
 
-    // Step 3: Prepare the updated movie data
-    const updatedMovie = { ...updateData };
-    updateData._id=movieId;
-
-    if(updatedMovie.categories){
+    // Add the movie to the new categories
     await Categories.updateMany(
       { _id: { $in: updatedMovie.categories } },  // Find categories with the given IDs
-      { $addToSet: { movies: movieId } }  // Add movieId to the `movies` array if not already present
+      { $addToSet: { movies: movieId } }  // Add movieId to the movies array if not already present
     );
   }
 
-    // Step 4: Update the movie document with the new data
-const updated = await Movies.findOneAndReplace(
-  { _id: movieId }, // Filter to find the document
-  updatedMovie,     // The new object to replace the document with
-  { new: true }     // Return the replaced document after the operation
-);
+  // Step 4: Update the movie document with the new data
+  const updated = await Movies.findOneAndReplace(
+    { _id: movieId }, // Filter to find the document
+    updatedMovie,     // The new object to replace the document with
+    { new: true }     // Return the replaced document after the operation
+  );
 
+  if (!updated) {
+    throw 'Failed to update movie';
+  }
 
-    if (!updated) {
-      throw 'Failed to update movie';
-    }
-    return updated; // Return the updated movie object
+  return updated; // Return the updated movie object
 };
 const deleteMovie = async (id) => {
 
