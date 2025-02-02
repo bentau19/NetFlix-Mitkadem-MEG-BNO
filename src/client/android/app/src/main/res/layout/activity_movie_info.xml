@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorBackground"
+    android:padding="16dp">
+
+    <!-- Movie Image -->
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Home" />
+
+    <ImageView
+        android:id="@+id/movieImageView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:scaleType="centerCrop"
+        android:background="@color/polaroidMain" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/movieTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:textColor="@color/colorOnSurface"
+        android:paddingTop="8dp"
+        android:textStyle="bold"/>
+
+    <!-- Logline -->
+    <TextView
+        android:id="@+id/movieLoglineTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/colorOnSurface"
+        android:paddingTop="4dp" />
+
+    <!-- Play Button -->
+    <Button
+        android:id="@+id/playButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Play"
+        android:textColor="@color/colorOnPrimary"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_marginTop="12dp" />
+
+    <!-- Recommended Movies Section -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recommended Movies"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorOnSurface"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recommendedMoviesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="232dp"
+        android:orientation="horizontal"
+        android:overScrollMode="never"
+        android:scrollbars="horizontal" />
+
+</LinearLayout>

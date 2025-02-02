@@ -16,8 +16,8 @@
 
         <Button
             android:id="@+id/dummyButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="101dp"
+            android:layout_height="71dp"
             android:text="back" />
     </com.google.android.exoplayer2.ui.PlayerView>
 

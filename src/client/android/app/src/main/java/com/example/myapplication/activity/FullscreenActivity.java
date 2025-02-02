@@ -37,7 +37,6 @@ public class FullscreenActivity extends AppCompatActivity {
             movieId = -1;
         }
         playerView = binding.videoPlayerView;
-
         String videoUrl = "http://10.0.2.2:5000/api/movies/" + movieId + "/play";
         setupPlayer(videoUrl);
 
