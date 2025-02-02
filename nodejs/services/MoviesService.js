@@ -141,34 +141,6 @@ const createMovie = async (title, logline, image, categories) => {
 };
 
 
-const createMovieWithImage = async (req, res) => {
-  try {
-    const { title, logline, categories } = req.body;
-
-    if (!title) {
-      throw 'empty movie title';
-    }
-    
-    if (!title) {
-      throw 'empty image ';
-    }
-
-    // Convert the image file to hex
-    const hexImage = await convertToHex(imageFile.path);
-
-    const movie = new Movie({
-      title,
-      logline,
-      image: hexImage,
-      categories
-    });
-
-    const savedMovie = await movie.save();
-    res.status(201).json(savedMovie);
-  } catch (error) {
-    res.status(500).json({ message: 'Server Error', error });
-  }
-};
 
 const updateMovie = async (movieId, updateData) => {
   if (!movieId) {
@@ -323,6 +295,6 @@ const getQueryMovie = async (query) => {
 
 
  
-module.exports = {createMovieWithImage, getMoviesByCategory,getMovieById,createMovie,updateMovie
+module.exports = {getMoviesByCategory,getMovieById,createMovie,updateMovie
   ,getRecommendMovie,deleteMovie,addMovieToUser,getQueryMovie
 }

@@ -110,10 +110,12 @@ button:hover {
 /* Item list container */
 .item-list {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 3 items per row */
-    gap: 20px; /* Space between grid items */
-  }
-  
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    place-items: center; /* Center items */
+    justify-content: center; /* Center the entire grid */
+}
+
 .item-container {
     display: flex; /* Use flexbox for layout */
     flex-direction: row; /* Place the button beside the content */

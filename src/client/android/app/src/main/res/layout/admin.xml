@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:text="Main"
             android:textSize="10sp"
-            android:backgroundTint="?attr/colorSecondary"
+            android:backgroundTint="@color/colorSecondary"
             android:textColor="?attr/colorOnSecondary"
             android:layout_gravity="start"
             android:layout_weight="1" />
@@ -88,7 +88,7 @@
         android:layout_height="wrap_content"
         android:text="Add"
         android:padding="12dp"
-        android:backgroundTint="?attr/colorSecondary"
+        android:backgroundTint="@color/colorSecondary"
         android:textColor="?attr/colorOnSecondary"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
