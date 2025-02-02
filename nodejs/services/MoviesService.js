@@ -81,6 +81,7 @@ const getMovieById = async (id) => {
             const movie = await Movies.findById(id);
             return movie; 
 };
+
 const createMovie = async (title, logline, image, categories) => {
   if (!title) {
     throw ERROR_MESSAGES.BAD_REQUEST;
@@ -139,7 +140,6 @@ const createMovie = async (title, logline, image, categories) => {
     throw ERROR_MESSAGES.BAD_REQUEST; // Return error message if saving fails
   }
 };
-
 
 
 const updateMovie = async (movieId, updateData) => {
@@ -246,9 +246,14 @@ const getRecommendMovie = async (userId,movieId) => {
   // Check if the movie exists
   const movie = await Movies.findOne({ _id: movieId });
   if (!movie) throw  ERROR_MESSAGES.BAD_REQUEST;
-      const res=await serverData.communicateWithServer("GET "+userId+" "+movieId);                
-      return res; // Will return the user or null if not found
+      const res=await serverData.communicateWithServer("GET "+userId+" "+movieId);  
+      if(res==="200 Ok \n \n\n")return[]
+      const lines = res.trim().replace(/^200 Ok\s*\n+/i, '');
+      const arr = lines.split(" ").map(Number);
+      const movies = await Movies.find({ _id: { $in: arr } }).exec();
+      return movies; // Will return the user or null if not found              
 };
+
 const addMovieToUser = async (userId,movieId) => {
       if(!userId||!movieId)throw ERROR_MESSAGES.BAD_REQUEST;
       const user = await Users.findOne({ _id: userId });
@@ -295,6 +300,6 @@ const getQueryMovie = async (query) => {
 
 
  
-module.exports = {getMoviesByCategory,getMovieById,createMovie,updateMovie
+module.exports = { getMoviesByCategory,getMovieById,createMovie,updateMovie
   ,getRecommendMovie,deleteMovie,addMovieToUser,getQueryMovie
 }
