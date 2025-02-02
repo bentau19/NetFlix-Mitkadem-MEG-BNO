@@ -67,7 +67,7 @@ const Navbar = ({ onSearchChange,selectedOption,setSelectedOption }) => {
         <div id="logo" style={{marginLeft:"-60px", width: "170px" }}>
             <NavLink to="/">
               <img
-                src= {userPhoto}
+                src= {logoSrc}
                 alt="logo"
 
               />

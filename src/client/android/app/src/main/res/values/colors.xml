@@ -1,13 +1,13 @@
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryVariant">#3700B3</color>
+    <color name="colorPrimary">#F42E14</color>
+    <color name="colorPrimaryVariant">#E41313</color>
     <color name="colorOnPrimary">#FFFFFF</color>
     <color name="colorBackground">#FFFFFF</color>
     <color name="colorSurface">#FFFFFF</color>
     <color name="colorOnSurface">#000000</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorAccent">#FA9B71</color>
     <color name="movieCard">#919090</color>
-    <color name="polaroidMain">#FFFFFF</color>
+    <color name="polaroidMain">#F4F2F2</color>
     <color name="polaroidAccent">#A9A5A5</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
