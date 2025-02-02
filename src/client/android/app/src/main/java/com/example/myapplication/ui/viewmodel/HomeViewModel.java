@@ -98,9 +98,9 @@ public class HomeViewModel extends ViewModel {
                 Gson gson = new Gson();
                 String json = gson.toJson(response);
                 List<Movie> movies = gson.fromJson(json, new TypeToken<List<Movie>>() {}.getType());
-                //List<Category> categories = new ArrayList<>(List.of(new Category(query, movies)));
+                List<Category> categories = new ArrayList<>(List.of(new Category(query, movies)));
 
-                //movieListLiveData.setValue(categories);
+                movieListLiveData.setValue(categories);
                 reqStatus.setValue("fetch successful!");
             }
 

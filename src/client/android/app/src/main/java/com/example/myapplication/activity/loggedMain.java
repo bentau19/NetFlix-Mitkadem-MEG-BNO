@@ -1,15 +1,24 @@
 package com.example.myapplication.activity;
 
+import static android.content.ContentValues.TAG;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.Category;
+import com.example.myapplication.adapter.ImageUtils;
+import com.example.myapplication.adapter.User;
 import com.example.myapplication.data.repository.CategoryRepository;
 import com.example.myapplication.data.repository.MovieRepository;
+import com.example.myapplication.data.repository.UserRepository;
 import com.example.myapplication.dataModel.SharedViewModel;
 import com.example.myapplication.server.api.ApiResponseCallback;
 import com.example.myapplication.ui.viewmodel.AdminViewModel;
@@ -35,14 +44,25 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 public class loggedMain extends AppCompatActivity {
-
+    private final UserRepository userRepository;
     private final CategoryRepository categoryRep;
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityLoggedMainBinding binding;
     private final MutableLiveData<List<Category>> categoryListLiveData = new MutableLiveData<>();
-
+    private MutableLiveData<User> user = new MutableLiveData<>();;
     private final MutableLiveData<String> reqStatus;
     public loggedMain() {
+        this.userRepository = new UserRepository(new ApiResponseCallback() {
+            @Override
+            public void onSuccess(Object response) {
+//                Log.d(TAG, "onSuccess: "+response);
+                user.setValue((User) response);
+            }
+            @Override
+            public void onError(String error) {
+
+            }
+        });
         reqStatus = new MutableLiveData<>();
         this.categoryRep = new CategoryRepository(new ApiResponseCallback() {
             @Override
@@ -59,24 +79,76 @@ public class loggedMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityLoggedMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Fetch user data and update UI
+        userRepository.getUser();
+        user.observe(this, user -> {
+            if (user != null) {
+                // Update user image if available
+                if (user.getImage() != null) {
+                    ImageView imageView = binding.navView.getHeaderView(0).findViewById(R.id.imageView2);
+                    imageView.setImageBitmap(ImageUtils.hexToImage(user.getImage()));
+                }
+
+                // Update user name if available
+                if (user.getName() != null) {
+                    TextView userNameTextView = binding.navView.getHeaderView(0).findViewById(R.id.userName);
+                    userNameTextView.setText(user.getName());
+                }
+            }
+        });
+
+        // Set up the toolbar
         setSupportActionBar(binding.appBarLoggedMain.toolbar);
 
+        // Set up navigation components
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
+        // Define top-level destinations
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.SignOut, R.id.Admin)
                 .setOpenableLayout(drawer)
                 .build();
+
+        // Set up NavController
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_logged_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        // Handle navigation item clicks
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.ThemeMode) {
+                // Handle the ThemeMode click event
+                Toast.makeText(this, "Theme Mode Clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (id == R.id.SignOut) {
+                // Handle SignOut: Navigate to LoginActivity and clear back stack
+                Intent intent = new Intent(this, LogInActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish(); // Close the current activity
+                return true;
+            } else if (id == R.id.Admin) {
+                // Handle Admin: Navigate to AdminFragment
+                navController.navigate(R.id.Admin);
+                return true;
+            } else if (id == R.id.nav_home) {
+                // Handle Home: Navigate to HomeFragment
+                navController.navigate(R.id.nav_home);
+                return true;
+            }
+
+            // Let the NavController handle other navigation items
+            return NavigationUI.onNavDestinationSelected(item, navController);
+        });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -92,45 +164,45 @@ public class loggedMain extends AppCompatActivity {
             sharedViewModel.setCatId("main");
             return true;
         });
-         //Observe the request status
+        // Observe the request status
         reqStatus.observe(this, status -> {
             if (status != null && status.equals("fetch successful!")) {
-//                // Observe the category list
-//                categoryListLiveData.observe(this, categories -> {
-//                    if (categories != null) {
-//                        // Add each category as a menu item
-//                        for (Category category : categories) {
-//                            MenuItem menuItem = menu.add(Menu.NONE, Menu.FIRST + category.getId(), Menu.NONE, category.getName());
-//
-//                            // Set a click listener for the menu item
-//                            menuItem.setOnMenuItemClickListener(item -> {
-//                                // Update the catId in SharedViewModel
-//                                sharedViewModel.setCatId(category.getName());
-//                                return true;
-//                            });
-//                        }
-//
-//                        // Add the "All" option
-//                        MenuItem allItem = menu.add(Menu.NONE, Menu.FIRST + categories.size(), Menu.NONE, "All");
-//
-//                        // Set a click listener for the "All" option
-//                        allItem.setOnMenuItemClickListener(item -> {
-//                            // Update the catId in SharedViewModel to indicate "All"
-//                            sharedViewModel.setCatId("all");
-//                            return true;
-//                        });
-//                    } else {
-//                        // If no categories are available, add the "All" option
-//                        MenuItem allItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "All");
-//
-//                        // Set a click listener for the "All" option
-//                        allItem.setOnMenuItemClickListener(item -> {
-//                            // Update the catId in SharedViewModel to indicate "All"
-//                            sharedViewModel.setCatId("all");
-//                            return true;
-//                        });
-//                    }
-//                });
+                // Observe the category list
+                categoryListLiveData.observe(this, categories -> {
+                    if (categories != null) {
+                        // Add each category as a menu item
+                        for (Category category : categories) {
+                            MenuItem menuItem = menu.add(Menu.NONE, Menu.FIRST + (int) Float.parseFloat(category.getId()), Menu.NONE, category.getName());
+
+                            // Set a click listener for the menu item
+                            menuItem.setOnMenuItemClickListener(item -> {
+                                // Update the catId in SharedViewModel
+                                sharedViewModel.setCatId(category.getName());
+                                return true;
+                            });
+                        }
+
+                        // Add the "All" option
+                        MenuItem allItem = menu.add(Menu.NONE, Menu.FIRST + categories.size(), Menu.NONE, "All");
+
+                        // Set a click listener for the "All" option
+                        allItem.setOnMenuItemClickListener(item -> {
+                            // Update the catId in SharedViewModel to indicate "All"
+                            sharedViewModel.setCatId("all");
+                            return true;
+                        });
+                    } else {
+                        // If no categories are available, add the "All" option
+                        MenuItem allItem = menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, "All");
+
+                        // Set a click listener for the "All" option
+                        allItem.setOnMenuItemClickListener(item -> {
+                            // Update the catId in SharedViewModel to indicate "All"
+                            sharedViewModel.setCatId("all");
+                            return true;
+                        });
+                    }
+                });
             }
         });
 

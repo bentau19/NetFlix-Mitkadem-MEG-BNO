@@ -12,6 +12,6 @@ public class VideoHeaderViewHolder extends RecyclerView.ViewHolder {
 
     public VideoHeaderViewHolder(View itemView) {
         super(itemView);
-        videoView = itemView.findViewById(R.id.videoView);
+//        videoView = itemView.findViewById(R.id.videoView);
     }
 }
