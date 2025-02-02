@@ -15,9 +15,10 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/categoryText"
             android:text="Create Category"
             android:textSize="20sp"
-            android:textColor="#000"
+            android:textColor="@color/colorAccent"
             android:layout_marginBottom="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -41,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Create Category"
-            android:backgroundTint="#4CAF50"
+            android:backgroundTint="@color/colorPrimary"
             android:textColor="#fff"
             android:padding="12dp" />
 
@@ -50,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cancel"
-            android:backgroundTint="#f44336"
+            android:backgroundTint="@color/colorPrimaryVariant"
             android:textColor="#fff"
             android:padding="12dp" />
     </LinearLayout>
@@ -64,9 +65,11 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/movieText"
+
             android:text="Create Movie"
             android:textSize="20sp"
-            android:textColor="#000"
+            android:textColor="@color/colorAccent"
             android:layout_marginBottom="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -111,8 +114,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Create Movie"
-            android:backgroundTint="#4CAF50"
-            android:textColor="#fff"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/colorOnPrimary"
             android:padding="12dp" />
 
         <Button
@@ -120,8 +123,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cancel"
-            android:backgroundTint="#f44336"
-            android:textColor="#fff"
+            android:backgroundTint="@color/colorPrimaryVariant"
+            android:textColor="@color/colorOnPrimary"
             android:padding="12dp" />
     </LinearLayout>
 </LinearLayout>

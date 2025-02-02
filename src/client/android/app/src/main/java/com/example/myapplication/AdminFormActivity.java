@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +39,7 @@ public class AdminFormActivity extends AppCompatActivity {
     private EditText categoryNameEditText, movieTitleEditText, movieLoglineEditText, movieCategoriesEditText;
     private ImageView movieImageView;
     private Bitmap selectedImageBitmap;
-
+   private TextView movieText, categoryText;
     private CheckBox promotedCheckBox;
     private Uri imageUri;
     private AdminFormViewModel adminFormViewModel;
@@ -63,6 +64,9 @@ public class AdminFormActivity extends AppCompatActivity {
         movieTitleEditText = findViewById(R.id.movieTitle);
         movieLoglineEditText = findViewById(R.id.movieLogline);
         movieCategoriesEditText = findViewById(R.id.movieCategories);
+        movieText = findViewById(R.id.movieText);
+        categoryText = findViewById(R.id.categoryText);
+
         // Initialize ViewModel
         adminFormViewModel = new ViewModelProvider(this).get(AdminFormViewModel.class);
 
@@ -80,7 +84,9 @@ public class AdminFormActivity extends AppCompatActivity {
             categoryForm.setVisibility(View.VISIBLE);
             movieForm.setVisibility(View.GONE);
             if (isEditing) {
-                createCategoryButton.setText("Edit Category");
+                createCategoryButton.setText("Update Category");
+                categoryText.setText("Edit Categort");
+
                 adminFormViewModel.getCategory(id).observe(this, category -> {
                     if (category != null) {
                         Log.d("AdminFormActivity", "Category name: " + category.getName());  // Verify the category name
@@ -94,8 +100,8 @@ public class AdminFormActivity extends AppCompatActivity {
             movieForm.setVisibility(View.VISIBLE);
             categoryForm.setVisibility(View.GONE);
             if (isEditing) {
-                createCategoryButton.setText("Edit Movie");
-
+                createMovieButton.setText("Update Movie");
+                movieText.setText("Edit Movie");
                 adminFormViewModel.getMovie(id).observe(this, movie -> {
                     if (movie != null) {
                         movieTitleEditText.setText(movie.getTitle());

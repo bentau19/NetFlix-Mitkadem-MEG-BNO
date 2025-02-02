@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,7 +32,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.HashMap;
 import java.util.List;
 
-public class AdminActivity extends AppCompatActivity implements MovieAdapter.OnItemActionListener , CategoryAdapter.OnItemActionListener  {
+public class AdminActivity extends AppCompatActivity  {
 
     private RecyclerView recyclerView;
 
@@ -96,12 +99,19 @@ public class AdminActivity extends AppCompatActivity implements MovieAdapter.OnI
 
             @Override
             public void onDeleteClicked(Movie movie) {
-                // Handle delete action for movie
-                adminViewModel.deleteMovie(String.valueOf(movie.getId()));
-                Toast.makeText(AdminActivity.this, "Movie deleted", Toast.LENGTH_SHORT).show();
-                displayMovies("");
-
+                new AlertDialog.Builder(AdminActivity.this)
+                        .setTitle("Confirm Delete")
+                        .setMessage("Are you sure you want to delete this movie?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            adminViewModel.deleteMovie(String.valueOf(movie.getId()));
+                            Toast.makeText(AdminActivity.this, "Movie deleted", Toast.LENGTH_SHORT).show();
+                            // Remove specific item from adapter using int ID
+                            movieAdapter.removeItem(movie.getId());
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
             }
+
         });
 
 // Set the listener for CategoryAdapter
@@ -118,33 +128,23 @@ public class AdminActivity extends AppCompatActivity implements MovieAdapter.OnI
 
             @Override
             public void onDeleteClicked(Category category) {
-                // Handle delete action for category
-                adminViewModel.deleteCategory(String.valueOf(category.getId()));
-                Toast.makeText(AdminActivity.this, "Category deleted", Toast.LENGTH_SHORT).show();
-                displayCategories("");
-
+                new AlertDialog.Builder(AdminActivity.this)
+                        .setTitle("Confirm Delete")
+                        .setMessage("Are you sure you want to delete this category?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            adminViewModel.deleteCategory(String.valueOf(category.getId()));
+                            Toast.makeText(AdminActivity.this, "Movie deleted", Toast.LENGTH_SHORT).show();
+                            // Remove specific item from adapter using int ID
+                            categoryAdapter.removeItem(category.getId());
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
             }
         });
 
     }
 
-    private void observeLiveData() {
-        // Observe the movie list LiveData
-        adminViewModel.getMovieListLiveData().observe(this, movies -> {
-            if (movies != null) {
-                movieAdapter.setMovies(movies);
-                recyclerView.setAdapter(movieAdapter);
-            }
-        });
 
-        // Observe the category list LiveData
-        adminViewModel.getCategoryListLiveData().observe(this, categories -> {
-            if (categories != null) {
-                categoryAdapter.setCategories(categories);
-                recyclerView.setAdapter(categoryAdapter);
-            }
-        });
-    }
 
 
     private void setupSearchListener() {
@@ -185,83 +185,33 @@ public class AdminActivity extends AppCompatActivity implements MovieAdapter.OnI
     }
 
 
-    @Override
-    public void onEditClicked(Movie movie) {
-        // Handle edit button click
-        Intent intent = new Intent(AdminActivity.this, AdminFormActivity.class);
-        intent.putExtra("type", type);
-        intent.putExtra("isEditing", true);
-        intent.putExtra("id", String.valueOf(movie.getId())); // Pass the movie ID to edit
-        startActivity(intent);
+
+
+    private void observeLiveData() {
+        // Set up observers once
+        adminViewModel.getMovieListLiveData().observe(this, movies -> {
+            if (movies != null) {
+                movieAdapter.setMovies(movies);
+                recyclerView.setAdapter(movieAdapter);
+            }
+        });
+
+        adminViewModel.getCategoryListLiveData().observe(this, categories -> {
+            if (categories != null) {
+                categoryAdapter.setCategories(categories);
+                recyclerView.setAdapter(categoryAdapter);
+            }
+        });
     }
 
-    @Override
-    public void onDeleteClicked(Movie movie) {
-        // Handle delete button click
-        adminViewModel.deleteMovie(String.valueOf(movie.getId()));
-        Toast.makeText(this, "Movie deleted2", Toast.LENGTH_SHORT).show();
-        displayMovies("");
+    public void displayMovies(String query) {
+        adminViewModel.fetchMovies(query);
     }
 
-
-    @Override
-    public void onEditClicked(Category category) {
-        // Handle edit button click
-        Intent intent = new Intent(AdminActivity.this, AdminFormActivity.class);
-        intent.putExtra("type", type);
-        intent.putExtra("isEditing", true);
-        intent.putExtra("id", String.valueOf(category.getId())); // Pass the movie ID to edit
-        startActivity(intent);
-    }
-
-    @Override
-    public void onDeleteClicked(Category category) {
-        // Handle edit button click
-        Intent intent = new Intent(AdminActivity.this, AdminFormActivity.class);
-        intent.putExtra("type", "Movie");
-        intent.putExtra("movieId", String.valueOf(category.getId())); // Pass the movie ID to edit
-        Toast.makeText(this, "Movie deleted2", Toast.LENGTH_SHORT).show();
-
-        startActivity(intent);
-
-    }
-
-    public void displayCategories(String query){
+    public void displayCategories(String query) {
         adminViewModel.fetchCategories(query);
-        adminViewModel.getReqStatus().observe(this, status -> {
-            if (status != null) {
-                // Compare the actual value of status (which is a String) here
-                if (status.equals("fetch successful!")) {
-                    adminViewModel.getCategoryListLiveData().observe(this, categories -> {
-                        if (categories != null) {
-                            categoryAdapter.setCategories(categories);
-                            recyclerView.setAdapter(categoryAdapter);
-                        }
-                    });
-                    // Handle success case
-                }
-            }
-        });
-
     }
-    public void displayMovies(String query){
-        adminViewModel.fetchMovies(searchInput.getText().toString());
-        adminViewModel.getReqStatus().observe(this, status -> {
-            if (status != null) {
-                // Compare the actual value of status (which is a String) here
-                if (status.equals("fetch successful!")) {
-                    adminViewModel.getMovieListLiveData().observe(this, movies -> {
-                        if (movies != null) {
-                            movieAdapter.setMovies(movies);
-                            recyclerView.setAdapter(movieAdapter);
-                        }
-                    });
-                    // Handle success case
-                }
-            }
-        });
 
-    }
 }
 
 

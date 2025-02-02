@@ -18,11 +18,7 @@ public class GuestMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_guest_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
         Button btnGoToSignup = findViewById(R.id.Signup);
         btnGoToSignup.setOnClickListener(view -> {
             Intent intent = new Intent(this, SignupActivity.class);

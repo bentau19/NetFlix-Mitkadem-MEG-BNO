@@ -74,40 +74,51 @@ public class MovieRepository {
     }
     // Signup User
     public void createMovie(String title, String logline, String imageHex, String categories) {
-        String endpoint = "movies/";
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
-        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjUsInVzZXJOYW1lIjoiZGl2YSIsImFkbWluIjp0cnVlLCJpYXQiOjE3MzgzNDMxMDQsImV4cCI6MTczODk0NzkwNH0.F7tzwszWyrdgJXbcx6Syns-WUjtKwKFjtTOV4ETQnNs");
-
-        // Create a FormData object with the image hex and other form fields
-        Map<String, String> jsonBody = new HashMap<>();
-        jsonBody.put("title", title);
-        jsonBody.put("logline", logline);
-        jsonBody.put("image", imageHex);
-
-        // Process categories into a List<Integer>
-        List<Integer> processedCategories = processCategories(categories);
-
-        // Convert the List<Integer> into a JSON array string
-        String categoriesJsonString = new JSONArray(processedCategories).toString();
-
-        // Put the categories as a string in the JSON body
-        jsonBody.put("categories", categoriesJsonString);
-
-        // Create and send the API request
-        APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
-
-        // Make the POST request
-        apiRequest.post(new ApiResponseCallback() {
+        // Use getToken to fetch the token from the database
+        getToken(new Callback<String>() {
             @Override
-            public void onSuccess(Object response) {
-                // Call the callback onSuccess method
-                callback.onSuccess(response);
+            public void onSuccess(String token) {
+                String endpoint = "movies/";
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("token", token); // Use the token fetched from the database
+
+                // Create a FormData object with the image hex and other form fields
+                Map<String, String> jsonBody = new HashMap<>();
+                jsonBody.put("title", title);
+                jsonBody.put("logline", logline);
+                jsonBody.put("image", imageHex);
+
+                // Process categories into a List<Integer>
+                List<Integer> processedCategories = processCategories(categories);
+
+                // Convert the List<Integer> into a JSON array string
+                String categoriesJsonString = new JSONArray(processedCategories).toString();
+
+                // Put the categories as a string in the JSON body
+                jsonBody.put("categories", categoriesJsonString);
+
+                // Create and send the API request
+                APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
+
+                // Make the POST request
+                apiRequest.post(new ApiResponseCallback() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        // Call the callback onSuccess method
+                        callback.onSuccess(response);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        // Call the callback onError method
+                        callback.onError(error);
+                    }
+                });
             }
 
             @Override
             public void onError(String error) {
-                // Call the callback onError method
                 callback.onError(error);
             }
         });
@@ -236,25 +247,37 @@ public class MovieRepository {
     }
 
     public void userRecommends(ApiResponseCallback callback) {
-        String endpoint = "movies/";  // Example endpoint for deleting user
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer your_token_here");
-        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjUsInVzZXJOYW1lIjoiZGl2YSIsImFkbWluIjp0cnVlLCJpYXQiOjE3MzgzNDMxMDQsImV4cCI6MTczODk0NzkwNH0.F7tzwszWyrdgJXbcx6Syns-WUjtKwKFjtTOV4ETQnNs");
-
-        // Create APIRequest for DELETE method
-        APIRequest apiRequest = new APIRequest(endpoint, headers, null);
-        apiRequest.get(new ApiResponseCallback() {
+        // Use getToken to fetch the token from the database
+        getToken(new Callback<String>() {
             @Override
-            public void onSuccess(Object response) {
-                callback.onSuccess(response);  // Pass the response back to the caller (e.g., ViewModel)
+            public void onSuccess(String token) {
+                String endpoint = "movies/";  // Endpoint for recommendations
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + token); // Use the token fetched from the database
+                headers.put("token", token); // Add token as another header if needed
+
+                // Create APIRequest for GET method (or whatever HTTP method you need)
+                APIRequest apiRequest = new APIRequest(endpoint, headers, null);
+                apiRequest.get(new ApiResponseCallback() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        callback.onSuccess(response);  // Pass the response back to the caller
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        callback.onError(error);  // Pass error back to the caller
+                    }
+                });
             }
 
             @Override
             public void onError(String error) {
-                callback.onError(error);  // Pass error back to the caller
+                callback.onError(error);  // Handle error when the token can't be fetched
             }
         });
     }
+
 
     public void fetchMovies(String query, ApiResponseCallback callback) {
         String endpoint = query.isEmpty() ? "movies/search" : "movies/search/" + query;
