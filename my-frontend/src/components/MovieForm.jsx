@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { hexToBase64, convertFileToHex} from '../utils/imageConverter';
-const MovieForm = ({ onClose, initialValues = {} }) => {
+const MovieForm = ({ onClose, initialValues = {} , onSuccess }) => {
   const { title, logline, image, categories } = initialValues || {};
   
   const [titleState, setTitle] = useState(title || '');
@@ -18,10 +18,14 @@ const MovieForm = ({ onClose, initialValues = {} }) => {
       const method = isEditing ? 'PUT' : 'POST';
       
       let imageBase64 = null;
-      if (imageState) {
-        // Convert the image to Base64 before sending (Ensure convertFileToHex or similar function works)
+      if (imageState && imageState instanceof File) {
+        // Only convert if it's a file, not a string
         imageBase64 = await convertFileToHex(imageState);
+      } else if (typeof imageState === 'string') {
+        // If it's already a base64 string, use it directly
+        imageBase64 = imageState;
       }
+      
   
       const response = await fetch(url, {
         method,
@@ -48,8 +52,9 @@ const MovieForm = ({ onClose, initialValues = {} }) => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}, response: ${responseText}`);
       } else {
-        alert(`movie ${isEditing ? 'updated' : 'created'} successfully!`);
-        onClose();
+          alert(`Movie ${isEditing ? 'updated' : 'created'} successfully!`);
+          onClose();
+          onSuccess(); // Trigger the refresh        
       }
     } catch (error) {
       console.error('Submission Error:', error);

@@ -102,14 +102,14 @@ input[type="text"], select {
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: var(--button-color);
     color: white;
     border: none;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: var(--button-hover-color);
 }
 
 .popup {
@@ -135,14 +135,14 @@ button:hover {
 
 
 .popup-content {
-    background-color: #fff;
+    background-color: var(--background-second-color);
     display: flex;
     flex-direction: column; /* Stack elements vertically */
     padding: 20px;
     border-radius: 5px;
     width: 600px;
     text-align: center; /* Center text inside inputs/buttons */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px var(--second-text-color);
     gap: 15px; /* Add consistent spacing between elements */
 }
 /* Form group styling inside popup */
@@ -160,7 +160,8 @@ button:hover {
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 20px;
+    color: var(--text-color);
+    font-size: 50px;
     cursor: pointer;
 }
 
@@ -181,37 +182,41 @@ input[type="checkbox"] {
 #addButton {
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: #2196F3;
+    background-color: var(--button-color);
     color: white;
     border: none;
     cursor: pointer;
 }
 
 #addButton:hover {
-    background-color: #0b7dda;
+    background-color: var(--button-hover-color);
 }
 
 :root {
-    --background-image: url("../../public/image/photosbackgroundlight.jpeg"); /* Corrected */
-    --sigin-image:url("../../public/image/signincard.png");
+
     --background-color: #ffffff;
+    --background-second-color:#eed8d8;
+    --light-main:#f3c3c3;
+    --light_hover-main:#f5d2d2;
     --button-color: #8a2c2c;
-    --the-color:#d75d3bee;
+    --the-color:#d0491fee;
     --secondry-button-color:#9e610b;
-    --button-hover-color:#431616;
+    --button-hover-color:#a74b4b;
     --secondry-button-hover-color:#6e3d12;
     --continer-color: #f9f9f9;
     --text-color: #000000;
     --second-text-color:#452026;
-
+  
   }
   
   [data-theme="dark"] {
-    --sigin-image:url("../../public/image/signinpurple.png");
-    --background-image: url("../../public/image/photosbackgrounddark.jpeg"); /* Corrected */
+   
     --background-color: #121212;
+    --background-second-color:#595159;
+    --light-main:#4c384f;
+    --light_hover-main:#6b556e;
+  
     --the-color:#891181ee;
-
     --button-color: #7f2c8a;
     --button-hover-color:#561554;
     --secondry-button-color:#0b0b9e;
@@ -220,4 +225,3 @@ input[type="checkbox"] {
     --text-color: #ffffff;
     --second-text-color:#e0abd0;
   }
-  

@@ -82,8 +82,8 @@ const getMovieById = async (id) => {
             return movie; 
 };
 
-const createMovie = async (title,logline,image,categories) => {
-  if(!title){
+const createMovie = async (title, logline, image, categories) => {
+  if (!title) {
     throw ERROR_MESSAGES.BAD_REQUEST;
 
   }
@@ -102,46 +102,28 @@ const createMovie = async (title,logline,image,categories) => {
 
   if (logline) movies.logline = logline;
   if (image) movies.image = image;
-  const res =await movies.save();
-  if(categories)
-    if (categories!=[]){
-      for (const categoryName of categories) {
-        const category = await Categories.findOne({ _id: categoryName });
-        category.movies.push(res._id);
-        res.categories.push(category._id);
-        await category.save();
-      }}
 
-  return await res.save();
-};
-const createMovieWithImage = async (req, res) => {
   try {
-    const { title, logline, categories } = req.body;
+    const res = await movies.save(); // Save the movie
 
-    if (!title) {
-      throw 'empty movie title';
+    // Handle category associations if categories are present
+    if (categoriesArray.length) {
+      for (const categoryId of categoriesArray) {
+        const category = await Categories.findOne({ _id: categoryId });
+        if (category) {
+          category.movies.push(res._id);
+          await category.save();
+        }
+      }
     }
-    
-    if (!title) {
-      throw 'empty image ';
-    }
 
-    // Convert the image file to hex
-    const hexImage = await convertToHex(imageFile.path);
-
-    const movie = new Movie({
-      title,
-      logline,
-      image: hexImage,
-      categories
-    });
-
-    const savedMovie = await movie.save();
-    res.status(201).json(savedMovie);
+    return res; // Return the saved movie
   } catch (error) {
-    res.status(500).json({ message: 'Server Error', error });
+    console.log("Error creating movie:", error); // Log the error details
+    throw ERROR_MESSAGES.BAD_REQUEST; // Return error message if saving fails
   }
 };
+
 
 const updateMovie = async (movieId, updateData) => {
   if (!movieId) {
@@ -275,6 +257,6 @@ const getQueryMovie = async (query) => {
 
 
  
-module.exports = {createMovieWithImage, getMoviesByCategory,getMovieById,createMovie,updateMovie
+module.exports = { getMoviesByCategory,getMovieById,createMovie,updateMovie
   ,getRecommendMovie,deleteMovie,addMovieToUser,getQueryMovie
 }

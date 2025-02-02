@@ -23,6 +23,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         void onEditClicked(Movie movie);
         void onDeleteClicked(Movie movie);
     }
+    public void removeItem(int movieId) {
+        for (int i = 0; i < movies.size(); i++) {
+            // Convert the movie ID to int before comparison
+            if (movies.get(i).getId() == movieId) {
+                movies.remove(i);
+                notifyItemRemoved(i);
+                break;
+            }
+        }
+
+    }
 
     public void setMovies(List<Movie> newMovies) {
         movies.clear();

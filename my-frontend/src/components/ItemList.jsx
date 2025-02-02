@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { del } from './httpUtils.jsx'; // Assuming you have this function for DELETE requests
 import Popup from './Popup'; // Assuming you have the Popup component
 import { hexToBase64 } from '../utils/imageConverter.js';
-const ItemList = ({ type, query, onEdit }) => {
+const ItemList = ({ type, query, onEdit , refreshKey}) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -30,7 +30,7 @@ const ItemList = ({ type, query, onEdit }) => {
     if (query || type) {
       fetchItems();
     }
-  }, [type, query]);
+  }, [type, query,refreshKey]);
 
   // Handle delete action
   const handleDelete = async () => {
