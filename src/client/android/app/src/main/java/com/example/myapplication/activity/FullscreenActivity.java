@@ -31,8 +31,8 @@ public class FullscreenActivity extends AppCompatActivity {
 
         mVisible = true;
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("MOVIE_ID")) {
-            movieId = intent.getIntExtra("MOVIE_ID", -1);
+        if (intent != null && intent.hasExtra("id")) {
+            movieId = intent.getIntExtra("id", -1);
         } else {
             movieId = -1;
         }
@@ -42,13 +42,6 @@ public class FullscreenActivity extends AppCompatActivity {
         setupPlayer(videoUrl);
 
         binding.fullscreenContentControls.setVisibility(View.VISIBLE);
-        binding.dummyButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                toggle();
-                return false;
-            }
-        });
 
         playerView.setOnClickListener(view -> toggle());
 

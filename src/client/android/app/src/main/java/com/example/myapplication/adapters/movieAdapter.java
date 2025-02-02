@@ -1,5 +1,7 @@
 package com.example.myapplication.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activity.FullscreenActivity;
 import com.example.myapplication.adapter.ImageUtils;
 import com.example.myapplication.adapter.Movie;
 
@@ -46,9 +49,10 @@ public class movieAdapter extends RecyclerView.Adapter<movieAdapter.ItemViewHold
 
         // Set the click listener for the item
         holder.itemView.setOnClickListener(v -> {
-
-                Log.d("movieAdapter", "Item clicked: " + item.getTitle());
-
+            Context context = v.getContext();
+            Intent intent = new Intent(context, FullscreenActivity.class);
+            intent.putExtra("id", item.getId());
+            context.startActivity(intent);
         });
     }
 
