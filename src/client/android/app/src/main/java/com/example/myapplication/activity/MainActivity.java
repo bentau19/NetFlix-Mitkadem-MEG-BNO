@@ -32,18 +32,6 @@ public class MainActivity extends AppCompatActivity {
             AppDatabase.init(this);
         }
 
-        TextView hash = findViewById(R.id.hash);
-        AppDatabase db = AppDatabase.getInstance();
-        TokenDao tokenDao = db.tokenDao();
-
-        // Asynchronously fetch the token
-        tokenDao.getToken().observe(this, userToken -> {
-            if (userToken != null && userToken.token != null && !userToken.token.isEmpty()) {
-                hash.setText(userToken.token); // Update the TextView with the token
-            } else {
-                hash.setText("Log in first"); // Display fallback message
-            }
-        });
         LogInViewModel = new ViewModelProvider(this).get(LogInViewModel.class);
         LogInViewModel.getLogInStatus().observe(this, status -> {
             Toast.makeText(this, status, Toast.LENGTH_SHORT).show();
@@ -51,41 +39,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, loggedMain.class);
                 startActivity(intent);
                 finish();
-            }
-            else{
+            } else {
                 Intent intent = new Intent(this, GuestMain.class);
                 startActivity(intent);
                 finish();
             }
         });
         LogInViewModel.islogged();
-
-        Button btnGoToMain = findViewById(R.id.mainButton);
-
-        btnGoToMain.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, loggedMain.class);
-            startActivity(intent);
-        });
-        // Go to Signup Activity
-        Button btnGoToSignup = findViewById(R.id.button);
-        btnGoToSignup.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, LogInActivity.class);
-            startActivity(intent);
-            finish();
-        });
-        Button btnGoToAdmin = findViewById(R.id.adminButton);
-        btnGoToAdmin.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, AdminActivity.class);
-            startActivity(intent);
-            finish();
-        });
-
-        // Go to Login Activity
-        Button btnGoTologin = findViewById(R.id.button2);
-        btnGoTologin.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, LogInActivity.class);
-            startActivity(intent);
-            finish();
-        });
     }
 }
