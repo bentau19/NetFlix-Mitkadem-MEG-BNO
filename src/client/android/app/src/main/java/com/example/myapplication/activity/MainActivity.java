@@ -32,10 +32,9 @@ public class MainActivity extends AppCompatActivity {
             if (status.equals("LogIn successful!")) {
                 Intent intent = new Intent(this, loggedMain.class);
                 startActivity(intent);
-                finish();
             } else {
-                Intent intent = new Intent(this, GuestMain.class);
-                startActivity(intent);
+                Intent intent2 = new Intent(this, GuestMain.class);
+                startActivity(intent2);
             }
         });
         LogInViewModel.islogged();

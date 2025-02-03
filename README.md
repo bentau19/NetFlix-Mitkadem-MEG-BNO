@@ -37,7 +37,7 @@ Alow the flowing roots:
 ### program testing and running instractions:
 
     to build the project :
-        create folder in c:/shlomyNoNerves
+        create the folder c:/shlomyNoNerves
         docker-compose build
         docker-compose up -d
 
