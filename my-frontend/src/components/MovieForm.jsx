@@ -18,8 +18,7 @@ const MovieForm = ({ onClose, initialValues = {} , onSuccess }) => {
       const method = isEditing ? 'PUT' : 'POST';
       
       let imageBase64 = null;
-      if (imageState && imageState instanceof File) {
-        // Only convert if it's a file, not a string
+      if (imageState && imageState instanceof File) { //if it is uploading as a file now (we dont in edit mode and got its hexa)
         imageBase64 = await convertFileToHex(imageState);
       } else if (typeof imageState === 'string') {
         // If it's already a base64 string, use it directly
@@ -36,7 +35,7 @@ const MovieForm = ({ onClose, initialValues = {} , onSuccess }) => {
         body: JSON.stringify({
           title: titleState,
           logline: loglineState,
-          image: imageBase64, // Use Base64 encoded image here
+          image: imageBase64, 
           categories: categoriesState
             .split(',')
             .map(id => id.trim())
@@ -44,16 +43,14 @@ const MovieForm = ({ onClose, initialValues = {} , onSuccess }) => {
         }),
       });
   
-      // Log raw response
       const responseText = await response.text();
       console.log('Full Response:', responseText);
   
-      // Detailed error handling
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}, response: ${responseText}`);
       } else {
-          alert(`Movie ${isEditing ? 'updated' : 'created'} successfully!`);
-          onClose();
+          alert(`Movie ${isEditing ? 'updated' : 'created'} successfully!`); //coreespanding message
+          onClose(); //close popup
           onSuccess(); // Trigger the refresh        
       }
     } catch (error) {

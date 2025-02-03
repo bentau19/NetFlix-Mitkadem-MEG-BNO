@@ -4,11 +4,11 @@ const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState('');
 
   const handleInputChange = (event) => {
-    setQuery(event.target.value);  // Update query as the user types
+    setQuery(event.target.value);  // update query as the user types
   };
 
   const handleSearch = () => {
-    onSearch(query);  // Trigger the search when the button is clicked
+    onSearch(query);  // trigger the search when the button is clicked
   };
 
   return (

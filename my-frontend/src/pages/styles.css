@@ -137,21 +137,29 @@ button:hover {
 .popup-content {
     background-color: var(--background-second-color);
     display: flex;
-    flex-direction: column; /* Stack elements vertically */
+    flex-direction: column; 
     padding: 20px;
     border-radius: 5px;
     width: 600px;
-    text-align: center; /* Center text inside inputs/buttons */
+    text-align: center; 
     box-shadow: 0 4px 8px var(--second-text-color);
-    gap: 15px; /* Add consistent spacing between elements */
+    gap: 15px; 
+}
+.popup-content img {
+    max-width: 100%; 
+    height: auto;
+    max-height: 50vh; 
+    width: auto; 
+    height: auto;
+    object-fit: contain; 
 }
 /* Form group styling inside popup */
 .popup-content .form-group {
     display: flex;
-    flex-direction: column; /* Stack label and input vertically */
-    align-items: center; /* Align elements to the left */
+    flex-direction: column; 
+    align-items: center; 
     width: 100%;
-    text-align: center; /* Center text inside inputs/buttons */
+    text-align: center; 
 
 }
 

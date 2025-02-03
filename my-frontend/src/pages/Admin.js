@@ -15,7 +15,7 @@ const RedirectToHome = () => {
   const navigate = useNavigate();
   
   React.useEffect(() => {
-    navigate('/');
+    navigate('/'); //navigate to home page
   }, [navigate]);
 
   return null; // Return nothing since we're just redirecting
@@ -30,7 +30,7 @@ const AdminPanel = () => {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const triggerRefresh = () => {
-    setRefreshKey(prevKey => prevKey + 1);
+    setRefreshKey(prevKey => prevKey + 1); //refreash
   };
     const navigate = useNavigate();
 
@@ -60,7 +60,7 @@ const AdminPanel = () => {
               <option value="category">Category</option>
             </select>
             <button onClick={() => openPopup(viewType)}>Add</button>
-            <button onClick={() => navigate('/')}>Back to Main</button>
+            <button onClick={() => navigate('/')}>Back to Main</button> 
           </div>
         </div>
 
@@ -80,7 +80,7 @@ const AdminPanel = () => {
           type={viewType}
           query={searchQuery}
           onEdit={(item) => openPopup(viewType, item)}
-          refreshKey={refreshKey} // This will force a re-render
+          refreshKey={refreshKey} // refresh when change happen as seen in onSuccess above
 
         />
       </div>
@@ -89,6 +89,7 @@ const AdminPanel = () => {
 };
 
 const Admin = () => {
+  //if not logged or logged but isnt admin send back to home page
   return <AdminAuth GuestComponent={RedirectToHome} LoggedComponent={AdminPanel} />;
 };
 

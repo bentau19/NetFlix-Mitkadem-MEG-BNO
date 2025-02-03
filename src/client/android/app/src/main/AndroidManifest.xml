@@ -46,6 +46,11 @@
         <activity android:name=".AdminActivity" />
         <activity android:name=".AdminFormActivity" />
         <activity android:name=".AdminForm2Activity" /> <!-- SignupActivity -->
+        <activity android:name=".activity.AdminActivity" />
+
+        <activity android:name=".activity.AdminFormActivity" />
+
+        <!-- SignupActivity -->
         <activity
             android:name=".activity.SignupActivity"
             android:exported="false" />
@@ -55,6 +60,8 @@
         <activity
             android:name=".ThemesActivity"
             android:exported="false" />
+
+
     </application>
 
 </manifest>

@@ -1,9 +1,7 @@
-package com.example.myapplication;
+package com.example.myapplication.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -17,20 +15,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.activity.LogInActivity;
-import com.example.myapplication.activity.loggedMain;
+import com.example.myapplication.R;
 import com.example.myapplication.adapter.Category;
 import com.example.myapplication.adapter.CategoryAdapter;
 import com.example.myapplication.adapter.Movie;
 import com.example.myapplication.adapter.MovieAdapter;
-import com.example.myapplication.server.api.APIRequest;
-import com.example.myapplication.server.api.ApiResponseCallback;
 import com.example.myapplication.ui.viewmodel.AdminViewModel;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.HashMap;
-import java.util.List;
 
 public class AdminActivity extends AppCompatActivity  {
 
@@ -78,8 +68,8 @@ public class AdminActivity extends AppCompatActivity  {
         });
         btnAdd.setOnClickListener(view -> {
             Intent intent = new Intent(AdminActivity.this, AdminFormActivity.class);
-            intent.putExtra("type", type);
-            intent.putExtra("isEditing", false);
+            intent.putExtra("type", type); //sent the type
+            intent.putExtra("isEditing", false); //add so we not editing
             startActivity(intent);
         });
 
@@ -90,8 +80,8 @@ public class AdminActivity extends AppCompatActivity  {
             public void onEditClicked(Movie movie) {
                 // Handle edit button click
                 Intent intent = new Intent(AdminActivity.this, AdminFormActivity.class);
-                intent.putExtra("type", type);
-                intent.putExtra("isEditing", true);
+                intent.putExtra("type", type); //send what we editing
+                intent.putExtra("isEditing", true); //tell we are editing
                 intent.putExtra("id", String.valueOf(movie.getId())); // Pass the movie ID to edit
                 startActivity(intent);
                 // Handle edit action

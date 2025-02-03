@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -22,7 +21,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.myapplication.AdminActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.ImageUtils;
 import com.example.myapplication.ui.viewmodel.AdminFormViewModel;
@@ -84,6 +82,7 @@ public class AdminFormActivity extends AppCompatActivity {
             categoryForm.setVisibility(View.VISIBLE);
             movieForm.setVisibility(View.GONE);
             if (isEditing) {
+                //if editing update
                 createCategoryButton.setText("Update Category");
                 categoryText.setText("Edit Categort");
 
@@ -111,7 +110,7 @@ public class AdminFormActivity extends AppCompatActivity {
                         List<Integer> categories = movie.getCategories();
                         String categoryString = categories.stream()
                                 .map(String::valueOf)
-                                .collect(Collectors.joining(", "));
+                                .collect(Collectors.joining(","));
                         movieCategoriesEditText.setText(categoryString);
 
                         selectedImageBitmap = ImageUtils.hexToImage(movie.getImage());
@@ -162,7 +161,7 @@ public class AdminFormActivity extends AppCompatActivity {
             String imageBase64 = null;
             if (selectedImageBitmap != null) {
                 try {
-                    imageBase64 = convertImageToHex(selectedImageBitmap);
+                    imageBase64 = ImageUtils.convertImageToHex(selectedImageBitmap);
                 } catch (Exception e) {
                     e.printStackTrace();
                     showToast("Failed to encode image");
@@ -236,14 +235,6 @@ public class AdminFormActivity extends AppCompatActivity {
         }
     }
 
-    private String encodeImageToBase64(Uri imageUri) throws Exception {
-        InputStream inputStream = getContentResolver().openInputStream(imageUri);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        byte[] imageBytes = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
-    }
 
     private void navigateToAdmin(String select) {
         Intent intent = new Intent(this, AdminActivity.class);
@@ -256,19 +247,5 @@ public class AdminFormActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(AdminFormActivity.this, message, Toast.LENGTH_LONG);
         toast.show();
     }
-    private String convertImageToHex(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream.toByteArray();
-        return bytesToHex(byteArray);
-    }
 
-    // Convert bytes to hexadecimal string
-    private String bytesToHex(byte[] bytes) {
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : bytes) {
-            hexString.append(String.format("%02x", b));
-        }
-        return hexString.toString();
-    }
 }

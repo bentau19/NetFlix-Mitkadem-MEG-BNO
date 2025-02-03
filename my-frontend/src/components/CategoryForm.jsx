@@ -16,14 +16,14 @@ const CategoryForm = ({ onClose, initialValues = {}, onSuccess }) => {
 
   const handleSubmit = async () => {
     try {
-      const token = sessionStorage.getItem('token'); // Use 'token' as a string
+      const token = sessionStorage.getItem('token'); // Use token
       if (!token) {
-        throw new Error('No token found. Please sign in.');
+        throw new Error('No token found. Please sign in.'); //if you dont have tokens you cant get too this page but just in cause
       }
       const url = isEditing
-        ? `http://localhost:5000/api/categories/${initialValues._id}`
+        ? `http://localhost:5000/api/categories/${initialValues._id}`  //if in edit mode or regular
         : 'http://localhost:5000/api/categories';
-      const method = isEditing ? 'PATCH' : 'POST';
+      const method = isEditing ? 'PATCH' : 'POST'; //editing or not
 
       const response = await fetch(url, {
         method,
@@ -51,7 +51,7 @@ const CategoryForm = ({ onClose, initialValues = {}, onSuccess }) => {
     <div>
       <h2>{isEditing ? 'Edit Category' : 'Create Category'}</h2>
       <input
-        value={nameState} // Bind to nameState, not name
+        value={nameState} // bind to nameState if in edit mode
         onChange={e => setName(e.target.value)} 
         placeholder="Category Name"
       />
@@ -59,7 +59,7 @@ const CategoryForm = ({ onClose, initialValues = {}, onSuccess }) => {
         Promoted
         <input
           type="checkbox"
-          checked={promotedState} // Bind to promotedState, not promoted
+          checked={promotedState} // bind to promotedState if in edit mode
           onChange={e => setPromoted(e.target.checked)} 
         />
       </label>

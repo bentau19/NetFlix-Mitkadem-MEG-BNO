@@ -19,7 +19,7 @@
 
     <activity
         android:id="@+id/Admin"
-        android:name="com.example.myapplication.AdminActivity"
+        android:name="com.example.myapplication.activity.AdminActivity"
         android:label="Admin"
         tools:layout="@layout/admin" />
 </navigation>
