@@ -19,6 +19,8 @@ public class FullscreenActivity extends AppCompatActivity {
     private PlayerView playerView;
     private ExoPlayer player;
     private boolean mVisible;
+    private int movieId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,41 +30,33 @@ public class FullscreenActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         mVisible = true;
-
-        // Initialize ExoPlayer view from binding
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("id")) {
+            movieId = intent.getIntExtra("id", -1);
+        } else {
+            movieId = -1;
+        }
         playerView = binding.videoPlayerView;
-
-        String videoUrl = "http://10.0.2.2:5000/api/movies/3/play";
+        String videoUrl = "http://10.0.2.2:5000/api/movies/" + movieId + "/play";
         setupPlayer(videoUrl);
 
-        // Set up UI controls
         binding.fullscreenContentControls.setVisibility(View.VISIBLE);
-        binding.dummyButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                toggle();
-                return false;
-            }
-        });
 
-        // Toggle UI on video click
         playerView.setOnClickListener(view -> toggle());
 
         Button btnGoToMain = findViewById(R.id.dummyButton);
 
         btnGoToMain.setOnClickListener(view -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            Intent intent2 = new Intent(this, MainActivity.class);
+            startActivity(intent2);
             finish();
         });
     }
 
     private void setupPlayer(String videoUrl) {
-        // Initialize ExoPlayer
+
         player = new ExoPlayer.Builder(this).build();
         playerView.setPlayer(player);
-
-        // Load the video
         MediaItem mediaItem = MediaItem.fromUri(Uri.parse(videoUrl));
         player.setMediaItem(mediaItem);
         player.prepare();

@@ -20,7 +20,7 @@ public class GuestMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_guest_main);
-        heroImage = findViewById(R.id.hero_image);
+
         Button btnGoToSignup = findViewById(R.id.Signup);
         btnGoToSignup.setOnClickListener(view -> {
             Intent intent = new Intent(this, SignupActivity.class);

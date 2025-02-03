@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Intent intent = new Intent(this, GuestMain.class);
                 startActivity(intent);
-                finish();
             }
         });
         LogInViewModel.islogged();

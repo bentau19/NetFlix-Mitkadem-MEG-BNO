@@ -277,6 +277,70 @@ public class MovieRepository {
             }
         });
     }
+    public void getRecommendedMovies(String movieId) {
+        getToken(new Callback<String>() {
+            @Override
+            public void onSuccess(String token) {
+                String endpoint = "movies/" + movieId + "/recommend";  // Endpoint for recommended movies
+                Map<String, String> headers = new HashMap<>();
+                headers.put("token", token);  // Include token in request headers
+
+                APIRequest apiRequest = new APIRequest(endpoint, headers, null);
+                apiRequest.get(new ApiResponseCallback() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        // The response is expected to be a list of recommended movies
+                        if (response instanceof List<?>) {
+                            List<Movie> recommendedMovies = (List<Movie>) response;
+                            callback.onSuccess(recommendedMovies);  // Pass the recommended movies back to the caller
+                        } else {
+                            callback.onError("Unexpected response format");
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        callback.onError(error);  // Pass the error back to the caller
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);  // Pass error if token retrieval fails
+            }
+        });
+    }
+    public void postRecommendedMovies(String movieId) {
+        getToken(new Callback<String>() {
+            @Override
+            public void onSuccess(String token) {
+                String endpoint = "movies/" + movieId + "/recommend";  // Endpoint for recommended movies
+                Map<String, String> headers = new HashMap<>();
+                headers.put("token", token);
+                Map<String, String> jsonBody = new HashMap<>();
+                jsonBody.put("id", movieId);
+                APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
+                apiRequest.post(new ApiResponseCallback() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        callback.onSuccess("ok");
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        callback.onError(error);  // Pass the error back to the caller
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);  // Pass error if token retrieval fails
+            }
+        });
+    }
+
 
 
     public void fetchMovies(String query, ApiResponseCallback callback) {
