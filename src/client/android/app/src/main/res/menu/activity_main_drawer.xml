@@ -19,7 +19,8 @@
         <item
             android:id="@+id/Admin"
             android:icon="@drawable/admin"
-            android:title="Admin" />
+            android:title="Admin"
+            android:visible="false" />
 
     </group>
 </menu>

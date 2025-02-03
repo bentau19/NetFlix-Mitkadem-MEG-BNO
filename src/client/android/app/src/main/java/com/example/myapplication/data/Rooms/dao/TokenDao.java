@@ -19,4 +19,9 @@ public interface TokenDao {
     LiveData<UserToken> getToken();
     @Query("SELECT token FROM UserToken LIMIT 1")
     String getTokenString();
+
+    @Query("DELETE FROM UserToken")
+    void deleteAllTokens();
+
+
 }
