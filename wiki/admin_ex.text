@@ -1,8 +1,0 @@
-the admin page work semailry in web and app , so the explation work for boths:
--have select/spinner button to switch if we want to work on category/movie
--to add press on add button (in movies type categories id we want seprate by ',' like 1,3,4)
--to edit item press on edit button , the current field will auto fill
--to delete item press on the delete button on item , a pop up ask if you sure and press yes 
--can also search for spesfic item , will use the query for that item (empty query will give all items)
-
--as stated in ex will users define as admin can acsees this page , in web if a user that doesnt have a admin token/or doesnt have a token at all will rederict to home page.
