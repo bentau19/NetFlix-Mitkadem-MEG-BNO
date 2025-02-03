@@ -28,7 +28,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         categories.addAll(newCategories);
         notifyDataSetChanged();
     }
+    public void removeItem(String categoryId) { //remove the item in the list
+        for (int i = 0; i < categories.size(); i++) {
+            // Convert the movie ID to int before comparison
+            if (categories.get(i).getId().equals(categoryId)) {
+                categories.remove(i);
+                notifyItemRemoved(i);
+                break;
+            }
+        }
 
+    }
     public void setOnItemActionListener(OnItemActionListener listener) {
         this.listener = listener;
     }

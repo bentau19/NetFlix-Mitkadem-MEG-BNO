@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { hexToBase64, convertFileToHex} from '../utils/imageConverter';
-const MovieForm = ({ onClose, initialValues = {} }) => {
+const MovieForm = ({ onClose, initialValues = {} , onSuccess }) => {
   const { title, logline, image, categories } = initialValues || {};
   
   const [titleState, setTitle] = useState(title || '');
@@ -18,10 +18,13 @@ const MovieForm = ({ onClose, initialValues = {} }) => {
       const method = isEditing ? 'PUT' : 'POST';
       
       let imageBase64 = null;
-      if (imageState) {
-        // Convert the image to Base64 before sending (Ensure convertFileToHex or similar function works)
+      if (imageState && imageState instanceof File) { //if it is uploading as a file now (we dont in edit mode and got its hexa)
         imageBase64 = await convertFileToHex(imageState);
+      } else if (typeof imageState === 'string') {
+        // If it's already a base64 string, use it directly
+        imageBase64 = imageState;
       }
+      
   
       const response = await fetch(url, {
         method,
@@ -32,7 +35,7 @@ const MovieForm = ({ onClose, initialValues = {} }) => {
         body: JSON.stringify({
           title: titleState,
           logline: loglineState,
-          image: imageBase64, // Use Base64 encoded image here
+          image: imageBase64, 
           categories: categoriesState
             .split(',')
             .map(id => id.trim())
@@ -40,16 +43,15 @@ const MovieForm = ({ onClose, initialValues = {} }) => {
         }),
       });
   
-      // Log raw response
       const responseText = await response.text();
       console.log('Full Response:', responseText);
   
-      // Detailed error handling
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}, response: ${responseText}`);
       } else {
-        alert(`movie ${isEditing ? 'updated' : 'created'} successfully!`);
-        onClose();
+          alert(`Movie ${isEditing ? 'updated' : 'created'} successfully!`); //coreespanding message
+          onClose(); //close popup
+          onSuccess(); // Trigger the refresh        
       }
     } catch (error) {
       console.error('Submission Error:', error);

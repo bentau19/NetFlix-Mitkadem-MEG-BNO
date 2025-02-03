@@ -8,16 +8,39 @@
     android:padding="16dp"
     android:background="@color/colorBackground">
 
-    <!-- Title -->
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Movies and Categories"
-        android:textSize="24sp"
-        android:textColor="?attr/colorOnSurface"
-    android:layout_gravity="center"
-    android:layout_marginBottom="20dp" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="20dp">
+
+        <!-- First Button (Add) -->
+        <Button
+            android:id="@+id/backToMain"
+            android:layout_marginEnd="80dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Main"
+            android:textSize="10sp"
+            android:backgroundTint="@color/colorSecondary"
+            android:textColor="?attr/colorOnSecondary"
+            android:layout_gravity="start"
+            android:layout_weight="1" />
+
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Welcome back admin"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
 
     <!-- Input Group (Spinner + Search Bar) -->
     <LinearLayout
@@ -45,7 +68,7 @@
             android:layout_marginLeft="10dp"
             android:textSize="16sp"
             android:textColor="?attr/colorOnSurface"
-        android:background="?attr/colorSurface" />
+            android:background="?attr/colorSurface" />
 
         <Button
             android:id="@+id/searchButton"
@@ -54,8 +77,8 @@
             android:text="Search"
             android:padding="12dp"
             android:backgroundTint="?attr/colorPrimary"
-        android:textColor="?attr/colorOnPrimary"
-        android:layout_marginLeft="10dp" />
+            android:textColor="?attr/colorOnPrimary"
+            android:layout_marginLeft="10dp" />
     </LinearLayout>
 
     <!-- Add Button -->
@@ -65,11 +88,11 @@
         android:layout_height="wrap_content"
         android:text="Add"
         android:padding="12dp"
-        android:backgroundTint="?attr/colorSecondary"
-    android:textColor="?attr/colorOnSecondary"
-    android:layout_gravity="center"
-    android:layout_marginTop="20dp"
-    android:layout_marginBottom="20dp" />
+        android:backgroundTint="@color/colorSecondary"
+        android:textColor="?attr/colorOnSecondary"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp" />
 
     <!-- Category and Movie Lists -->
     <androidx.recyclerview.widget.RecyclerView

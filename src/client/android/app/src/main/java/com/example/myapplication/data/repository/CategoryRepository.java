@@ -1,5 +1,7 @@
 package com.example.myapplication.data.repository;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -7,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.myapplication.adapter.Category;
 import com.example.myapplication.adapter.Movie;
+import com.example.myapplication.data.Rooms.DB.AppDatabase;
+import com.example.myapplication.data.Rooms.dao.TokenDao;
 import com.example.myapplication.server.api.APIRequest;
 import com.example.myapplication.server.api.ApiResponseCallback;
 import com.google.gson.Gson;
@@ -18,29 +22,59 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class CategoryRepository {
 
     private final ApiResponseCallback callback;
+    private final TokenDao tokenDao;
+    private final Executor executor = Executors.newSingleThreadExecutor();
 
     public CategoryRepository(ApiResponseCallback callback) {
         this.callback = callback;
+        this.tokenDao = AppDatabase.getInstance().tokenDao();
+
     }
+    private void getToken(CategoryRepository.Callback<String> tokenCallback) {
+        executor.execute(() -> {
+            String token = tokenDao.getTokenString();
+            new Handler(Looper.getMainLooper()).post(() -> {
+                if (token != null && !token.isEmpty()) {
+                    tokenCallback.onSuccess(token);
+                } else {
+                    tokenCallback.onError("No token found. User not logged in.");
+                }
+            });
+        });
+    }
+
 
     // Signup User
     public void createCategory(String name, Boolean promoted) {
-        String endpoint = "categories/";
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
-        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk");
+        getToken(new Callback<String>() {
+            @Override
+            public void onSuccess(String token) {
+                String endpoint = "categories/";
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("token", token);  // Use the retrieved token
 
-        Map<String, String> jsonBody = new HashMap<>();
-        jsonBody.put("name", name);
-        jsonBody.put("promoted", String.valueOf(promoted));
+                Map<String, String> jsonBody = new HashMap<>();
+                jsonBody.put("name", name);
+                jsonBody.put("promoted", String.valueOf(promoted));
 
-        APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
-        apiRequest.post(callback);
+                APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
+                apiRequest.post(callback);  // Pass the callback to handle the response
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);  // Handle error if token retrieval fails
+            }
+        });
     }
+
 
     public MutableLiveData<List<Category>> getAllCategories() {
         MutableLiveData<List<Category>> categoriesLiveData = new MutableLiveData<>();
@@ -87,57 +121,50 @@ public class CategoryRepository {
     }
 
     public void fetchCategoryData(String categoryId, ApiResponseCallback callback) {
-        String endpoint = "categories/" + categoryId;  // Example endpoint
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer your_token_here");
-
-        // Create the APIRequest for the GET method
-        APIRequest apiRequest = new APIRequest(endpoint, headers, null);
-        apiRequest.get(new ApiResponseCallback() {  // Accept Object here to handle LinkedTreeMap
+        getToken(new Callback<String>() {
             @Override
-            public void onSuccess(Object response) {
-                Log.d("CategoryRepository", "Full category response: " + response);  // Log the full response
-                if (response instanceof LinkedTreeMap) {
-                    Gson gson = new Gson();
+            public void onSuccess(String token) {
+                String endpoint = "categories/" + categoryId;
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + token);  // Use the retrieved token
 
-                    // Convert response to JSON string
-                    String json = gson.toJson(response);
+                APIRequest apiRequest = new APIRequest(endpoint, headers, null);
+                apiRequest.get(new ApiResponseCallback() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        Gson gson = new Gson();
+                        if (response instanceof LinkedTreeMap) {
+                            String json = gson.toJson(response);
+                            JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
 
-                    // Convert JSON string to JsonObject
-                    JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
-
-                    // Extract "message" object
-                    JsonObject messageObject = jsonObject.getAsJsonObject("message");
-
-                    if (messageObject != null) {
-                        // Deserialize "message" into Category
-                        Category category = gson.fromJson(messageObject, Category.class);
-
-                        Log.d("CategoryRepository", "Extracted Category - ID: " + category.getId() +
-                                ", Name: " + category.getName() + ", Promoted: " + category.isPromoted());
-
-                        callback.onSuccess(category);
-                    } else {
-                        Log.e("CategoryRepository", "Missing 'message' field in JSON response.");
-                        callback.onError("Invalid response format");
+                            JsonObject messageObject = jsonObject.getAsJsonObject("message");
+                            if (messageObject != null) {
+                                Category category = gson.fromJson(messageObject, Category.class);
+                                callback.onSuccess(category);
+                            } else {
+                                callback.onError("Missing 'message' field in the response");
+                            }
+                        } else if (response instanceof Category) {
+                            callback.onSuccess((Category) response);
+                        } else {
+                            callback.onError("Unexpected response format");
+                        }
                     }
-                }
-                 else if (response instanceof Category) {
-                    callback.onSuccess((Category) response);
-                } else {
-                    Log.e("CategoryRepository", "Unexpected response type: " + response.getClass().getName());
-                    callback.onError("Unexpected response format");
-                }
-            }
 
+                    @Override
+                    public void onError(String error) {
+                        callback.onError(error);
+                    }
+                });
+            }
 
             @Override
             public void onError(String error) {
-                // Call the callback onError method
-                callback.onError(error);
+                callback.onError(error);  // Handle error if no token is found
             }
         });
     }
+
 
     public ApiResponseCallback getCategories() {
         String endpoint = "categories/";  // Example endpoint for fetching user data
@@ -151,30 +178,63 @@ public class CategoryRepository {
 
     // Update User Data
     public void updateCategory(String categoryId, String newName, Boolean newPromoted) {
-        String endpoint = "categories/" + categoryId;  // Example endpoint for updating user data
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer your_token_here");
-        headers.put("Content-Type", "application/json");
-        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk");
+        getToken(new Callback<String>() {
+            @Override
+            public void onSuccess(String token) {
+                if (token == null || token.isEmpty()) {
+                    callback.onError("Token is null or empty");
+                    return;
+                }
 
-        Map<String, String> jsonBody = new HashMap<>();
-        jsonBody.put("name", newName);
-        jsonBody.put("promoted", String.valueOf(newPromoted));
+                String endpoint = "categories/" + categoryId;
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("token" , token);  // Use the retrieved token
 
-        APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
-        apiRequest.patch(callback);
+                Map<String, String> jsonBody = new HashMap<>();
+                jsonBody.put("name", newName);
+                jsonBody.put("promoted", String.valueOf(newPromoted));
+
+                APIRequest apiRequest = new APIRequest(endpoint, headers, jsonBody);
+                apiRequest.patch(new ApiResponseCallback() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        callback.onSuccess(response);  // Forward the response to the original callback
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        callback.onError(error);  // Forward the error to the original callback
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError("Failed to retrieve token: " + error);  // More descriptive error
+            }
+        });
     }
+
 
     // Delete User
     public void deleteCategory(String categoryId) {
-        String endpoint = "categories/" + categoryId;  // Example endpoint for deleting user
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer your_token_here");
-        headers.put("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInVzZXJOYW1lIjoiaGgiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNzM3NjcxNzQwLCJleHAiOjE3MzgyNzY1NDB9.lrAoaumgyCMFm472E0LoXpxMuImnTCmJsEqqVSR7Njk");
+        getToken(new Callback<String>() {
+            @Override
+            public void onSuccess(String token) {
+                String endpoint = "categories/" + categoryId;
+                Map<String, String> headers = new HashMap<>();
+                headers.put("token" , token);  // Use the retrieved token
 
-        // Create APIRequest for DELETE method
-        APIRequest apiRequest = new APIRequest(endpoint, headers, null);
-        apiRequest.delete(callback);
+                APIRequest apiRequest = new APIRequest(endpoint, headers, null);
+                apiRequest.delete(callback);  // Make the DELETE request
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);  // Handle error if no token is found
+            }
+        });
     }
     public void fetchCategories(String query, ApiResponseCallback callback) {
         String endpoint = query.isEmpty() ? "categories/search" : "categories/search/" + query;
@@ -191,6 +251,10 @@ public class CategoryRepository {
                 callback.onError(error);  // Pass error back to the caller
             }
         });
+    }
+    public interface Callback<T> {
+        void onSuccess(T result);
+        void onError(String error);
     }
 
 }

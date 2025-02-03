@@ -15,7 +15,7 @@ const RedirectToHome = () => {
   const navigate = useNavigate();
   
   React.useEffect(() => {
-    navigate('/');
+    navigate('/'); //navigate to home page
   }, [navigate]);
 
   return null; // Return nothing since we're just redirecting
@@ -27,8 +27,12 @@ const AdminPanel = () => {
   const [viewType, setViewType] = useState('movie');
   const [searchQuery, setSearchQuery] = useState('');
   const [editingItem, setEditingItem] = useState(null);
-  const { theme, toggleTheme } = useContext(ThemeContext);
-  const navigate = useNavigate();
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const triggerRefresh = () => {
+    setRefreshKey(prevKey => prevKey + 1); //refreash
+  };
+    const navigate = useNavigate();
 
   const openPopup = (type, item = null) => {
     setFormType(type);
@@ -56,27 +60,28 @@ const AdminPanel = () => {
               <option value="category">Category</option>
             </select>
             <button onClick={() => openPopup(viewType)}>Add</button>
-            <button onClick={() => navigate('/')}>Back to Main</button>
+            <button onClick={() => navigate('/')}>Back to Main</button> 
           </div>
         </div>
-        <button onClick={toggleTheme}>
-          Switch to {theme === "light" ? "Dark" : "Light"} Mode
-        </button>
+
       </div>
     
-      <Popup isOpen={isPopupOpen} onClose={closePopup}>
+            <Popup isOpen={isPopupOpen} onClose={closePopup}>
         {formType === 'movie' ? (
-          <MovieForm onClose={closePopup} initialValues={editingItem} />
+          <MovieForm onClose={closePopup} onSuccess={triggerRefresh} initialValues={editingItem} />
         ) : (
-          <CategoryForm onClose={closePopup} initialValues={editingItem} />
+          <CategoryForm onClose={closePopup} onSuccess={triggerRefresh} initialValues={editingItem} />
         )}
       </Popup>
+
 
       <div className="item-list-container">
         <ItemList
           type={viewType}
           query={searchQuery}
           onEdit={(item) => openPopup(viewType, item)}
+          refreshKey={refreshKey} // refresh when change happen as seen in onSuccess above
+
         />
       </div>
     </div>
@@ -84,6 +89,7 @@ const AdminPanel = () => {
 };
 
 const Admin = () => {
+  //if not logged or logged but isnt admin send back to home page
   return <AdminAuth GuestComponent={RedirectToHome} LoggedComponent={AdminPanel} />;
 };
 
