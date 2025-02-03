@@ -40,10 +40,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AdminActivity" />
+        <activity android:name=".activity.AdminActivity" />
 
-        <activity android:name=".AdminFormActivity" />
-        <activity android:name=".AdminForm2Activity" />
+        <activity android:name=".activity.AdminFormActivity" />
 
         <!-- SignupActivity -->
         <activity
@@ -52,8 +51,7 @@
         <activity
             android:name=".activity.LogInActivity"
             android:exported="false" />
-        <activity android:name=".ThemesActivity"
-            android:exported="false" />
+
 
     </application>
 

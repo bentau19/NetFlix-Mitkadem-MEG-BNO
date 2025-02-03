@@ -42,11 +42,10 @@ const ItemList = ({ type, query, onEdit , refreshKey}) => {
         : '';
 
       if (url) {
-     // type === 'categories' ?  await deleteCategory(itemToDelete._id) : await deleteMovie(itemToDelete._id) ; // Perform the delete operation
         const response = await del(url);
         if (response.ok) {
           alert(` ${type === 'category' ? 'category' : 'movie'} with id ${itemToDelete._id} was deleted successfully!`);
-        
+          //give coresapanding message
         }
         setIsPopupOpen(false); // Close popup after deletion
         const newItems = items.filter(item => item._id !== itemToDelete._id); // Remove deleted item from list
@@ -64,20 +63,15 @@ const ItemList = ({ type, query, onEdit , refreshKey}) => {
   };
 
   if (loading) {
+    //print loading while loading
     return <div>Loading...</div>;
   }
 
   if (items.length === 0) {
+    //if there isnt item to diaplay , tell the user that
     return <div>No items available</div>;
   }
-  const renderHexSnippet = (hexString, maxLength = 20) => {
-    if (!hexString) return "No Image Data";
-    // Truncate the hex string to a maximum length and add ellipsis
-  /*  return hexString.length > maxLength
-      ? `${hexString.substring(0, maxLength)}...`
-      : hexString;*/
-      return hexToBase64(hexString)
-  };
+
   
 
   return (
@@ -91,7 +85,7 @@ const ItemList = ({ type, query, onEdit , refreshKey}) => {
               <>
       { item.image ? (
         <img
-        src={hexToBase64(item.image)}
+        src={hexToBase64(item.image)} //if we are in edit mode display current photo
           alt="Uploaded Movie"
           style={{ maxWidth: '100px', maxHeight: '60px' }}
         />

@@ -2,19 +2,13 @@ package com.example.myapplication.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.myapplication.AdminActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.data.Rooms.DB.AppDatabase;
-import com.example.myapplication.data.Rooms.dao.TokenDao;
-import com.example.myapplication.ThemesActivity;
-import com.example.myapplication.data.Rooms.entity.UserToken;
 import com.example.myapplication.data.ThemeManager;
 import com.example.myapplication.ui.viewmodel.LogInViewModel;
 

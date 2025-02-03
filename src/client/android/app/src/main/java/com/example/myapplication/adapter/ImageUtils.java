@@ -3,6 +3,8 @@ package com.example.myapplication.adapter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import java.io.ByteArrayOutputStream;
+
 public class ImageUtils {
 
     public static Bitmap hexToImage(String hexString) {
@@ -40,5 +42,20 @@ public class ImageUtils {
                     + Character.digit(hexString.charAt(i + 1), 16));
         }
         return data;
+    }
+    public static  String convertImageToHex(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return bytesToHex(byteArray);
+    }
+
+    // Convert bytes to hexadecimal string
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : bytes) {
+            hexString.append(String.format("%02x", b));
+        }
+        return hexString.toString();
     }
 }
