@@ -20,7 +20,10 @@ public class GuestMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_guest_main);
-
+        heroImage = findViewById(R.id.hero_image);
+        if (heroImage == null) {
+            throw new RuntimeException("ImageView with ID 'heroImage' not found in activity_guest_main.xml");
+        }
         Button btnGoToSignup = findViewById(R.id.Signup);
         btnGoToSignup.setOnClickListener(view -> {
             Intent intent = new Intent(this, SignupActivity.class);
