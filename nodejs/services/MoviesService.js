@@ -298,6 +298,8 @@ const getQueryMovie = async (query) => {
   return testQuery;
 };
 
+
+ 
 module.exports = { getMoviesByCategory,getMovieById,createMovie,updateMovie
   ,getRecommendMovie,deleteMovie,addMovieToUser,getQueryMovie
 }
