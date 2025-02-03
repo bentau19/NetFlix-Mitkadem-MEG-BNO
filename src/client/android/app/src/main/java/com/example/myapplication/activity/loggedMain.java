@@ -16,6 +16,8 @@ import com.example.myapplication.R;
 import com.example.myapplication.adapter.Category;
 import com.example.myapplication.adapter.ImageUtils;
 import com.example.myapplication.adapter.User;
+import com.example.myapplication.data.Rooms.DB.AppDatabase;
+import com.example.myapplication.data.Rooms.dao.TokenDao;
 import com.example.myapplication.data.ThemeManager;
 import com.example.myapplication.data.repository.CategoryRepository;
 import com.example.myapplication.data.repository.MovieRepository;
@@ -43,6 +45,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 public class loggedMain extends AppCompatActivity {
     private final UserRepository userRepository;
@@ -79,12 +82,21 @@ public class loggedMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         binding = ActivityLoggedMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        NavigationView navigationView = binding.navView;
         // Fetch user data and update UI
         userRepository.getUser();
+        String currentTheme = ThemeManager.getTheme(this);
+        Menu menu = navigationView.getMenu();
+        MenuItem themeTitle = menu.findItem(R.id.ThemeMode);
+        if (currentTheme.equals("dark")) {
+            themeTitle.setTitle("ThemeMode - dark");
+        } else {
+            themeTitle.setTitle("ThemeMode - light");
+        }
         user.observe(this, user -> {
             if (user != null) {
                 // Update user image if available
@@ -98,6 +110,10 @@ public class loggedMain extends AppCompatActivity {
                     TextView userNameTextView = binding.navView.getHeaderView(0).findViewById(R.id.userName);
                     userNameTextView.setText(user.getName());
                 }
+
+                MenuItem adminItem = menu.findItem(R.id.Admin);
+                adminItem.setVisible(user.getAdmin());
+
             }
         });
 
@@ -106,7 +122,7 @@ public class loggedMain extends AppCompatActivity {
 
         // Set up navigation components
         DrawerLayout drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
+
 
         // Define top-level destinations
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -119,6 +135,8 @@ public class loggedMain extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+
+
         // Handle navigation item clicks
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -127,12 +145,14 @@ public class loggedMain extends AppCompatActivity {
                 // Handle the ThemeMode click event
 
                 // Get the current theme from preferences
-                String currentTheme = ThemeManager.getTheme(this);
+//                String currentTheme = ThemeManager.getTheme(this);
 
                 // Toggle between light and dark theme
                 if (currentTheme.equals("dark")) {
+                    themeTitle.setTitle("ThemeMode - light");
                     ThemeManager.saveThemeToPreferences(this, "light"); // Change to light theme
                 } else {
+                    themeTitle.setTitle("ThemeMode - dark");
                     ThemeManager.saveThemeToPreferences(this, "dark"); // Change to dark theme
                 }
 
@@ -145,6 +165,11 @@ public class loggedMain extends AppCompatActivity {
                 return true;
             }
              else if (id == R.id.SignOut) {
+                Executors.newSingleThreadExecutor().execute(() -> {
+                AppDatabase db= AppDatabase.getInstance();
+                TokenDao tokenDao = db.tokenDao();
+                tokenDao.deleteAllTokens();
+                });
                 // Handle SignOut: Navigate to LoginActivity and clear back stack
                 Intent intent = new Intent(this, LogInActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
