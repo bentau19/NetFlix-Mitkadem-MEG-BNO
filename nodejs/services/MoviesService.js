@@ -85,20 +85,37 @@ const getMovieById = async (id) => {
 const createMovie = async (title, logline, image, categories) => {
   if (!title) {
     throw ERROR_MESSAGES.BAD_REQUEST;
-
   }
-  const test = await Movies.findOne({ title:title });
+
+  const test = await Movies.findOne({ title: title });
   if (test) throw ERROR_MESSAGES.Existing("movie");
-  const movies = new Movies({ title : title});
-  if(categories)
-  if (categories!=[]){
-    for (const id of categories) {
-      const category = await Categories.findOne({ _id: id });
-      if(!category){
+
+  const movies = new Movies({ title: title });
+
+  let categoriesArray = [];
+  if (categories) {
+    if (typeof categories === "string") {
+      try {
+        categoriesArray = JSON.parse(categories);
+      } catch (error) {
+        console.log("Error parsing categories:", error); // Log parse errors
         throw ERROR_MESSAGES.BAD_REQUEST;
       }
-    }}
+    } else {
+      categoriesArray = categories;
+    }
 
+    // Validate categories before saving the movie
+    for (const id of categoriesArray) {
+      const category = await Categories.findOne({ _id: id });
+      if (!category) {
+        console.log("Invalid category ID:", id);
+        throw ERROR_MESSAGES.BAD_REQUEST;
+      }
+    }
+
+    movies.categories = categoriesArray;
+  }
 
   if (logline) movies.logline = logline;
   if (image) movies.image = image;
@@ -129,41 +146,67 @@ const updateMovie = async (movieId, updateData) => {
   if (!movieId) {
     throw ERROR_MESSAGES.BAD_REQUEST;
   }
-    const movie = await movies.findById(movieId);
-    if (!movie) {
-      throw ERROR_MESSAGES.BAD_REQUEST;
+
+  const movie = await Movies.findById(movieId);
+  if (!movie) {
+    throw ERROR_MESSAGES.BAD_REQUEST;
+  }
+
+  // First, remove the movie from all categories
+  await Categories.updateMany(
+    { movies: movieId },  // Find categories where the movie is listed
+    { $pull: { movies: movieId } }  // Remove the movie from the category's movies array
+  );
+
+  // Step 3: Prepare the updated movie data
+  const updatedMovie = { ...updateData };
+  updatedMovie._id = movieId;
+
+  // Handle the categories logic
+  if (updatedMovie.categories) {
+    let categoriesArray = [];
+
+    if (typeof updatedMovie.categories === "string") {
+      try {
+        categoriesArray = JSON.parse(updatedMovie.categories); // Convert string to array
+      } catch (error) {
+        console.log("Error parsing categories:", error); // Log parse errors
+        throw ERROR_MESSAGES.BAD_REQUEST;
+      }
+    } else {
+      categoriesArray = updatedMovie.categories; // If it's already an array
     }
 
-      // First, remove the movie from all categories
-      await Categories.updateMany(
-        { movies: movieId },  // Find categories where the movie is listed
-        { $pull: { movies: movieId } }  // Remove the movie from the category's `movies` array
-      );
+    // Validate categories before updating the movie
+    for (const id of categoriesArray) {
+      const category = await Categories.findOne({ _id: id });
+      if (!category) {
+        console.log("Invalid category ID:", id);
+        throw ERROR_MESSAGES.BAD_REQUEST;
+      }
+    }
 
+    updatedMovie.categories = categoriesArray;
 
-    // Step 3: Prepare the updated movie data
-    const updatedMovie = { ...updateData };
-    updateData._id=movieId;
-
-    if(updatedMovie.categories){
+    // Add the movie to the new categories
     await Categories.updateMany(
       { _id: { $in: updatedMovie.categories } },  // Find categories with the given IDs
-      { $addToSet: { movies: movieId } }  // Add movieId to the `movies` array if not already present
+      { $addToSet: { movies: movieId } }  // Add movieId to the movies array if not already present
     );
   }
 
-    // Step 4: Update the movie document with the new data
-const updated = await Movies.findOneAndReplace(
-  { _id: movieId }, // Filter to find the document
-  updatedMovie,     // The new object to replace the document with
-  { new: true }     // Return the replaced document after the operation
-);
+  // Step 4: Update the movie document with the new data
+  const updated = await Movies.findOneAndReplace(
+    { _id: movieId }, // Filter to find the document
+    updatedMovie,     // The new object to replace the document with
+    { new: true }     // Return the replaced document after the operation
+  );
 
+  if (!updated) {
+    throw 'Failed to update movie';
+  }
 
-    if (!updated) {
-      throw 'Failed to update movie';
-    }
-    return updated; // Return the updated movie object
+  return updated; // Return the updated movie object
 };
 const deleteMovie = async (id) => {
 
@@ -255,8 +298,6 @@ const getQueryMovie = async (query) => {
   return testQuery;
 };
 
-
- 
 module.exports = { getMoviesByCategory,getMovieById,createMovie,updateMovie
   ,getRecommendMovie,deleteMovie,addMovieToUser,getQueryMovie
 }
