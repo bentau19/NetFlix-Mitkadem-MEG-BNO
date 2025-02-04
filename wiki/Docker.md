@@ -9,6 +9,8 @@ Follow these steps to use the Docker.
 | ## 🏠 Step 1: initialize  |
 | Before running anything make sure your docker, emulator and mongodb is ready then create the folder c:/shlomyNoNerves as below| 
 | ![shlomeNeverNervous](docker/step1.png) |
+| Then add the movies you want to displat to NetFlix-Mitkadem-MEG-BNO/nodejs/public folde in this format movietitle.mp4:| 
+| ![shlomeNeverNervous](main-react/moviesadd) |
 | ## 🏠 Step 2: run the docker program  |
 | Open a teminal at the main folder of the project at below and run the following commend:| 
 | 1. docker-compose build (disclaimer the proccess may take a few minutes!!)| 
